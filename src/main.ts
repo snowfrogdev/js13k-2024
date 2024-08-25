@@ -49,6 +49,11 @@ class Player extends EngineObject {
     const deceleration = 0.1;
     this.velocity = this.velocity.scale(1 - deceleration);
 
+    // Clamp player position to prevent it from going outside the tilemap
+    const levelSize = vec2(tileMapData.width, tileMapData.height);
+    this.pos.x = clamp(this.pos.x, 1, levelSize.x - 1);
+    this.pos.y = clamp(this.pos.y, 1, levelSize.y - 1);
+
     super.update();
   }
 
