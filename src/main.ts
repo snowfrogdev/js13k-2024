@@ -1,9 +1,8 @@
 import {
   cameraPos,
+  cameraScale,
   clamp,
-  Color,
   drawRect,
-  drawText,
   drawTile,
   engineInit,
   EngineObject,
@@ -13,7 +12,6 @@ import {
   mainCanvasSize,
   mouseIsDown,
   mousePos,
-  percent,
   rgb,
   setCameraPos,
   tile,
@@ -122,7 +120,17 @@ function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
   const newCameraPos = cameraPos.lerp(player.pos, 0.1);
-  setCameraPos(newCameraPos);
+
+  // Clamp the camera position to prevent it from going outside the tilemap
+  const levelSize = vec2(tileMapData.width, tileMapData.height);
+  const cameraSize = mainCanvasSize.scale(1 / cameraScale);
+  const halfCameraSize = cameraSize.scale(0.5);
+  const clampedCameraPos = vec2(
+    clamp(newCameraPos.x, halfCameraSize.x, levelSize.x - halfCameraSize.x),
+    clamp(newCameraPos.y, halfCameraSize.y, levelSize.y - halfCameraSize.y)
+  );  
+
+  setCameraPos(clampedCameraPos);
 }
 
 function gameRender() {
