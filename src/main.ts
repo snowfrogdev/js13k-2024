@@ -1,6 +1,7 @@
 import {
   Color,
   drawRect,
+  drawText,
   drawTile,
   engineInit,
   EngineObject,
@@ -13,6 +14,8 @@ import {
   Vector2,
 } from "littlejsengine";
 
+
+
 class Player extends EngineObject {
   constructor() {
     super();
@@ -20,11 +23,30 @@ class Player extends EngineObject {
 
   update() {
     // wasd input for movement
-    const speed = 0.17;
-    if (keyIsDown("KeyW")) this.pos.y += speed;
-    if (keyIsDown("KeyS")) this.pos.y -= speed;
-    if (keyIsDown("KeyA")) this.pos.x -= speed;
-    if (keyIsDown("KeyD")) this.pos.x += speed;
+
+    const direction = vec2(0, 0);
+    if (keyIsDown("KeyW")) direction.y += 1;
+    if (keyIsDown("KeyS")) direction.y -= 1;
+    if (keyIsDown("KeyA")) direction.x -= 1;
+    if (keyIsDown("KeyD")) direction.x += 1;
+
+    if (direction.lengthSquared() > 0) {
+      direction.normalize();
+      const acceleration = 0.07;
+      this.velocity = this.velocity.add(direction.scale(acceleration));
+      const maxSpeed = 0.25;
+      if (this.velocity.length() > maxSpeed) {
+        this.velocity = this.velocity.normalize().scale(maxSpeed);
+      }
+    }
+
+    
+    const deceleration = 0.1;
+    this.velocity = this.velocity.scale(1 - deceleration);
+    
+
+
+    super.update();
   }
 
   render() {
@@ -64,7 +86,7 @@ function gameUpdate() {
   if (mouseIsDown(0)) {
     const direction = mousePos.subtract(player.pos).normalize();
     const position = player.pos.add(direction.scale(0.5));
-    const rateOfFire = 0.2; // configurable rate of fire
+    const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
       new Projectile(position, direction);
