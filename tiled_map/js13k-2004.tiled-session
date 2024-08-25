@@ -21,11 +21,11 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "D:/Philippe/Projects/js13k-2024/assets/data",
+    "last.exportedFilePath": "D:/Philippe/Projects/js13k-2024/public/assets/data",
     "last.imagePath": "D:/Philippe/Projects/js13k-2024/public/assets/img",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.height": 32,
-    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedExportFilter": "JavaScript map files (*.js)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,

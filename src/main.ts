@@ -1,24 +1,32 @@
 import {
+  cameraPos,
+  clamp,
   Color,
   drawRect,
   drawText,
   drawTile,
   engineInit,
   EngineObject,
+  engineObjectsDestroy,
+  initTileCollision,
   keyIsDown,
+  mainCanvasSize,
   mouseIsDown,
   mousePos,
+  percent,
   rgb,
+  setCameraPos,
   tile,
+  TileLayer,
+  TileLayerData,
   vec2,
   Vector2,
 } from "littlejsengine";
-
-
+import { tileMapData } from "./tiled-map";
 
 class Player extends EngineObject {
-  constructor() {
-    super();
+  constructor(position: Vector2) {
+    super(position);
   }
 
   update() {
@@ -40,11 +48,8 @@ class Player extends EngineObject {
       }
     }
 
-    
     const deceleration = 0.1;
     this.velocity = this.velocity.scale(1 - deceleration);
-    
-
 
     super.update();
   }
@@ -74,7 +79,25 @@ class Projectile extends EngineObject {
 }
 
 function gameInit() {
-  player = new Player();
+  const levelSize = vec2(tileMapData.width, tileMapData.height);
+  initTileCollision(levelSize);
+  engineObjectsDestroy();
+
+  const tileLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 1));
+  for (let x = levelSize.x; x--; ) {
+    for (let y = levelSize.y; y--; ) {
+      const pos = vec2(x, levelSize.y - 1 - y);
+      const tile = tileMapData.layers[0].data[y * levelSize.x + x];
+
+      const data = new TileLayerData(tile - 1);
+      tileLayer.setData(pos, data);
+    }
+  }
+
+  tileLayer.redraw();
+
+  player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
+  setCameraPos(player.pos);
 }
 
 let lastFireTime = 0;
@@ -98,6 +121,8 @@ function gameUpdate() {
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
+  const newCameraPos = cameraPos.lerp(player.pos, 0.1);
+  setCameraPos(newCameraPos);
 }
 
 function gameRender() {
@@ -113,4 +138,6 @@ function gameRenderPost() {
 // Startup LittleJS Engine
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
   "./assets/img/player.png",
+  "./assets/img/tileset.png",
 ]);
+
