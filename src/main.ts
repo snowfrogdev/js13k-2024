@@ -6,6 +6,7 @@ import {
   drawTile,
   engineInit,
   EngineObject,
+  engineObjectsCallback,
   engineObjectsDestroy,
   initTileCollision,
   keyIsDown,
@@ -62,6 +63,31 @@ class Player extends EngineObject {
   }
 }
 
+class Enemy extends EngineObject {
+  constructor(position: Vector2) {
+    super(position);
+  }
+
+  update() {
+    // move towards the player
+    const direction = player.pos.subtract(this.pos).normalize();
+    const speed = 0.05;
+    this.velocity = direction.scale(speed);
+
+    super.update();
+  }
+
+  render() {
+    drawTile(this.pos, vec2(1), tile(0, 16, 2), this.color);
+  }
+
+  takeDamage() {
+    // flash color
+    this.color = rgb(255, 255, 255, 0.5);
+    setTimeout(() => (this.color = undefined!), 50);
+  }
+}
+
 let player: Player;
 
 class Projectile extends EngineObject {
@@ -72,12 +98,33 @@ class Projectile extends EngineObject {
    */
   constructor(position: Vector2, private direction: Vector2) {
     super(position);
-    const speed = 0.5;
+    const speed = 0.7;
     this.velocity = this.direction.scale(speed);
+    this.drawSize = vec2(0.25);
+    this.size = vec2(0.25);
   }
 
+  update() {
+    engineObjectsCallback(this.pos, this.size, (obj: EngineObject) => {
+      if (obj instanceof Enemy) {
+        obj.takeDamage();
+        this.destroy();
+      }
+    });
+
+    super.update();
+  }
+
+  /* collideWithObject(obj: EngineObject) {
+    if (obj instanceof Enemy) {
+      obj.takeDamage();
+    }
+
+    return true;
+  } */
+
   render() {
-    drawRect(this.pos, vec2(0.2), rgb(255, 255, 0));
+    drawRect(this.pos, this.drawSize, rgb(255, 255, 0));
   }
 }
 
@@ -100,6 +147,8 @@ function gameInit() {
   tileLayer.redraw();
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
+  new Enemy(vec2(levelSize.x / 2 + 5, levelSize.y / 2));
+
   setCameraPos(player.pos);
 }
 
@@ -133,7 +182,7 @@ function gameUpdatePost() {
   const clampedCameraPos = vec2(
     clamp(newCameraPos.x, halfCameraSize.x, levelSize.x - halfCameraSize.x),
     clamp(newCameraPos.y, halfCameraSize.y, levelSize.y - halfCameraSize.y)
-  );  
+  );
 
   setCameraPos(clampedCameraPos);
 }
@@ -152,5 +201,5 @@ function gameRenderPost() {
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
   "./assets/img/player.png",
   "./assets/img/tileset.png",
+  "./assets/img/enemy.png",
 ]);
-
