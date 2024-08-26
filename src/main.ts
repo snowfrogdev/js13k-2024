@@ -15,6 +15,7 @@ import {
   mousePos,
   rgb,
   setCameraPos,
+  Sound,
   tile,
   TileLayer,
   TileLayerData,
@@ -91,6 +92,7 @@ class Enemy extends EngineObject {
 let player: Player;
 
 class Projectile extends EngineObject {
+  static sound = new Sound([4.5,,82.40689,,,,,,.8,1.5,,.2,,1.1,5,,.08,,,.16,29]);
   /**
    * Constructs a new instance of the Projectile class.
    * @param position - The position of the instance.
@@ -114,14 +116,6 @@ class Projectile extends EngineObject {
 
     super.update();
   }
-
-  /* collideWithObject(obj: EngineObject) {
-    if (obj instanceof Enemy) {
-      obj.takeDamage();
-    }
-
-    return true;
-  } */
 
   render() {
     drawRect(this.pos, this.drawSize, rgb(255, 255, 0));
@@ -159,12 +153,15 @@ function gameUpdate() {
   // handle input and update the game state
 
   if (mouseIsDown(0)) {
+    Projectile.sound.play();
     const direction = mousePos.subtract(player.pos).normalize();
-    const position = player.pos.add(direction.scale(0.5));
+    const positionLeft = player.pos.add(direction.rotate(-0.5).scale(0.5));
+    const positionRight = player.pos.add(direction.rotate(0.5).scale(0.5));
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
-      new Projectile(position, direction);
+      new Projectile(positionLeft, direction);
+      new Projectile(positionRight, direction);
       lastFireTime = currentTime;
     }
   }
