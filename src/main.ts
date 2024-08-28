@@ -2,150 +2,29 @@ import {
   cameraPos,
   cameraScale,
   clamp,
-  drawRect,
-  drawTile,
   engineInit,
-  EngineObject,
-  engineObjectsCallback,
   engineObjectsDestroy,
   initTileCollision,
-  keyIsDown,
   mainCanvasSize,
   mouseIsDown,
   mousePos,
-  rgb,
-  screenToWorld,
+  mouseWheel,
   setCameraPos,
-  Sound,
+  setCameraScale,
   tile,
   TileLayer,
   TileLayerData,
+  tileSizeDefault,
   vec2,
   Vector2,
 } from "littlejsengine";
 import { tileMapData } from "./tiled-map";
-
-class Player extends EngineObject {
-  constructor(position: Vector2) {
-    super(position);
-  }
-
-  update() {
-    // wasd input for movement
-
-    const direction = vec2(0, 0);
-    if (keyIsDown("KeyW")) direction.y += 1;
-    if (keyIsDown("KeyS")) direction.y -= 1;
-    if (keyIsDown("KeyA")) direction.x -= 1;
-    if (keyIsDown("KeyD")) direction.x += 1;
-
-    if (direction.lengthSquared() > 0) {
-      direction.normalize();
-      const acceleration = 0.07;
-      this.velocity = this.velocity.add(direction.scale(acceleration));
-      const maxSpeed = 0.25;
-      if (this.velocity.length() > maxSpeed) {
-        this.velocity = this.velocity.normalize().scale(maxSpeed);
-      }
-    }
-
-    const deceleration = 0.1;
-    this.velocity = this.velocity.scale(1 - deceleration);
-
-    // Clamp player position to prevent it from going outside the tilemap
-    const levelSize = vec2(tileMapData.width, tileMapData.height);
-    this.pos.x = clamp(this.pos.x, 1, levelSize.x - 1);
-    this.pos.y = clamp(this.pos.y, 1, levelSize.y - 1);
-
-    super.update();
-  }
-
-  render() {
-    //drawTile(this.pos, vec2(1), tile(0, 16));
-    drawRect(this.pos, vec2(1), rgb(0, 255, 0));
-  }
-}
-
-class Enemy extends EngineObject {
-  constructor(position: Vector2) {
-    super(position);
-  }
-
-  update() {
-    // move towards the player
-    const direction = player.pos.subtract(this.pos).normalize();
-    const speed = 0.05;
-    this.velocity = direction.scale(speed);
-
-    super.update();
-  }
-
-  render() {
-    //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
-    drawRect(this.pos, vec2(1), this.color || rgb(255, 0, 0));
-  }
-
-  takeDamage() {
-    // flash color
-    this.color = rgb(255, 255, 255, 0.5);
-    setTimeout(() => (this.color = undefined!), 50);
-  }
-}
+import { Base } from "./base";
+import { Player } from "./player";
+import { Enemy } from "./enemy";
+import { Projectile } from "./projectile";
 
 let player: Player;
-
-class Projectile extends EngineObject {
-  static sound = new Sound([
-    4.5,
-    ,
-    82.40689,
-    ,
-    ,
-    ,
-    ,
-    ,
-    0.8,
-    1.5,
-    ,
-    0.2,
-    ,
-    1.1,
-    5,
-    ,
-    0.08,
-    ,
-    ,
-    0.16,
-    29,
-  ]);
-  /**
-   * Constructs a new instance of the Projectile class.
-   * @param position - The position of the instance.
-   * @param direction - The direction of the instance. Must be a unit vector.
-   */
-  constructor(position: Vector2, private direction: Vector2) {
-    super(position);
-    const speed = 0.7;
-    this.velocity = this.direction.scale(speed);
-    this.drawSize = vec2(0.25);
-    this.size = vec2(0.25);
-  }
-
-  update() {
-    engineObjectsCallback(this.pos, this.size, (obj: EngineObject) => {
-      if (obj instanceof Enemy) {
-        obj.takeDamage();
-        this.destroy();
-      }
-    });
-
-    super.update();
-  }
-
-  render() {
-    drawRect(this.pos, this.drawSize, rgb(255, 255, 0));
-  }
-}
 
 function gameInit() {
   const levelSize = vec2(tileMapData.width, tileMapData.height);
@@ -178,13 +57,29 @@ function gameInit() {
   groundLayer.redraw();
   roadLayer.redraw();
 
-  const spawn = tileMapData.layers.find((x) => x.name === "Spawns")
-    ?.objects![0];
-  const spawnPosition = convertCoord(spawn!.x, spawn!.y, 16, levelSize.y);
+  const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
+
+  const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
+  const enemySpawnPosition = convertCoord(
+    enemySpawn!.x,
+    enemySpawn!.y,
+    tileSizeDefault.x,
+    levelSize.y
+  );
+
+  new Enemy(enemySpawnPosition);
+
+  const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
+  const baseSpawnPosition = convertCoord(
+    baseSpawn!.x,
+    baseSpawn!.y,
+    tileSizeDefault.x,
+    levelSize.y
+  );
+
+  new Base(baseSpawnPosition);
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
-  new Enemy(spawnPosition);
-
   setCameraPos(player.pos);
 }
 
@@ -217,6 +112,11 @@ function gameUpdate() {
 }
 
 function gameUpdatePost() {
+  // for debug only
+  if (mouseWheel) {
+    const zoomSpeed = 2;
+    setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
+  }
   // called after physics and objects are updated
   // setup camera and prepare for render
   let newCameraPos = cameraPos.lerp(player.pos, 0.1);

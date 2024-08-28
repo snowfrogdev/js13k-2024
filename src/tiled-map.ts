@@ -1195,6 +1195,18 @@ export const tileMapData = {
           x: 776,
           y: 105.5,
         },
+        {
+          height: 0,
+          id: 6,
+          name: "",
+          point: true,
+          rotation: 0,
+          type: "BaseSpawn",
+          visible: true,
+          width: 0,
+          x: 414,
+          y: 860,
+        },
       ],
       opacity: 1,
       type: "objectgroup",
@@ -1204,7 +1216,7 @@ export const tileMapData = {
     },
   ],
   nextlayerid: 10,
-  nextobjectid: 4,
+  nextobjectid: 7,
   orientation: "orthogonal",
   renderorder: "right-down",
   tiledversion: "1.11.0",
@@ -1224,3 +1236,4 @@ export const tileMapData = {
   version: "1.10",
   width: 135,
 };
+ 
