@@ -60,7 +60,8 @@ class Player extends EngineObject {
   }
 
   render() {
-    drawTile(this.pos, vec2(1), tile(0, 16));
+    //drawTile(this.pos, vec2(1), tile(0, 16));
+    drawRect(this.pos, vec2(1), rgb(0, 255, 0));
   }
 }
 
@@ -79,7 +80,8 @@ class Enemy extends EngineObject {
   }
 
   render() {
-    drawTile(this.pos, vec2(1), tile(0, 16, 2), this.color);
+    //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
+    drawRect(this.pos, vec2(1), this.color || rgb(255, 0, 0));
   }
 
   takeDamage() {
@@ -149,18 +151,33 @@ function gameInit() {
   initTileCollision(levelSize);
   engineObjectsDestroy();
 
-  const tileLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 1));
+  const groundLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
+  groundLayer.renderOrder = -2;
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
       const tile = tileMapData.layers[0].data[y * levelSize.x + x];
 
       const data = new TileLayerData(tile - 1);
-      tileLayer.setData(pos, data);
+      groundLayer.setData(pos, data);
     }
   }
 
-  tileLayer.redraw();
+  const roadLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
+  roadLayer.renderOrder = -1;
+  for (let x = levelSize.x; x--; ) {
+    for (let y = levelSize.y; y--; ) {
+      const pos = vec2(x, levelSize.y - 1 - y);
+      const tile = tileMapData.layers[1].data[y * levelSize.x + x];
+
+      if (tile === 0) continue;
+      const data = new TileLayerData(tile - 1);
+      roadLayer.setData(pos, data);
+    }
+  }
+
+  groundLayer.redraw();
+  roadLayer.redraw(); 
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   new Enemy(vec2(levelSize.x / 2 + 5, levelSize.y / 2));
@@ -179,8 +196,12 @@ function gameUpdate() {
   if (mouseIsDown(0)) {
     Projectile.sound.play();
     firingDirection = mousePos.subtract(player.pos).normalize();
-    const positionLeft = player.pos.add(firingDirection.rotate(-0.5).scale(0.5));
-    const positionRight = player.pos.add(firingDirection.rotate(0.5).scale(0.5));
+    const positionLeft = player.pos.add(
+      firingDirection.rotate(-0.5).scale(0.5)
+    );
+    const positionRight = player.pos.add(
+      firingDirection.rotate(0.5).scale(0.5)
+    );
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
@@ -202,8 +223,16 @@ function gameUpdatePost() {
   const cameraSize = mainCanvasSize.scale(1 / cameraScale);
   const halfCameraSize = cameraSize.scale(0.5);
   let clampedCameraPos = vec2(
-    clamp(newCameraPos.x, halfCameraSize.x + 1, levelSize.x - halfCameraSize.x - 1),
-    clamp(newCameraPos.y, halfCameraSize.y + 1, levelSize.y - halfCameraSize.y - 1)
+    clamp(
+      newCameraPos.x,
+      halfCameraSize.x + 1,
+      levelSize.x - halfCameraSize.x - 1
+    ),
+    clamp(
+      newCameraPos.y,
+      halfCameraSize.y + 1,
+      levelSize.y - halfCameraSize.y - 1
+    )
   );
 
   if (isFiring) {
@@ -228,7 +257,5 @@ function gameRenderPost() {
 
 // Startup LittleJS Engine
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
-  "./assets/img/player.png",
-  "./assets/img/tileset.png",
-  "./assets/img/enemy.png",
+  "./assets/img/Tilemap.png",
 ]);
