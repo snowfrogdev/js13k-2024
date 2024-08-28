@@ -14,6 +14,7 @@ import {
   mouseIsDown,
   mousePos,
   rgb,
+  screenToWorld,
   setCameraPos,
   Sound,
   tile,
@@ -152,11 +153,10 @@ function gameInit() {
   engineObjectsDestroy();
 
   const groundLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
-  groundLayer.renderOrder = -2;
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
-      const tile = tileMapData.layers[0].data[y * levelSize.x + x];
+      const tile = tileMapData.layers[0].data![y * levelSize.x + x];
 
       const data = new TileLayerData(tile - 1);
       groundLayer.setData(pos, data);
@@ -164,11 +164,10 @@ function gameInit() {
   }
 
   const roadLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
-  roadLayer.renderOrder = -1;
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
-      const tile = tileMapData.layers[1].data[y * levelSize.x + x];
+      const tile = tileMapData.layers[1].data![y * levelSize.x + x];
 
       if (tile === 0) continue;
       const data = new TileLayerData(tile - 1);
@@ -177,10 +176,14 @@ function gameInit() {
   }
 
   groundLayer.redraw();
-  roadLayer.redraw(); 
+  roadLayer.redraw();
+
+  const spawn = tileMapData.layers.find((x) => x.name === "Spawns")
+    ?.objects![0];
+  const spawnPosition = convertCoord(spawn!.x, spawn!.y, 16, levelSize.y);
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
-  new Enemy(vec2(levelSize.x / 2 + 5, levelSize.y / 2));
+  new Enemy(spawnPosition);
 
   setCameraPos(player.pos);
 }
@@ -259,3 +262,15 @@ function gameRenderPost() {
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
   "./assets/img/Tilemap.png",
 ]);
+
+function convertCoord(
+  x: number,
+  y: number,
+  tileSize: number,
+  mapHeight: number
+): Vector2 {
+  const newX = x / tileSize;
+  const newY = mapHeight - y / tileSize;
+
+  return vec2(newX, newY);
+}

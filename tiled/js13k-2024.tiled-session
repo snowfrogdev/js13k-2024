@@ -16,6 +16,7 @@
     },
     "last.exportedFilePath": "D:/Philippe/Projects/js13k-2024/public/assets/data",
     "last.imagePath": "D:/Philippe/Projects/js13k-2024/tiled",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.fixedSize": false,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -24,6 +25,7 @@
     "openFiles": [
     ],
     "project": "js13k-2024.tiled-project",
+    "property.type": "string",
     "recentFiles": [
     ],
     "tileset.lastUsedFormat": "tsx",

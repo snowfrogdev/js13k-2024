@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="4">
+ <editorsettings>
+  <export target="../public/assets/data/TileMap..tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>
  <layer id="8" name="Ground" width="135" height="85">
@@ -182,5 +185,10 @@
  </layer>
  <objectgroup id="7" name="Reference" visible="0" locked="1" opacity="0.38" offsetx="-111" offsety="90.3333">
   <object id="2" name="reference" gid="35" x="109.833" y="1265.17" width="2165.33" height="1379.33"/>
+ </objectgroup>
+ <objectgroup id="9" name="Spawns">
+  <object id="3" type="EnemySpawn" x="776" y="105.5">
+   <point/>
+  </object>
  </objectgroup>
 </map>
