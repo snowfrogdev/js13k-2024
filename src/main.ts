@@ -92,7 +92,29 @@ class Enemy extends EngineObject {
 let player: Player;
 
 class Projectile extends EngineObject {
-  static sound = new Sound([4.5,,82.40689,,,,,,.8,1.5,,.2,,1.1,5,,.08,,,.16,29]);
+  static sound = new Sound([
+    4.5,
+    ,
+    82.40689,
+    ,
+    ,
+    ,
+    ,
+    ,
+    0.8,
+    1.5,
+    ,
+    0.2,
+    ,
+    1.1,
+    5,
+    ,
+    0.08,
+    ,
+    ,
+    0.16,
+    29,
+  ]);
   /**
    * Constructs a new instance of the Projectile class.
    * @param position - The position of the instance.
@@ -147,22 +169,25 @@ function gameInit() {
 }
 
 let lastFireTime = 0;
+let isFiring = false;
+let firingDirection: Vector2 = vec2();
 
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
-
+  isFiring = false;
   if (mouseIsDown(0)) {
     Projectile.sound.play();
-    const direction = mousePos.subtract(player.pos).normalize();
-    const positionLeft = player.pos.add(direction.rotate(-0.5).scale(0.5));
-    const positionRight = player.pos.add(direction.rotate(0.5).scale(0.5));
+    firingDirection = mousePos.subtract(player.pos).normalize();
+    const positionLeft = player.pos.add(firingDirection.rotate(-0.5).scale(0.5));
+    const positionRight = player.pos.add(firingDirection.rotate(0.5).scale(0.5));
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
-      new Projectile(positionLeft, direction);
-      new Projectile(positionRight, direction);
+      new Projectile(positionLeft, firingDirection);
+      new Projectile(positionRight, firingDirection);
       lastFireTime = currentTime;
+      isFiring = true;
     }
   }
 }
@@ -170,16 +195,23 @@ function gameUpdate() {
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
-  const newCameraPos = cameraPos.lerp(player.pos, 0.1);
+  let newCameraPos = cameraPos.lerp(player.pos, 0.1);
 
   // Clamp the camera position to prevent it from going outside the tilemap
   const levelSize = vec2(tileMapData.width, tileMapData.height);
   const cameraSize = mainCanvasSize.scale(1 / cameraScale);
   const halfCameraSize = cameraSize.scale(0.5);
-  const clampedCameraPos = vec2(
-    clamp(newCameraPos.x, halfCameraSize.x, levelSize.x - halfCameraSize.x),
-    clamp(newCameraPos.y, halfCameraSize.y, levelSize.y - halfCameraSize.y)
+  let clampedCameraPos = vec2(
+    clamp(newCameraPos.x, halfCameraSize.x + 1, levelSize.x - halfCameraSize.x - 1),
+    clamp(newCameraPos.y, halfCameraSize.y + 1, levelSize.y - halfCameraSize.y - 1)
   );
+
+  if (isFiring) {
+    // shake the camera when firing
+    const shakeAmount = 0.1;
+    const shake = firingDirection.scale(-1).scale(shakeAmount);
+    clampedCameraPos = clampedCameraPos.add(shake);
+  }
 
   setCameraPos(clampedCameraPos);
 }
