@@ -3,6 +3,7 @@ import {
   cameraScale,
   clamp,
   drawLine,
+  drawText,
   engineInit,
   engineObjectsDestroy,
   initTileCollision,
@@ -11,6 +12,7 @@ import {
   mousePos,
   mouseWheel,
   rgb,
+  screenToWorld,
   setCameraPos,
   setCameraScale,
   tile,
@@ -25,15 +27,11 @@ import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
+import { findPath } from "./findPath";
+import { navGraph, toKey } from "./findPath";
 
 let player: Player;
 let path: Vector2[] = [];
-
-// Define the graph as an adjacency list with movement costs
-const navGraph = new Map<string, { pos: Vector2; cost: number }[]>();
-
-// Helper function to convert coordinates to a string key for the graph
-const toKey = (pos: Vector2) => `${pos.x},${pos.y}`;
 
 function gameInit() {
   const levelSize = vec2(tileMapData.width, tileMapData.height);
@@ -52,16 +50,6 @@ function gameInit() {
   }
 
   const roadLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
-  /* for (let x = levelSize.x; x--; ) {
-    for (let y = levelSize.y; y--; ) {
-      const pos = vec2(x, levelSize.y - 1 - y);
-      const tile = tileMapData.layers[1].data![y * levelSize.x + x];
-
-      if (tile === 0) continue;
-      const data = new TileLayerData(tile - 1);
-      roadLayer.setData(pos, data);
-    }
-  } */
 
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
@@ -110,17 +98,19 @@ function gameInit() {
   const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
   const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
 
-  new Enemy(enemySpawnPosition);
-
+  
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
-
+  
   new Base(baseSpawnPosition);
-
+  
   path = findPath(enemySpawnPosition, baseSpawnPosition)!;
+  const enemy = new Enemy(enemySpawnPosition);
+  enemy.path = path;
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);
+  setCameraScale(64);
 }
 
 let lastFireTime = 0;
@@ -184,13 +174,19 @@ function gameRender() {
   for (let i = 0; i < path.length - 1; i++) {
     const start = path[i];
     const end = path[i + 1];
-    drawLine(start, end, 1, rgb(0, 255, 0));
+    drawLine(start, end, 0.2, rgb(0, 255, 0));
   }
 }
 
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
+
+  // Print the camera scale to the screen
+  /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
+  const scaleTextSize = 30 / cameraScale;
+  const scaleTextPos = screenToWorld(vec2(160, 40));
+  drawText(scaleText, scaleTextPos, scaleTextSize, rgb(255, 255, 255)); */
 }
 
 // Startup LittleJS Engine
@@ -201,57 +197,4 @@ function convertCoord(x: number, y: number, tileSize: number, mapHeight: number)
   const newY = mapHeight - y / tileSize;
 
   return vec2(newX, newY);
-}
-
-// Pathfinding function using A* algorithm
-function findPath(start: Vector2, goal: Vector2): Vector2[] | null {
-  start = vec2(Math.floor(start.x), Math.floor(start.y));
-  goal = vec2(Math.floor(goal.x), Math.floor(goal.y));
-
-  const openSet: Vector2[] = [start];
-  const cameFrom = new Map<string, Vector2 | null>();
-  const gScore = new Map<string, number>();
-  gScore.set(toKey(start), 0);
-  const fScore = new Map<string, number>();
-  fScore.set(toKey(start), heuristic(start, goal));
-
-  while (openSet.length > 0) {
-    const current = openSet.reduce((a, b) =>
-      fScore.get(toKey(a)) ?? Infinity < (fScore.get(toKey(b)) ?? Infinity) ? a : b
-    );
-    if (current.x === goal.x && current.y === goal.y) {
-      return reconstructPath(cameFrom, current);
-    }
-
-    openSet.splice(openSet.indexOf(current), 1);
-    for (const neighbor of navGraph.get(toKey(current))!) {
-      const tentativegScore = gScore.get(toKey(current))! + neighbor.cost;
-      if (tentativegScore < (gScore.get(toKey(neighbor.pos)) ?? Infinity)) {
-        cameFrom.set(toKey(neighbor.pos), current);
-        gScore.set(toKey(neighbor.pos), tentativegScore);
-        fScore.set(toKey(neighbor.pos), tentativegScore + heuristic(neighbor.pos, goal));
-        if (!openSet.find(({ x, y }) => x === neighbor.pos.x && y === neighbor.pos.y)) {
-          openSet.push(neighbor.pos);
-        }
-      }
-    }
-  }
-
-  // Return null if no path is found
-  return null;
-}
-
-// Heuristic function for A* (using Chebyshev distance)
-function heuristic(a: Vector2, b: Vector2): number {
-  return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
-}
-
-// Function to reconstruct the path from start to goal
-function reconstructPath(cameFrom: Map<string, Vector2 | null>, current: Vector2): Vector2[] {
-  const totalPath = [current];
-  while (cameFrom.has(toKey(current))) {
-    current = cameFrom.get(toKey(current))!;
-    totalPath.unshift(current);
-  }
-  return totalPath;
 }
