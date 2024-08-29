@@ -98,12 +98,11 @@ function gameInit() {
   const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
   const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
 
-  
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
-  
+
   new Base(baseSpawnPosition);
-  
+
   path = findPath(enemySpawnPosition, baseSpawnPosition)!;
   const enemy = new Enemy(enemySpawnPosition);
   enemy.path = path;
@@ -129,22 +128,31 @@ function gameUpdate() {
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
-      new Projectile(positionLeft, firingDirection);
-      new Projectile(positionRight, firingDirection);
+      Projectile.create(positionLeft, firingDirection);
+      Projectile.create(positionRight, firingDirection);
       lastFireTime = currentTime;
       isFiring = true;
     }
   }
+
+  // destroy projectiles that are out of bounds
+  Projectile.pool.forEach((p) => {
+    if (p.pos.x < 0 || p.pos.x > tileMapData.width || p.pos.y < 0 || p.pos.y > tileMapData.height) {
+      p.destroy();
+    }
+  });
 }
 
 function gameUpdatePost() {
+  // called after physics and objects are updated
+  // setup camera and prepare for render
+
   // for debug only
   if (mouseWheel) {
     const zoomSpeed = 2;
     setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
   }
-  // called after physics and objects are updated
-  // setup camera and prepare for render
+
   let newCameraPos = cameraPos.lerp(player.pos, 0.1);
 
   // Clamp the camera position to prevent it from going outside the tilemap
@@ -181,7 +189,6 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
-
   // Print the camera scale to the screen
   /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
   const scaleTextSize = 30 / cameraScale;
