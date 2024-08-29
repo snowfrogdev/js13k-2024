@@ -1,9 +1,10 @@
-import { EngineObject, Vector2, vec2, drawRect, rgb, Timer } from "littlejsengine";
+import { EngineObject, Vector2, vec2, drawRect, rgb, Timer, Sound } from "littlejsengine";
 
 export class Enemy extends EngineObject {
   private _path: Vector2[] = [];
   private health = 100;
   private deathTimer = new Timer();
+  private deathSound = new Sound([1.5,,47,.08,.15,.66,4,.4,2,-4,,,,.7,,.9,.06,.34,.3]);
 
   set path(value: Vector2[]) {
     this._path = value;
@@ -71,6 +72,7 @@ export class Enemy extends EngineObject {
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);
+      this.deathSound.play();
     }
   }
 }
