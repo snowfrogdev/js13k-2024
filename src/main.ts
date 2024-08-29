@@ -132,6 +132,10 @@ function gameUpdate() {
       Projectile.create(positionRight, firingDirection);
       lastFireTime = currentTime;
       isFiring = true;
+
+      // knockback player when firing
+      const knockback = 0.1;
+      player.velocity = player.velocity.add(firingDirection.scale(-knockback));
     }
   }
 
