@@ -17,7 +17,6 @@ import {
   TileLayer,
   TileLayerData,
   tileSizeDefault,
-  Timer,
   vec2,
   Vector2,
 } from "littlejsengine";
@@ -121,7 +120,7 @@ function gameInit() {
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);
-  setCameraScale(64);
+  setCameraScale(48);
 }
 
 let lastFireTime = 0;
@@ -140,8 +139,8 @@ function gameUpdate() {
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
-      Projectile.create(positionLeft, firingDirection);
-      Projectile.create(positionRight, firingDirection);
+      Projectile.create(positionLeft, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.25), [Enemy]);
+      Projectile.create(positionRight, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.25), [Enemy]);
       lastFireTime = currentTime;
       isFiring = true;
 
