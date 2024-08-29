@@ -3,7 +3,6 @@ import {
   cameraScale,
   clamp,
   drawLine,
-  drawText,
   engineInit,
   engineObjectsDestroy,
   initTileCollision,
@@ -12,17 +11,17 @@ import {
   mousePos,
   mouseWheel,
   rgb,
-  screenToWorld,
   setCameraPos,
   setCameraScale,
   tile,
   TileLayer,
   TileLayerData,
   tileSizeDefault,
+  Timer,
   vec2,
   Vector2,
 } from "littlejsengine";
-import { tileMapData } from "./tiled-map";
+import * as tileMapData from "./tilemap.json";
 import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
@@ -97,6 +96,7 @@ function gameInit() {
 
   const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
   const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
+  const enemyCount: number = (<any> enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
 
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
@@ -104,8 +104,20 @@ function gameInit() {
   new Base(baseSpawnPosition);
 
   path = findPath(enemySpawnPosition, baseSpawnPosition)!;
-  const enemy = new Enemy(enemySpawnPosition);
-  enemy.path = path;
+
+  const enemySpawnInterval = 1000; // in milliseconds
+  
+  let count = enemyCount;
+  const intervalID = setInterval(() => {
+    if (count <= 0) {
+      clearInterval(intervalID);
+      return;
+    }
+
+    const enemy = new Enemy(enemySpawnPosition);
+    enemy.path = path;
+    count--;
+  }, enemySpawnInterval);
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);

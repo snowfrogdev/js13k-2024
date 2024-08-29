@@ -188,6 +188,9 @@
  </objectgroup>
  <objectgroup id="9" name="Spawns">
   <object id="3" type="EnemySpawn" x="776" y="105.5">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
    <point/>
   </object>
   <object id="6" type="BaseSpawn" x="414" y="860">

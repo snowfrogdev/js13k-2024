@@ -1,7 +1,10 @@
-import { EngineObject, Vector2, vec2, drawRect, rgb } from "littlejsengine";
+import { EngineObject, Vector2, vec2, drawRect, rgb, Timer } from "littlejsengine";
 
 export class Enemy extends EngineObject {
   private _path: Vector2[] = [];
+  private health = 100;
+  private deathTimer = new Timer();
+
   set path(value: Vector2[]) {
     this._path = value;
   }
@@ -36,17 +39,38 @@ export class Enemy extends EngineObject {
     const dir = target.subtract(this.pos).normalize();
     this.velocity = dir.scale(maxSpeed);
 
+    if (this.deathTimer.elapsed()) {
+      this.destroy();
+    }
+
     super.update();
   }
 
   render() {
+    if (this.health <= 0) {
+      if (this.deathTimer.getPercent() < 0.35) {
+        drawRect(this.pos, this.drawSize.scale(3), rgb(0,0,0));
+      } else {
+        drawRect(this.pos, this.drawSize.scale(3), rgb(255));
+      }
+
+      return;
+    }
+
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
     drawRect(this.pos, this.drawSize, this.color || rgb(255, 0, 0));
   }
 
   takeDamage() {
+    if (this.deathTimer.active()) return;
     // flash color
     this.color = rgb(255, 255, 255, 0.5);
     setTimeout(() => (this.color = undefined!), 50);
+
+    this.health -= 5;
+
+    if (this.health <= 0) {
+      this.deathTimer.set(0.15);
+    }
   }
 }
