@@ -12,6 +12,8 @@ import {
   mouseIsDown,
   mousePos,
   mouseWheel,
+  Particle,
+  ParticleEmitter,
   rgb,
   setCameraPos,
   setCameraScale,
@@ -156,6 +158,9 @@ function gameUpdate() {
     if (currentTime - lastFireTime > rateOfFire * 1000) {
       Projectile.create(positionLeft, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.25), [Enemy]);
       Projectile.create(positionRight, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.25), [Enemy]);
+
+      new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
+      new Particle(positionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
       lastFireTime = currentTime;
       isFiring = true;
 
