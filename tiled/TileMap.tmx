@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="7">
  <editorsettings>
-  <export target="../public/assets/data/TileMap.json" format="json"/>
+  <export target="../src/tilemap.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>
@@ -193,7 +193,7 @@
    </properties>
    <point/>
   </object>
-  <object id="6" type="BaseSpawn" x="414" y="860">
+  <object id="6" type="BaseSpawn" x="448" y="831.984">
    <point/>
   </object>
  </objectgroup>

@@ -1,9 +1,10 @@
-import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2 } from "littlejsengine";
+import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
 
 export class Enemy extends EngineObject implements DamageTaker {
+  static all = new Set<Enemy>();
   private _path: Vector2[] = [];
   private health = 100;
   private deathTimer = new Timer();
@@ -17,6 +18,7 @@ export class Enemy extends EngineObject implements DamageTaker {
   constructor(position: Vector2) {
     super(position);
     this.drawSize = this.size.scale(0.8);
+    Enemy.all.add(this);
   }
 
   update() {
@@ -49,6 +51,23 @@ export class Enemy extends EngineObject implements DamageTaker {
     this.velocity = dir.scale(maxSpeed);
 
     engineObjectsCallback(this.pos, 15, (obj: EngineObject) => {
+      if (obj instanceof Enemy && obj !== this) {
+        const dist = this.pos.distance(obj.pos);
+
+        // Basic collision avoidance
+        if (dist < this.size.x * 1.5) {
+          const coneAngle = 80; // degrees
+          const directionAB = obj.pos.subtract(this.pos).normalize();
+          const directionA = this.velocity.normalize();
+          const dotProduct = directionA.dot(directionAB);
+          const cosHalfConeAngle = Math.cos((coneAngle / 2) * (Math.PI / 180));
+          if (dotProduct > cosHalfConeAngle) {
+            const speedAttenuation = min(1, (dist - this.size.x * 1.1) / (this.size.x * 1.5 - this.size.x * 1.1));            
+            this.velocity = this.velocity.scale(speedAttenuation);
+          }
+        }
+      }
+
       if (obj instanceof Player) {
         if (this.firingTimer.active()) return;
         const projectileSpeed = 0.5;
@@ -60,7 +79,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
 
         const firingDirection = firingSolution.rotate(angleOffset);
-        
+
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
         Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.4), [Player]);
@@ -131,5 +150,10 @@ export class Enemy extends EngineObject implements DamageTaker {
     const dy = (deltaY + targetVelocity.y * t) / (projectileSpeed * t);
 
     return vec2(dx, dy).normalize();
+  }
+
+  destroy() {
+    super.destroy();
+    Enemy.all.delete(this);
   }
 }

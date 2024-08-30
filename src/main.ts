@@ -6,6 +6,8 @@ import {
   engineInit,
   engineObjectsDestroy,
   initTileCollision,
+  isOverlapping,
+  lerp,
   mainCanvasSize,
   mouseIsDown,
   mousePos,
@@ -25,7 +27,7 @@ import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
-import { findPath } from "./findPath";
+import { findPath, fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
 
 let player: Player;
@@ -100,9 +102,22 @@ function gameInit() {
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
 
+  // Find the nearest valid position on the navGraph to the baseSpawnPosition
+  let minDistance = Infinity;
+  let nearestValidPos = baseSpawnPosition;
+
+  for (const key of navGraph.keys()) {
+    const pos = fromKey(key);
+    const distance = baseSpawnPosition.distance(pos);
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestValidPos = pos;
+    }
+  }
+
   new Base(baseSpawnPosition);
 
-  path = findPath(enemySpawnPosition, baseSpawnPosition)!;
+  path = findPath(enemySpawnPosition, nearestValidPos)!;
 
   const enemySpawnInterval = 1000; // in milliseconds
   
@@ -168,16 +183,33 @@ function gameUpdatePost() {
     setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
   }
 
-  let newCameraPos = cameraPos.lerp(player.pos, 0.1);
-
-  // Clamp the camera position to prevent it from going outside the tilemap
   const levelSize = vec2(tileMapData.width, tileMapData.height);
   const cameraSize = mainCanvasSize.scale(1 / cameraScale);
   const halfCameraSize = cameraSize.scale(0.5);
+
+  const lerpFactor = 0.025;
+
+  // Calculate the average position of all enemies
+  let averageEnemyPos = vec2(0, 0);
+  let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
+  
+  const enemies = Enemy.all;
+  if (enemies.size > 0) {
+    for (const enemy of enemies) {
+      averageEnemyPos = averageEnemyPos.add(enemy.pos);
+    }
+    averageEnemyPos = averageEnemyPos.scale(1 / enemies.size);
+    // Adjust the camera position to give headroom towards the average enemy position
+    const headroomFactor = 8; // Adjust this factor to control the amount of headroom
+    const directionToEnemies = averageEnemyPos.subtract(player.pos).normalize();
+    newCameraPos = cameraPos.lerp(player.pos.add(directionToEnemies.scale(headroomFactor)), lerpFactor);
+  }
+
+  // Clamp the camera position to prevent it from going outside the tilemap
   let clampedCameraPos = vec2(
     clamp(newCameraPos.x, halfCameraSize.x + 1, levelSize.x - halfCameraSize.x - 1),
     clamp(newCameraPos.y, halfCameraSize.y + 1, levelSize.y - halfCameraSize.y - 1)
-  );
+  );  
 
   if (isFiring) {
     // shake the camera when firing

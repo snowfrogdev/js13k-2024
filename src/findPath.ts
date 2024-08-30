@@ -37,10 +37,12 @@ export function findPath(start: Vector2, goal: Vector2): Vector2[] | null {
   // Return null if no path is found
   return null;
 }
+
 // Heuristic function for A* (using Chebyshev distance)
 function heuristic(a: Vector2, b: Vector2): number {
   return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
 }
+
 // Function to reconstruct the path from start to goal
 function reconstructPath(cameFrom: Map<string, Vector2 | null>, current: Vector2): Vector2[] {
   const totalPath = [current.add(vec2(0.5, 0.5))];
@@ -51,8 +53,10 @@ function reconstructPath(cameFrom: Map<string, Vector2 | null>, current: Vector2
     totalPath.unshift(waypoint);
   }
   return totalPath;
-} // Helper function to convert coordinates to a string key for the graph
+} 
 
+// Helper function to convert coordinates to a string key for the graph
 export const toKey = (pos: Vector2) => `${pos.x},${pos.y}`; // Define the graph as an adjacency list with movement costs
+export const fromKey = (key: string) => vec2(...key.split(",").map(Number));
 
 export const navGraph = new Map<string, { pos: Vector2; cost: number }[]>();
