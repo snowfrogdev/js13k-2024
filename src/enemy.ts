@@ -16,6 +16,8 @@ export class Enemy extends EngineObject implements DamageTaker {
   );
   private firingTimer = new Timer();
 
+  private knockbackFromHit = new Vector2();
+
   set path(value: Vector2[]) {
     this._path = value;
   }
@@ -96,6 +98,10 @@ export class Enemy extends EngineObject implements DamageTaker {
         const knockback = 0.05;
         this.velocity = this.velocity.add(firingSolution!.scale(-knockback));
       }
+
+      // apply knockback from hit, will be 0 if we have not been hit
+      this.velocity = this.velocity.add(this.knockbackFromHit);
+      this.knockbackFromHit = vec2();
     });
 
     super.update();
@@ -116,13 +122,17 @@ export class Enemy extends EngineObject implements DamageTaker {
     drawRect(this.pos, this.drawSize, this.color || rgb(255, 0, 0));
   }
 
-  takeDamage() {
+  takeDamage(projectile: Projectile) {
     if (this.deathTimer.active()) return;
     // flash color
-    this.color = rgb(255, 255, 255, 0.5);
-    setTimeout(() => (this.color = undefined!), 50);
+    this.color = rgb(255, 255, 255);
+    setTimeout(() => (this.color = undefined!), 70);
 
     this.health -= 5;
+    // knockback
+    const knockback = 0.05;
+    this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
+
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);

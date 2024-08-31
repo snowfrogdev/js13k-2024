@@ -1,3 +1,5 @@
+import { Projectile } from "./projectile";
+
 export interface DamageTaker {
-  takeDamage(): void;
+  takeDamage(projectile: Projectile): void;
 }

@@ -37,8 +37,8 @@ export class Base extends EngineObject {
   takeDamage() {
     if (this.deathTimer.active()) return;
     // flash color
-    this.color = rgb(1, 1, 1, 0.5);
-    setTimeout(() => (this.color = undefined!), 50);
+    this.color = rgb(1, 1, 1, 1);
+    setTimeout(() => (this.color = undefined!), 70);
 
     this.health -= 5;
 

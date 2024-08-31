@@ -42,7 +42,7 @@ export class Projectile extends EngineObject {
   update() {
     engineObjectsCallback(this.pos, this.size, (obj: EngineObject) => {
       if (this._targetTypes.some((t) => obj instanceof t)) {
-        (<DamageTaker & EngineObject>obj).takeDamage();
+        (<DamageTaker & EngineObject>obj).takeDamage(this);
         this.destroy();
       }
     });

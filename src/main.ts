@@ -137,40 +137,10 @@ function gameInit() {
   setCameraScale(48);
 }
 
-let lastFireTime = 0;
-let isFiring = false;
-let firingDirection: Vector2 = vec2();
 
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
-  isFiring = false;
-  if (mouseIsDown(0)) {
-    // Calculate angle offset so that `accuracy` percentage of the time the angleOffset will be 0 and the shot will hit
-    // the player. Otherwise, the shot will miss slightly.
-    const accuracy = 0.5;
-    const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
-
-    const firingDirection = mousePos.subtract(player.pos).normalize().rotate(angleOffset);
-    const positionLeft = player.pos.add(player.velocity).add(firingDirection.rotate(-0.5).scale(0.5));
-    const positionRight = player.pos.add(player.velocity).add(firingDirection.rotate(0.5).scale(0.5));
-    const rateOfFire = 0.1; // configurable rate of fire
-    const currentTime = performance.now();
-    if (currentTime - lastFireTime > rateOfFire * 1000) {
-      Projectile.create(positionLeft, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
-      Projectile.create(positionRight, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
-
-      new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
-      new Particle(positionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
-      Projectile.sound.play();
-      lastFireTime = currentTime;
-      isFiring = true;
-
-      // knockback player when firing
-      const knockback = 0.1;
-      player.velocity = player.velocity.add(firingDirection.scale(-knockback));
-    }
-  }
 
   // destroy projectiles that are out of bounds
   Projectile.pool.forEach((p) => {
@@ -218,10 +188,10 @@ function gameUpdatePost() {
     clamp(newCameraPos.y, halfCameraSize.y + 1, levelSize.y - halfCameraSize.y - 1)
   );
 
-  if (isFiring) {
+  if (player.isFiring) {
     // shake the camera when firing
     const shakeAmount = 0.1;
-    const shake = firingDirection.scale(-1).scale(shakeAmount);
+    const shake = player.firingDirection.scale(-1).scale(shakeAmount);
     clampedCameraPos = clampedCameraPos.add(shake);
   }
 
