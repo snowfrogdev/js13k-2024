@@ -87,7 +87,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
-        Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.4), [Player, Base]);
+        Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.45), [Player, Base]);
         Projectile.sound.play(position);
         this.firingTimer.set(rateOfFire);
 
