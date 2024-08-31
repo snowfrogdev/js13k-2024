@@ -2,6 +2,7 @@ import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallba
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
+import { Base } from "./base";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
@@ -68,7 +69,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         }
       }
 
-      if (obj instanceof Player) {
+      if (obj instanceof Player || obj instanceof Base) {
         if (this.firingTimer.active()) return;
         const projectileSpeed = 0.5;
         const firingSolution = this.calculateInterceptVector(this.pos, obj.pos, obj.velocity, projectileSpeed);
@@ -82,7 +83,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
-        Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.4), [Player]);
+        Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.4), [Player, Base]);
         Projectile.sound.play();
         this.firingTimer.set(rateOfFire);
 
