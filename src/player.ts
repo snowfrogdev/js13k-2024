@@ -47,12 +47,12 @@ export class Player extends EngineObject implements DamageTaker {
       const accuracy = 0.5;
       const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
 
-      const firingDirection = mousePos.subtract(this.pos).normalize().rotate(angleOffset);
-      const positionLeft = this.pos.add(this.velocity).add(firingDirection.rotate(-0.5).scale(0.5));
-      const positionRight = this.pos.add(this.velocity).add(firingDirection.rotate(0.5).scale(0.5));
+      this.firingDirection = mousePos.subtract(this.pos).normalize().rotate(angleOffset);
+      const positionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.5).scale(0.5));
+      const positionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.5).scale(0.5));
 
-      Projectile.create(positionLeft, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
-      Projectile.create(positionRight, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
+      Projectile.create(positionLeft, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
+      Projectile.create(positionRight, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
 
       // Muzzle flash
       new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
@@ -62,8 +62,8 @@ export class Player extends EngineObject implements DamageTaker {
       const leftCasing = new Particle(positionLeft, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
       const rightCasing = new Particle(positionRight, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
       // set a random velocity for the casings that is roughly at a perpendicular angle to the firing direction
-      leftCasing.velocity = firingDirection.rotate(90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));  
-      rightCasing.velocity = firingDirection.rotate(-90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));    
+      leftCasing.velocity = this.firingDirection.rotate(90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));  
+      rightCasing.velocity = this.firingDirection.rotate(-90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));    
       leftCasing.damping = 0.95;
       rightCasing.damping = 0.95;
       leftCasing.renderOrder = this.renderOrder - 0.1;
@@ -77,7 +77,7 @@ export class Player extends EngineObject implements DamageTaker {
 
       // knockback player when firing
       const knockback = 0.1;
-      this.velocity = this.velocity.add(firingDirection.scale(-knockback));
+      this.velocity = this.velocity.add(this.firingDirection.scale(-knockback));
     }
 
     // wasd input for movement

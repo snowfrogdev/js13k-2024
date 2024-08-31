@@ -213,6 +213,7 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
+  
   // Print the camera scale to the screen
   /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
   const scaleTextSize = 30 / cameraScale;
