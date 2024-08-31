@@ -1,4 +1,18 @@
-import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min, Particle, randVector, ParticleEmitter } from "littlejsengine";
+import {
+  EngineObject,
+  Vector2,
+  drawRect,
+  rgb,
+  Timer,
+  Sound,
+  engineObjectsCallback,
+  vec2,
+  min,
+  Particle,
+  randVector,
+  ParticleEmitter,
+  PI,
+} from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
@@ -25,19 +39,63 @@ export class Enemy extends EngineObject implements DamageTaker {
   constructor(position: Vector2) {
     super(position);
     this.drawSize = this.size.scale(0.8);
-    this.color = rgb(1, 0, 0)
+    this.color = rgb(1, 0, 0);
     Enemy.all.add(this);
   }
 
   update() {
     if (this.deathTimer.elapsed()) {
-      for (let i = 0; i < 5; i++) { 
-        const brokenPart = new Particle(this.pos, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60 * 5, this.size.x / 5, this.size.x * 0.5, 0.001);
+      for (let i = 0; i < 5; i++) {
+        const brokenPart = new Particle(
+          this.pos,
+          undefined,
+          undefined,
+          rgb(1, 0.3, 0.3),
+          rgb(1, 0.3, 0.3),
+          60 * 5,
+          this.size.x / 5,
+          this.size.x * 0.5,
+          0.001
+        );
         brokenPart.velocity = randVector(0.1);
         brokenPart.damping = 0.9;
         brokenPart.renderOrder = this.renderOrder - 0.1;
       }
-      
+
+      // smoke
+      const startA = rgb(0.55, 0.55, 0.55, 0.7);
+      const startB = rgb(0.45, 0.45, 0.45, 0.7);
+      const endA = rgb(0.55, 0.55, 0.55, 0);
+      const endB = rgb(0.45, 0.45, 0.45, 0);
+      const smokeEmitter = new ParticleEmitter(
+        this.pos,
+        0,
+        1,
+        2,
+        5,
+        PI,
+        undefined,
+        startA,
+        startB,
+        endA,
+        endB,
+        20, // particleTime
+        0.7, // sizeStart
+        0.05, // sizeEnd
+        0.005, // speed
+        0.01, // angleSpeed
+        0.999, // damping
+        0.999, // angle damping
+        0,
+        undefined,
+        0.1,
+        0.2,
+        false,
+        false,
+        true,
+        this.renderOrder
+      );
+
       this.destroy();
     }
 
@@ -54,7 +112,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
     }
 
-    const maxSpeed = 0.025;
+    const maxSpeed = 0.03;
 
     if (nearestWaypointIndex === this._path.length - 1 && minDist < maxSpeed) return;
 
@@ -118,9 +176,9 @@ export class Enemy extends EngineObject implements DamageTaker {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(0, 0, 0));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(1));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
       }
 
       return;
@@ -140,7 +198,6 @@ export class Enemy extends EngineObject implements DamageTaker {
     // knockback
     const knockback = 0.05;
     this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
-
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);

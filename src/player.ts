@@ -12,6 +12,7 @@ import {
   mousePos,
   Particle,
   randVector,
+  rand,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -39,7 +40,7 @@ export class Player extends EngineObject implements DamageTaker {
 
     this.isFiring = false;
     const currentTime = performance.now();
-    const rateOfFire = 0.1; // configurable rate of fire
+    const rateOfFire = 0.08; // configurable rate of fire
     if (mouseIsDown(0) && currentTime - this.lastFireTime > rateOfFire * 1000) {
       // Calculate angle offset so that `accuracy` percentage of the time the angleOffset will be 0 and the shot will hit
       // the player. Otherwise, the shot will miss slightly.
@@ -61,8 +62,8 @@ export class Player extends EngineObject implements DamageTaker {
       const leftCasing = new Particle(positionLeft, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
       const rightCasing = new Particle(positionRight, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
       // set a random velocity for the casings that is roughly at a perpendicular angle to the firing direction
-      leftCasing.velocity = firingDirection.rotate(90).add(randVector(0.1)).normalize().scale(0.2);  
-      rightCasing.velocity = firingDirection.rotate(-90).add(randVector(0.1)).normalize().scale(0.2);    
+      leftCasing.velocity = firingDirection.rotate(90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));  
+      rightCasing.velocity = firingDirection.rotate(-90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));    
       leftCasing.damping = 0.95;
       rightCasing.damping = 0.95;
       leftCasing.renderOrder = this.renderOrder - 0.1;
@@ -114,9 +115,9 @@ export class Player extends EngineObject implements DamageTaker {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(0, 0, 0));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(255));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
       }
 
       return;

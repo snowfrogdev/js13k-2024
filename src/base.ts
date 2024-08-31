@@ -22,9 +22,9 @@ export class Base extends EngineObject {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(0, 0, 0));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(1));
+        drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
       }
 
       return;
