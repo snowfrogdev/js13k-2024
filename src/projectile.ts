@@ -1,4 +1,4 @@
-import { EngineObject, Sound, Vector2, vec2, engineObjectsCallback, drawRect, Color } from "littlejsengine";
+import { EngineObject, Sound, Vector2, vec2, engineObjectsCallback, drawRect, Color, Timer, setPaused } from "littlejsengine";
 import { DamageTaker } from "./damage-taker";
 
 // Define a generic type for the constructor of a class
@@ -43,6 +43,8 @@ export class Projectile extends EngineObject {
     engineObjectsCallback(this.pos, this.size, (obj: EngineObject) => {
       if (this._targetTypes.some((t) => obj instanceof t)) {
         (<DamageTaker & EngineObject>obj).takeDamage(this);
+        setPaused(true);
+        setTimeout(() => setPaused(false), 20);
         this.destroy();
       }
     });

@@ -32,7 +32,7 @@ export class Enemy extends EngineObject implements DamageTaker {
   update() {
     if (this.deathTimer.elapsed()) {
       for (let i = 0; i < 5; i++) { 
-        const brokenPart = new Particle(this.pos, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60, this.size.x / 5, this.size.x * 0.5, 0.01);
+        const brokenPart = new Particle(this.pos, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60 * 5, this.size.x / 5, this.size.x * 0.5, 0.001);
         brokenPart.velocity = randVector(0.1);
         brokenPart.damping = 0.9;
         brokenPart.renderOrder = this.renderOrder - 0.1;
