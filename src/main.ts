@@ -146,8 +146,12 @@ function gameUpdate() {
   // handle input and update the game state
   isFiring = false;
   if (mouseIsDown(0)) {
-    Projectile.sound.play();
-    firingDirection = mousePos.subtract(player.pos).normalize();
+    // Calculate angle offset so that `accuracy` percentage of the time the angleOffset will be 0 and the shot will hit
+    // the player. Otherwise, the shot will miss slightly.
+    const accuracy = 0.5;
+    const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
+
+    const firingDirection = mousePos.subtract(player.pos).normalize().rotate(angleOffset);
     const positionLeft = player.pos.add(player.velocity).add(firingDirection.rotate(-0.5).scale(0.5));
     const positionRight = player.pos.add(player.velocity).add(firingDirection.rotate(0.5).scale(0.5));
     const rateOfFire = 0.1; // configurable rate of fire
@@ -158,6 +162,7 @@ function gameUpdate() {
 
       new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
       new Particle(positionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
+      Projectile.sound.play();
       lastFireTime = currentTime;
       isFiring = true;
 
