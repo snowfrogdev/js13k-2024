@@ -3,7 +3,7 @@ import { drawRect, EngineObject, rgb, Sound, Timer, vec2, Vector2 } from "little
 export class Base extends EngineObject {
   private health = 1000;
   private deathTimer = new Timer();
-  private deathSound = new Sound([1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3]);
+  private deathSound = new Sound([1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3], 100, 0);
 
   constructor(position: Vector2) {
     super(position);
@@ -44,7 +44,7 @@ export class Base extends EngineObject {
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);
-      this.deathSound.play();
+      this.deathSound.play(this.pos);
     }
   }
 }

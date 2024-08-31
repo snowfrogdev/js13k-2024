@@ -9,7 +9,11 @@ export class Enemy extends EngineObject implements DamageTaker {
   private _path: Vector2[] = [];
   private health = 100;
   private deathTimer = new Timer();
-  private deathSound = new Sound([1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3]);
+  private deathSound = new Sound(
+    [1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3],
+    100,
+    0
+  );
   private firingTimer = new Timer();
 
   set path(value: Vector2[]) {
@@ -63,7 +67,7 @@ export class Enemy extends EngineObject implements DamageTaker {
           const dotProduct = directionA.dot(directionAB);
           const cosHalfConeAngle = Math.cos((coneAngle / 2) * (Math.PI / 180));
           if (dotProduct > cosHalfConeAngle) {
-            const speedAttenuation = min(1, (dist - this.size.x * 1.1) / (this.size.x * 1.5 - this.size.x * 1.1));            
+            const speedAttenuation = min(1, (dist - this.size.x * 1.1) / (this.size.x * 1.5 - this.size.x * 1.1));
             this.velocity = this.velocity.scale(speedAttenuation);
           }
         }
@@ -84,7 +88,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
         Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.4), [Player, Base]);
-        Projectile.sound.play();
+        Projectile.sound.play(position);
         this.firingTimer.set(rateOfFire);
 
         // knockback enemy when firing
@@ -121,7 +125,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);
-      this.deathSound.play();
+      this.deathSound.play(this.pos);
     }
   }
 

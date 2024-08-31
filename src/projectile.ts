@@ -5,7 +5,7 @@ import { DamageTaker } from "./damage-taker";
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 export class Projectile extends EngineObject {
-  static sound = new Sound([4.5, , 82.40689, , , , , , 0.8, 1.5, , 0.2, , 1.1, 5, , 0.08, , , 0.16, 29]);
+  static sound = new Sound([4.5, , 82.40689, , , , , , 0.8, 1.5, , 0.2, , 1.1, 5, , 0.08, , , 0.16, 29], 100, 0);
   static pool = new Set<Projectile>();
   private _active: boolean = true;
   private _targetTypes: Constructor<DamageTaker>[] = [];
