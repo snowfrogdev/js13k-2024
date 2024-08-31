@@ -151,8 +151,8 @@ function gameUpdate() {
   if (mouseIsDown(0)) {
     Projectile.sound.play();
     firingDirection = mousePos.subtract(player.pos).normalize();
-    const positionLeft = player.pos.add(firingDirection.rotate(-0.5).scale(0.5));
-    const positionRight = player.pos.add(firingDirection.rotate(0.5).scale(0.5));
+    const positionLeft = player.pos.add(player.velocity).add(firingDirection.rotate(-0.5).scale(0.5));
+    const positionRight = player.pos.add(player.velocity).add(firingDirection.rotate(0.5).scale(0.5));
     const rateOfFire = 0.1; // configurable rate of fire
     const currentTime = performance.now();
     if (currentTime - lastFireTime > rateOfFire * 1000) {
