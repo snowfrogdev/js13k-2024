@@ -11,6 +11,7 @@ import {
   mouseIsDown,
   mousePos,
   Particle,
+  randVector,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -52,8 +53,22 @@ export class Player extends EngineObject implements DamageTaker {
       Projectile.create(positionLeft, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
       Projectile.create(positionRight, firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
 
+      // Muzzle flash
       new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
       new Particle(positionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
+
+      // Shell casings
+      const leftCasing = new Particle(positionLeft, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
+      const rightCasing = new Particle(positionRight, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
+      // set a random velocity for the casings that is roughly at a perpendicular angle to the firing direction
+      leftCasing.velocity = firingDirection.rotate(90).add(randVector(0.1)).normalize().scale(0.2);  
+      rightCasing.velocity = firingDirection.rotate(-90).add(randVector(0.1)).normalize().scale(0.2);    
+      leftCasing.damping = 0.95;
+      rightCasing.damping = 0.95;
+      leftCasing.renderOrder = this.renderOrder - 0.1;
+      rightCasing.renderOrder = this.renderOrder - 0.1;
+
+
       Projectile.sound.play();
       Projectile.sound.play();
       this.lastFireTime = currentTime;

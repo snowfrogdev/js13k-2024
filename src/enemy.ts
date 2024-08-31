@@ -118,7 +118,7 @@ export class Enemy extends EngineObject implements DamageTaker {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(0));
+        drawRect(this.pos, this.drawSize.scale(3), rgb(0, 0, 0));
       } else {
         drawRect(this.pos, this.drawSize.scale(3), rgb(1));
       }
