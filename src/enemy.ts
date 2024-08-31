@@ -1,4 +1,4 @@
-import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min, Particle } from "littlejsengine";
+import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min, Particle, randVector, ParticleEmitter } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
@@ -25,11 +25,19 @@ export class Enemy extends EngineObject implements DamageTaker {
   constructor(position: Vector2) {
     super(position);
     this.drawSize = this.size.scale(0.8);
+    this.color = rgb(1, 0, 0)
     Enemy.all.add(this);
   }
 
   update() {
     if (this.deathTimer.elapsed()) {
+      for (let i = 0; i < 5; i++) { 
+        const brokenPart = new Particle(this.pos, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60, this.size.x / 5, this.size.x * 0.5, 0.01);
+        brokenPart.velocity = randVector(0.1);
+        brokenPart.damping = 0.9;
+        brokenPart.renderOrder = this.renderOrder - 0.1;
+      }
+      
       this.destroy();
     }
 
@@ -110,22 +118,22 @@ export class Enemy extends EngineObject implements DamageTaker {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(0, 0, 0));
+        drawRect(this.pos, this.drawSize.scale(3), rgb(0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3), rgb(255));
+        drawRect(this.pos, this.drawSize.scale(3), rgb(1));
       }
 
       return;
     }
 
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
-    drawRect(this.pos, this.drawSize, this.color || rgb(255, 0, 0));
+    drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
   }
 
   takeDamage(projectile: Projectile) {
     if (this.deathTimer.active()) return;
     // flash color
-    this.color = rgb(255, 255, 255);
+    this.color = rgb(1);
     setTimeout(() => (this.color = undefined!), 70);
 
     this.health -= 5;
