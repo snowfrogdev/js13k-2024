@@ -1,4 +1,4 @@
-import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min } from "littlejsengine";
+import { EngineObject, Vector2, drawRect, rgb, Timer, Sound, engineObjectsCallback, vec2, min, Particle } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
@@ -88,6 +88,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
         Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.45), [Player, Base]);
+        new Particle(position, undefined, undefined, rgb(1), rgb(1), 0.007, 0.65, 0.65);
         Projectile.sound.play(position);
         this.firingTimer.set(rateOfFire);
 
