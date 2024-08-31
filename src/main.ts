@@ -6,14 +6,11 @@ import {
   engineInit,
   engineObjectsDestroy,
   initTileCollision,
-  isOverlapping,
-  lerp,
   mainCanvasSize,
   mouseIsDown,
   mousePos,
   mouseWheel,
   Particle,
-  ParticleEmitter,
   rgb,
   setCameraPos,
   setCameraScale,
@@ -99,7 +96,7 @@ function gameInit() {
 
   const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
   const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
-  const enemyCount: number = (<any> enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
+  const enemyCount: number = (<any>enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
 
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
@@ -122,7 +119,7 @@ function gameInit() {
   path = findPath(enemySpawnPosition, nearestValidPos)!;
 
   const enemySpawnInterval = 1000; // in milliseconds
-  
+
   let count = enemyCount;
   const intervalID = setInterval(() => {
     if (count <= 0) {
@@ -197,7 +194,7 @@ function gameUpdatePost() {
   // Calculate the average position of all enemies
   let averageEnemyPos = vec2(0, 0);
   let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
-  
+
   const enemies = Enemy.all;
   if (enemies.size > 0) {
     for (const enemy of enemies) {
@@ -214,7 +211,7 @@ function gameUpdatePost() {
   let clampedCameraPos = vec2(
     clamp(newCameraPos.x, halfCameraSize.x + 1, levelSize.x - halfCameraSize.x - 1),
     clamp(newCameraPos.y, halfCameraSize.y + 1, levelSize.y - halfCameraSize.y - 1)
-  );  
+  );
 
   if (isFiring) {
     // shake the camera when firing
