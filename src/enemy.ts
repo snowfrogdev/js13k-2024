@@ -64,11 +64,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
 
       // smoke
-      const startA = rgb(0.55, 0.55, 0.55, 0.7);
-      const startB = rgb(0.45, 0.45, 0.45, 0.7);
-      const endA = rgb(0.55, 0.55, 0.55, 0);
-      const endB = rgb(0.45, 0.45, 0.45, 0);
-      const smokeEmitter = new ParticleEmitter(
+      new ParticleEmitter(
         this.pos,
         0,
         1,

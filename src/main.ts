@@ -3,9 +3,11 @@ import {
   cameraScale,
   clamp,
   drawLine,
+  drawRect,
   engineInit,
   engineObjectsDestroy,
   initTileCollision,
+  isOverlapping,
   mainCanvasSize,
   mousePos,
   mouseWheel,
@@ -18,6 +20,7 @@ import {
   tileSizeDefault,
   vec2,
   Vector2,
+  worldToScreen,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { Base } from "./base";
@@ -165,9 +168,9 @@ function gameUpdatePost() {
 
   let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
 
-  // Adjust the camera position to move towards the mid point between the mouse position
+  // Adjust the camera position to move towards a point between the mouse position
   // and the player position
-  newCameraPos = cameraPos.lerp(mousePos.add(player.pos).scale(0.5), lerpFactor);
+  newCameraPos = cameraPos.lerp(mousePos.subtract(player.pos).scale(0.3).add(player.pos), lerpFactor);
 
   // Clamp the camera position to prevent it from going outside the tilemap
   let clampedCameraPos = vec2(
@@ -205,6 +208,69 @@ function gameRenderPost() {
   const scaleTextSize = 30 / cameraScale;
   const scaleTextPos = screenToWorld(vec2(160, 40));
   drawText(scaleText, scaleTextPos, scaleTextSize, rgb(255, 255, 255)); */
+
+  // Draw enemy indicator on the edge of the screen
+  for (const enemy of Enemy.all) {
+    const enemyScreenPos = worldToScreen(enemy.pos);
+    const cameraScreenPos = worldToScreen(cameraPos);
+    const screenSize = vec2(mainCanvasSize.x, mainCanvasSize.y);
+    if (!isOverlapping(vec2(mainCanvasSize.x / 2, mainCanvasSize.y / 2), screenSize, enemyScreenPos)) {
+      // Calculate the direction from the center of the screen to to the enemy
+      const dir = enemyScreenPos.subtract(cameraScreenPos).normalize();
+      // Calculate the position along that direction where we reach the edge of the screen
+
+      let tMin = Infinity;
+      let intersection: Vector2 = cameraScreenPos;
+
+      // Check intersection with left edge (x = 0)
+      if (dir.x !== 0) {
+        const t = -cameraScreenPos.x / dir.x;
+        const y = cameraScreenPos.y + t * dir.y;
+        if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
+          tMin = t;
+          intersection = vec2(0, y);
+        }
+      }
+
+      // Check intersection with right edge (x = screenSize.x)
+      if (dir.x !== 0) {
+        const t = (screenSize.x - cameraScreenPos.x) / dir.x;
+        const y = cameraScreenPos.y + t * dir.y;
+        if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
+          tMin = t;
+          intersection = vec2(screenSize.x, y);
+        }
+      }
+
+      // Check intersection with top edge (y = 0)
+      if (dir.y !== 0) {
+        const t = -cameraScreenPos.y / dir.y;
+        const x = cameraScreenPos.x + t * dir.x;
+        if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
+          tMin = t;
+          intersection = vec2(x, 0);
+        }
+      }
+
+      // Check intersection with bottom edge (y = screenSize.y)
+      if (dir.y !== 0) {
+        const t = (screenSize.y - cameraScreenPos.y) / dir.y;
+        const x = cameraScreenPos.x + t * dir.x;
+        if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
+          tMin = t;
+          intersection = vec2(x, screenSize.y);
+        }
+      }
+
+      drawRect(intersection, vec2(10), rgb(255, 0, 0), 0, true, true);
+
+
+      
+    }
+
+  }
+
+  
 }
 
 // Startup LittleJS Engine
