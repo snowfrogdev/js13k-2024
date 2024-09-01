@@ -12,6 +12,7 @@ import {
   randVector,
   ParticleEmitter,
   PI,
+  tile,
 } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
@@ -74,11 +75,11 @@ export class Enemy extends EngineObject implements DamageTaker {
         2,
         5,
         PI,
+        tile(1, 16, 1),
         undefined,
-        startA,
-        startB,
-        endA,
-        endB,
+        undefined,
+        undefined,
+        undefined,
         20, // particleTime
         0.7, // sizeStart
         0.05, // sizeEnd

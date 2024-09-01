@@ -7,10 +7,8 @@ import {
   engineObjectsDestroy,
   initTileCollision,
   mainCanvasSize,
-  mouseIsDown,
   mousePos,
   mouseWheel,
-  Particle,
   rgb,
   setCameraPos,
   setCameraScale,
@@ -137,7 +135,6 @@ function gameInit() {
   setCameraScale(48);
 }
 
-
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
@@ -166,21 +163,11 @@ function gameUpdatePost() {
 
   const lerpFactor = 0.025;
 
-  // Calculate the average position of all enemies
-  let averageEnemyPos = vec2(0, 0);
   let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
 
-  const enemies = Enemy.all;
-  if (enemies.size > 0) {
-    for (const enemy of enemies) {
-      averageEnemyPos = averageEnemyPos.add(enemy.pos);
-    }
-    averageEnemyPos = averageEnemyPos.scale(1 / enemies.size);
-    // Adjust the camera position to give headroom towards the average enemy position
-    const headroomFactor = 8; // Adjust this factor to control the amount of headroom
-    const directionToEnemies = averageEnemyPos.subtract(player.pos).normalize();
-    newCameraPos = cameraPos.lerp(player.pos.add(directionToEnemies.scale(headroomFactor)), lerpFactor);
-  }
+  // Adjust the camera position to move towards the mid point between the mouse position
+  // and the player position
+  newCameraPos = cameraPos.lerp(mousePos.add(player.pos).scale(0.5), lerpFactor);
 
   // Clamp the camera position to prevent it from going outside the tilemap
   let clampedCameraPos = vec2(
@@ -213,7 +200,6 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
-  
   // Print the camera scale to the screen
   /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
   const scaleTextSize = 30 / cameraScale;
@@ -222,7 +208,10 @@ function gameRenderPost() {
 }
 
 // Startup LittleJS Engine
-engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, ["./assets/img/Tilemap.png"]);
+engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
+  "./assets/img/Tilemap.png",
+  "./assets/img/Smoke.png",
+]);
 
 function convertCoord(x: number, y: number, tileSize: number, mapHeight: number): Vector2 {
   const newX = x / tileSize;
