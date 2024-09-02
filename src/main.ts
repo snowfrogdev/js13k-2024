@@ -28,9 +28,10 @@ import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
-import { findPath, fromKey } from "./findPath";
+import { fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
 import { Hospital } from "./hospital";
+import { AIDirector } from "./ai-director";
 
 let player: Player;
 let base: Base;
@@ -124,26 +125,11 @@ function gameInit() {
 
   base = new Base(baseSpawnPosition);
 
-  const enemySpawns = spawns?.objects?.filter((x) => x.type === "EnemySpawn")!;
-  for (const enemySpawn of enemySpawns) {
-    const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
-    const enemyCount: number = (<any>enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
-    const path = findPath(enemySpawnPosition, nearestValidPos)!;
-    paths.push(path);
-    const enemySpawnInterval = 1000; // in milliseconds
+  const enemySpawns: Vector2[] = spawns?.objects
+    ?.filter((x) => x.type === "EnemySpawn")!
+    .map((x) => convertCoord(x.x, x.y, tileSizeDefault.x, levelSize.y))!;
 
-    let count = enemyCount;
-    const intervalID = setInterval(() => {
-      if (count <= 0) {
-        clearInterval(intervalID);
-        return;
-      }
-
-      const enemy = new Enemy(enemySpawnPosition);
-      enemy.path = path;
-      count--;
-    }, enemySpawnInterval);
-  }
+  AIDirector.init(enemySpawns, nearestValidPos);
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);
@@ -153,6 +139,12 @@ function gameInit() {
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
+  AIDirector.update(player.pos);
+}
+
+function gameUpdatePost() {
+  // called after physics and objects are updated
+  // setup camera and prepare for render
 
   // destroy projectiles that are out of bounds
   Projectile.pool.forEach((p) => {
@@ -160,11 +152,6 @@ function gameUpdate() {
       p.destroy();
     }
   });
-}
-
-function gameUpdatePost() {
-  // called after physics and objects are updated
-  // setup camera and prepare for render
 
   // for debug only
   if (mouseWheel) {

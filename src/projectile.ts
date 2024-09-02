@@ -1,4 +1,4 @@
-import { EngineObject, Sound, Vector2, vec2, engineObjectsCallback, drawRect, Color, Timer, setPaused } from "littlejsengine";
+import { EngineObject, Sound, Vector2, vec2, engineObjectsCallback, drawRect, Color } from "littlejsengine";
 import { DamageTaker } from "./damage-taker";
 
 // Define a generic type for the constructor of a class
