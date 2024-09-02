@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="7">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="25">
  <editorsettings>
   <export target="../src/tilemap.json" format="json"/>
  </editorsettings>
@@ -188,6 +188,114 @@
  </objectgroup>
  <objectgroup id="9" name="Spawns">
   <object id="3" type="EnemySpawn" x="776" y="105.5">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" type="EnemySpawn" x="632" y="106.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="8" type="EnemySpawn" x="503.667" y="105.833">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="9" type="EnemySpawn" x="904.333" y="58.5">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" type="EnemySpawn" x="1000" y="105.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" type="EnemySpawn" x="1304.67" y="105.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" type="EnemySpawn" x="1703.33" y="26.8333">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" type="EnemySpawn" x="2136" y="712.5">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" type="EnemySpawn" x="2151.67" y="859.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" type="EnemySpawn" x="2136" y="1049.5">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" type="EnemySpawn" x="1688" y="1304.17">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" type="EnemySpawn" x="1048" y="1304.83">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" type="EnemySpawn" x="41.3333" y="1032.83">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" type="EnemySpawn" x="56.3333" y="953.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" type="EnemySpawn" x="57" y="792.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" type="EnemySpawn" x="56.6667" y="568.167">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" type="EnemySpawn" x="40.3333" y="473.833">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" type="EnemySpawn" x="104" y="104.833">
+   <properties>
+    <property name="Count" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" type="EnemySpawn" x="328" y="105.833">
    <properties>
     <property name="Count" type="int" value="25"/>
    </properties>

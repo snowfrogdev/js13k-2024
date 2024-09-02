@@ -2,6 +2,7 @@ import {
   cameraPos,
   cameraScale,
   clamp,
+  Color,
   drawLine,
   drawRect,
   engineInit,
@@ -31,7 +32,8 @@ import { findPath, fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
 
 let player: Player;
-let path: Vector2[] = [];
+let base: Base;
+let paths: Vector2[][] = [];
 
 function gameInit() {
   const levelSize = vec2(tileMapData.width, tileMapData.height);
@@ -95,10 +97,6 @@ function gameInit() {
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
 
-  const enemySpawn = spawns?.objects?.find((x) => x.type === "EnemySpawn");
-  const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
-  const enemyCount: number = (<any>enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
-
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
 
@@ -115,23 +113,28 @@ function gameInit() {
     }
   }
 
-  new Base(baseSpawnPosition);
+  base = new Base(baseSpawnPosition);
 
-  path = findPath(enemySpawnPosition, nearestValidPos)!;
+  const enemySpawns = spawns?.objects?.filter((x) => x.type === "EnemySpawn")!;
+  for (const enemySpawn of enemySpawns) {
+    const enemySpawnPosition = convertCoord(enemySpawn!.x, enemySpawn!.y, tileSizeDefault.x, levelSize.y);
+    const enemyCount: number = (<any>enemySpawn).properties.find((x: any) => x.name === "Count")?.value ?? 1;
+    const path = findPath(enemySpawnPosition, nearestValidPos)!;
+    paths.push(path);
+    const enemySpawnInterval = 1000; // in milliseconds
 
-  const enemySpawnInterval = 1000; // in milliseconds
+    let count = enemyCount;
+    const intervalID = setInterval(() => {
+      if (count <= 0) {
+        clearInterval(intervalID);
+        return;
+      }
 
-  let count = enemyCount;
-  const intervalID = setInterval(() => {
-    if (count <= 0) {
-      clearInterval(intervalID);
-      return;
-    }
-
-    const enemy = new Enemy(enemySpawnPosition);
-    enemy.path = path;
-    count--;
-  }, enemySpawnInterval);
+      const enemy = new Enemy(enemySpawnPosition);
+      enemy.path = path;
+      count--;
+    }, enemySpawnInterval);
+  }
 
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);
@@ -192,11 +195,13 @@ function gameRender() {
   // called before objects are rendered
   // draw any background effects that appear behind objects
 
-  // draw path
-  for (let i = 0; i < path.length - 1; i++) {
-    const start = path[i];
-    const end = path[i + 1];
-    drawLine(start, end, 0.2, rgb(0, 255, 0));
+  // draw paths
+  for (const path of paths) {
+    for (let i = 0; i < path.length - 1; i++) {
+      const start = path[i];
+      const end = path[i + 1];
+      drawLine(start, end, 0.2, rgb(0, 255, 0));
+    }
   }
 }
 
@@ -211,66 +216,11 @@ function gameRenderPost() {
 
   // Draw enemy indicator on the edge of the screen
   for (const enemy of Enemy.all) {
-    const enemyScreenPos = worldToScreen(enemy.pos);
-    const cameraScreenPos = worldToScreen(cameraPos);
-    const screenSize = vec2(mainCanvasSize.x, mainCanvasSize.y);
-    if (!isOverlapping(vec2(mainCanvasSize.x / 2, mainCanvasSize.y / 2), screenSize, enemyScreenPos)) {
-      // Calculate the direction from the center of the screen to to the enemy
-      const dir = enemyScreenPos.subtract(cameraScreenPos).normalize();
-      // Calculate the position along that direction where we reach the edge of the screen
-
-      let tMin = Infinity;
-      let intersection: Vector2 = cameraScreenPos;
-
-      // Check intersection with left edge (x = 0)
-      if (dir.x !== 0) {
-        const t = -cameraScreenPos.x / dir.x;
-        const y = cameraScreenPos.y + t * dir.y;
-        if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
-          tMin = t;
-          intersection = vec2(0, y);
-        }
-      }
-
-      // Check intersection with right edge (x = screenSize.x)
-      if (dir.x !== 0) {
-        const t = (screenSize.x - cameraScreenPos.x) / dir.x;
-        const y = cameraScreenPos.y + t * dir.y;
-        if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
-          tMin = t;
-          intersection = vec2(screenSize.x, y);
-        }
-      }
-
-      // Check intersection with top edge (y = 0)
-      if (dir.y !== 0) {
-        const t = -cameraScreenPos.y / dir.y;
-        const x = cameraScreenPos.x + t * dir.x;
-        if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
-          tMin = t;
-          intersection = vec2(x, 0);
-        }
-      }
-
-      // Check intersection with bottom edge (y = screenSize.y)
-      if (dir.y !== 0) {
-        const t = (screenSize.y - cameraScreenPos.y) / dir.y;
-        const x = cameraScreenPos.x + t * dir.x;
-        if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
-          tMin = t;
-          intersection = vec2(x, screenSize.y);
-        }
-      }
-
-      drawRect(intersection, vec2(10), rgb(255, 0, 0), 0, true, true);
-
-
-      
-    }
-
+    drawScreenEdgeIndicator(enemy.pos, rgb(1, 0, 0), 15);
   }
 
-  
+  // Draw base indicator on the edge of the screen
+  drawScreenEdgeIndicator(base.pos, rgb(1, 1, 0), 25);
 }
 
 // Startup LittleJS Engine
@@ -284,4 +234,60 @@ function convertCoord(x: number, y: number, tileSize: number, mapHeight: number)
   const newY = mapHeight - y / tileSize;
 
   return vec2(newX, newY);
+}
+
+function drawScreenEdgeIndicator(target: Vector2, color: Color, size: number = 15) {
+  const enemyScreenPos = worldToScreen(target);
+  const cameraScreenPos = worldToScreen(cameraPos);
+  const screenSize = vec2(mainCanvasSize.x, mainCanvasSize.y);
+  if (!isOverlapping(vec2(mainCanvasSize.x / 2, mainCanvasSize.y / 2), screenSize, enemyScreenPos)) {
+    // Calculate the direction from the center of the screen to to the enemy
+    const dir = enemyScreenPos.subtract(cameraScreenPos).normalize();
+    // Calculate the position along that direction where we reach the edge of the screen
+
+    let tMin = Infinity;
+    let intersection: Vector2 = cameraScreenPos;
+
+    // Check intersection with left edge (x = 0)
+    if (dir.x !== 0) {
+      const t = -cameraScreenPos.x / dir.x;
+      const y = cameraScreenPos.y + t * dir.y;
+      if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
+        tMin = t;
+        intersection = vec2(0, y);
+      }
+    }
+
+    // Check intersection with right edge (x = screenSize.x)
+    if (dir.x !== 0) {
+      const t = (screenSize.x - cameraScreenPos.x) / dir.x;
+      const y = cameraScreenPos.y + t * dir.y;
+      if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
+        tMin = t;
+        intersection = vec2(screenSize.x, y);
+      }
+    }
+
+    // Check intersection with top edge (y = 0)
+    if (dir.y !== 0) {
+      const t = -cameraScreenPos.y / dir.y;
+      const x = cameraScreenPos.x + t * dir.x;
+      if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
+        tMin = t;
+        intersection = vec2(x, 0);
+      }
+    }
+
+    // Check intersection with bottom edge (y = screenSize.y)
+    if (dir.y !== 0) {
+      const t = (screenSize.y - cameraScreenPos.y) / dir.y;
+      const x = cameraScreenPos.x + t * dir.x;
+      if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
+        tMin = t;
+        intersection = vec2(x, screenSize.y);
+      }
+    }
+
+    drawRect(intersection, vec2(size), color, 0, true, true);
+  }
 }

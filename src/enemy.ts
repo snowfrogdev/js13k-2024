@@ -126,7 +126,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
         // Basic collision avoidance
         if (dist < this.size.x * 1.5) {
-          const coneAngle = 80; // degrees
+          const coneAngle = 120; // degrees
           const directionAB = obj.pos.subtract(this.pos).normalize();
           const directionA = this.velocity.normalize();
           const dotProduct = directionA.dot(directionAB);
