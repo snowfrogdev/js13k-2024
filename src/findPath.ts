@@ -21,6 +21,7 @@ export function findPath(start: Vector2, goal: Vector2): Vector2[] | null {
     }
 
     openSet.splice(openSet.indexOf(current), 1);
+    if (!navGraph.has(toKey(current))) debugger;
     for (const neighbor of navGraph.get(toKey(current))!) {
       const tentativegScore = gScore.get(toKey(current))! + neighbor.cost;
       if (tentativegScore < (gScore.get(toKey(neighbor.pos)) ?? Infinity)) {
@@ -53,7 +54,7 @@ function reconstructPath(cameFrom: Map<string, Vector2 | null>, current: Vector2
     totalPath.unshift(waypoint);
   }
   return totalPath;
-} 
+}
 
 // Helper function to convert coordinates to a string key for the graph
 export const toKey = (pos: Vector2) => `${pos.x},${pos.y}`; // Define the graph as an adjacency list with movement costs

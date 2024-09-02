@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from "vite";
+import { defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => ({
   resolve: {
@@ -12,8 +12,8 @@ export default defineConfig(({ mode }) => ({
     terserOptions: {
       compress: {
         booleans_as_integers: true,
-        drop_console: true,
-        drop_debugger: true,
+        drop_console: mode === "production" ? true : false,
+        drop_debugger: mode === "production" ? true : false,
         passes: 4,
         toplevel: true,
         unsafe: true,

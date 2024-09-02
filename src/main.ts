@@ -76,19 +76,23 @@ function gameInit() {
         { move: vec2(-1, -1), cost: 1.4 }, // bottom-left diagonal
       ];
 
-      for (const { move, cost } of possibleMoves) {
-        const neighborPos = pos.add(move);
-        const isInbounds =
-          neighborPos.x >= 0 && neighborPos.x < levelSize.x && neighborPos.y >= 0 && neighborPos.y < levelSize.y;
-        if (isInbounds) {
-          const neighborTile =
-            tileMapData.layers[1].data![(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
-          if (neighborTile !== 0) {
-            neighbors.push({ pos: neighborPos, cost });
+      const nonWalkableTiles: number[] = [0, 10, 12, 15, 16, 26, 29];
+
+      if (!nonWalkableTiles.some((x) => x === tile)) {
+        for (const { move, cost } of possibleMoves) {
+          const neighborPos = pos.add(move);
+          const isInbounds =
+            neighborPos.x >= 0 && neighborPos.x < levelSize.x && neighborPos.y >= 0 && neighborPos.y < levelSize.y;
+          if (isInbounds) {
+            const neighborTile =
+              tileMapData.layers[1].data![(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+            if (!nonWalkableTiles.some((x) => x === neighborTile)) {
+              neighbors.push({ pos: neighborPos, cost });
+            }
           }
         }
+        navGraph.set(toKey(pos), neighbors);
       }
-      navGraph.set(toKey(pos), neighbors);
     }
   }
 
@@ -195,7 +199,7 @@ function gameRender() {
   // called before objects are rendered
   // draw any background effects that appear behind objects
 
-  // draw paths
+  // draw paths for debugging purposes at the moment
   for (const path of paths) {
     for (let i = 0; i < path.length - 1; i++) {
       const start = path[i];
