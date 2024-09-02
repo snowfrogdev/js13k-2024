@@ -216,7 +216,7 @@
          "offsety":90.3333333333334,
          "opacity":0.38,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -584,9 +584,32 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"Buildings",
+         "objects":[
+                {
+                 "gid":36,
+                 "height":61,
+                 "id":30,
+                 "name":"Hospital",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":225.666666666667,
+                 "y":1013.66666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":25,
+ "nextlayerid":12,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
@@ -599,6 +622,10 @@
         {
          "firstgid":35,
          "source":"..\/tiled\/Reference.tsx"
+        }, 
+        {
+         "firstgid":36,
+         "source":"..\/tiled\/Buildings.tsx"
         }],
  "tilewidth":16,
  "type":"map",

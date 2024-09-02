@@ -30,6 +30,7 @@ import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
 import { findPath, fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
+import { Hospital } from "./hospital";
 
 let player: Player;
 let base: Base;
@@ -100,6 +101,10 @@ function gameInit() {
   roadLayer.redraw();
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
+  const buildings = tileMapData.layers.find((x) => x.name === "Buildings");
+  const hospital = buildings?.objects?.find((x) => x.name === "Hospital");
+  const hospitalPosition = convertCoord(hospital!.x + 54 / 2, hospital!.y - 62 / 2, tileSizeDefault.x, levelSize.y);
+  new Hospital(hospitalPosition);
 
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
   const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
@@ -231,6 +236,7 @@ function gameRenderPost() {
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
   "./assets/img/Tilemap.png",
   "./assets/img/Smoke.png",
+  "./assets/img/Hospital.png",
 ]);
 
 function convertCoord(x: number, y: number, tileSize: number, mapHeight: number): Vector2 {

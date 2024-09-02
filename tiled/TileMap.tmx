@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="25">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="31">
  <editorsettings>
   <export target="../src/tilemap.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>
+ <tileset firstgid="36" source="Buildings.tsx"/>
  <layer id="8" name="Ground" width="135" height="85">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -183,7 +184,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="Reference" visible="0" locked="1" opacity="0.38" offsetx="-111" offsety="90.3333">
+ <objectgroup id="7" name="Reference" locked="1" opacity="0.38" offsetx="-111" offsety="90.3333">
   <object id="2" name="reference" gid="35" x="109.833" y="1265.17" width="2165.33" height="1379.33"/>
  </objectgroup>
  <objectgroup id="9" name="Spawns">
@@ -304,5 +305,8 @@
   <object id="6" type="BaseSpawn" x="448" y="831.984">
    <point/>
   </object>
+ </objectgroup>
+ <objectgroup id="10" name="Buildings">
+  <object id="30" name="Hospital" gid="36" x="225.667" y="1013.67" width="54" height="61"/>
  </objectgroup>
 </map>

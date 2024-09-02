@@ -181,6 +181,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       return;
     }
 
+    this.renderOrder = -this.pos.y + this.size.y / 2;
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
     drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
   }
