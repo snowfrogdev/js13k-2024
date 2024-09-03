@@ -110,7 +110,7 @@ function debug() {
 
     // Draw the intensity
     const intensityY = intensityToGraphY(debugData[i].intensity);
-    drawRect(vec2(xPos, intensityY), vec2(2, 2), rgb(1, 1, 1, 0.7), 0, true, true);
+    drawRect(vec2(xPos, intensityY), vec2(3, 3), rgb(1, 1, 1, 0.7), 0, true, true);
   }
 }
 

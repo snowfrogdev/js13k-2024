@@ -163,7 +163,11 @@ function gameUpdatePost() {
   const cameraSize = mainCanvasSize.scale(1 / cameraScale);
   const halfCameraSize = cameraSize.scale(0.5);
 
-  const lerpFactor = 0.025;
+  let lerpFactor = 0.025;
+
+  if (player.velocity.length() > 0.1) { 
+    lerpFactor = 0.1;
+  }
 
   let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
 
