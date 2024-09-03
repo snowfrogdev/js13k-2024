@@ -18,6 +18,7 @@ import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
+import { publish } from "./event-bus";
 
 export class Player extends EngineObject implements DamageTaker {
   private health = 500;
@@ -130,6 +131,9 @@ export class Player extends EngineObject implements DamageTaker {
 
   takeDamage(projectile: Projectile) {
     if (this.deathTimer.active()) return;
+
+    publish("PLAYER_DAMAGED", { damage: 5 });
+
     // flash color
     this.color = rgb(255, 255, 255, 1);
     setTimeout(() => (this.color = undefined!), 70);
@@ -140,6 +144,7 @@ export class Player extends EngineObject implements DamageTaker {
     this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
 
     if (this.health <= 0) {
+      publish("PLAYER_INCAPACITATED");
       this.deathTimer.set(0.15);
       this.deathSound.play();
     }

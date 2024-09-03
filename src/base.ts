@@ -1,4 +1,5 @@
 import { drawRect, EngineObject, rgb, Sound, Timer, vec2, Vector2 } from "littlejsengine";
+import { publish } from "./event-bus";
 
 export class Base extends EngineObject {
   private health = 1000;
@@ -36,6 +37,9 @@ export class Base extends EngineObject {
 
   takeDamage() {
     if (this.deathTimer.active()) return;
+
+    publish("BASE_DAMAGED", { damage: 5 });
+
     // flash color
     this.color = rgb(1, 1, 1, 1);
     setTimeout(() => (this.color = undefined!), 70);

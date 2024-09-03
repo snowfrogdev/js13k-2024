@@ -217,6 +217,8 @@ function gameRenderPost() {
 
   // Draw base indicator on the edge of the screen
   drawScreenEdgeIndicator(base.pos, rgb(1, 1, 0), 25);
+
+  AIDirector.debug();
 }
 
 // Startup LittleJS Engine

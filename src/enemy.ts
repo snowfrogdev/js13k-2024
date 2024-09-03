@@ -18,6 +18,7 @@ import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
 import { Base } from "./base";
+import { publish } from "./event-bus";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
@@ -109,7 +110,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
     }
 
-    const maxSpeed = 0.03;
+    const maxSpeed = 0.025;
 
     if (nearestWaypointIndex === this._path.length - 1 && minDist < maxSpeed) return;
 
@@ -188,6 +189,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
   takeDamage(projectile: Projectile) {
     if (this.deathTimer.active()) return;
+
     // flash color
     this.color = rgb(1);
     setTimeout(() => (this.color = undefined!), 70);
@@ -198,6 +200,7 @@ export class Enemy extends EngineObject implements DamageTaker {
     this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
 
     if (this.health <= 0) {
+      publish("ENEMY_KILLED");
       this.deathTimer.set(0.15);
       this.deathSound.play(this.pos);
     }

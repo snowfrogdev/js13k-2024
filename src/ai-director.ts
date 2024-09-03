@@ -1,13 +1,14 @@
-import { Timer, Vector2 } from "littlejsengine";
+import { drawLine, drawRect, mainCanvasSize, rgb, time, Timer, vec2, Vector2 } from "littlejsengine";
 import { subscribe } from "./event-bus";
 import { findPath } from "./findPath";
 import { Enemy } from "./enemy";
 
 let _emotionalIntensity = 0;
+const debugData: { time: number; enemies: number; intensity: number }[] = [];
+const maxDebugDataPoints = 10 * 60; // 10 minutes at 1 point per second
 
 function setEmotionalIntensity(value: number) {
   _emotionalIntensity = value;
-  console.log("Emotional intensity set to", value);
 }
 
 let _lastActionTimestamp = performance.now();
@@ -55,6 +56,13 @@ function init(enemySpawns: Vector2[], basePosition: Vector2) {
   _basePosition = basePosition;
 
   _spawnTimer.set(_spawnIntervalSecs);
+
+  setInterval(() => {
+    if (debugData.length > 10 * 60) {
+      debugData.shift();
+    }
+    debugData.push({ time: Math.round(time), enemies: Enemy.all.size, intensity: _emotionalIntensity });
+  }, 1000);
 }
 
 function update(playerPosition: Vector2) {
@@ -65,6 +73,45 @@ function update(playerPosition: Vector2) {
   }
 
   _stateMachine[_state]();
+}
+
+function debug() {
+  const screenWidth = mainCanvasSize.x;
+  const screenHeight = mainCanvasSize.y;
+  const graphWidth = 600;
+  const graphHeight = 300;
+  // Draw the graph background
+  drawRect(
+    vec2(screenWidth - graphWidth / 2, screenHeight - graphHeight / 2),
+    vec2(graphWidth, graphHeight),
+    rgb(0, 0, 0, 0.5),
+    0,
+    true,
+    true
+  );
+
+  const yPeak = screenHeight - 0.85 * graphHeight;
+  const scalingFactor = (yPeak - screenHeight) / _peakEmotionalIntensityThreshold;
+  const intensityToGraphY = (intensity: number) => screenHeight + scalingFactor * intensity;
+
+  // Draw the peak emotional intensity threshold line
+  drawLine(vec2(screenWidth - graphWidth, yPeak), vec2(screenWidth, yPeak), 3, rgb(1, 0, 0, 0.5), true, true);
+
+  // Draw the relax emotional intensity threshold line
+  const yRelax = intensityToGraphY(_relaxEmotionalIntensityThreshold);
+  drawLine(vec2(screenWidth - graphWidth, yRelax), vec2(screenWidth, yRelax), 3, rgb(0, 0, 1, 0.5), true, true);
+
+  for (let i = 0; i < debugData.length - 1; i++) {
+    const xPos = (graphWidth / maxDebugDataPoints) * i + (screenWidth - graphWidth);
+    // Draw a vertical line for each 30 seconds
+    if (debugData[i].time !== 0 && debugData[i].time % 30 === 0) {
+      drawLine(vec2(xPos, screenHeight), vec2(xPos, screenHeight - graphHeight), 1, rgb(1, 1, 1, 0.3), true, true);
+    }
+
+    // Draw the intensity
+    const intensityY = intensityToGraphY(debugData[i].intensity);
+    drawRect(vec2(xPos, intensityY), vec2(2, 2), rgb(1, 1, 1, 0.7), 0, true, true);
+  }
 }
 
 const _stateMachine: Record<States, () => void> = {
@@ -126,4 +173,4 @@ function spawnEnemy() {
   _spawnTimer.set(_spawnIntervalSecs);
 }
 
-export const AIDirector = { init, update } as const;
+export const AIDirector = { init, update, debug } as const;
