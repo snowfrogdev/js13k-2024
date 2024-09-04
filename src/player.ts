@@ -11,8 +11,6 @@ import {
   mouseIsDown,
   mousePos,
   Particle,
-  randVector,
-  rand,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -60,8 +58,8 @@ export class Player extends EngineObject implements DamageTaker {
       new Particle(firingPositionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
       new Particle(firingPositionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
 
-      new ShellCasings(firingPositionLeft, this.firingDirection.rotate(90));
-      new ShellCasings(firingPositionRight, this.firingDirection.rotate(-90));
+      ShellCasings.create(firingPositionLeft, this.firingDirection.rotate(90));
+      ShellCasings.create(firingPositionRight, this.firingDirection.rotate(-90));
 
 
       Projectile.sound.play();

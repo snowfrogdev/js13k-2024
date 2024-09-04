@@ -45,7 +45,7 @@ const _sustainPeakPeriodSecs = 5;
 const _realaxPeriodSecs = 45;
 
 const _spawnTimer = new Timer();
-const _spawnIntervalSecs = 1;
+const _spawnIntervalSecs = 2;
 
 let _enemySpawns: Vector2[];
 let _playerPosition: Vector2;
