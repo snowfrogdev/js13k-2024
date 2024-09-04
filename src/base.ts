@@ -33,6 +33,14 @@ export class Base extends EngineObject {
 
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
     drawRect(this.pos, this.drawSize, this.color || rgb(1, 1, 0));
+
+    // draw health bar
+    const healthBarWidth = this.drawSize.x;
+    const healthBarHeight = 0.2;
+    const healthBarPos = this.pos.add(vec2(0, -this.size.y / 2 - 0.2));
+    drawRect(healthBarPos, vec2(healthBarWidth, healthBarHeight), rgb(0, 0, 0));
+    drawRect(healthBarPos, vec2(healthBarWidth * (this.health / 1000), healthBarHeight), rgb(1, 0, 0));
+
   }
 
   takeDamage() {
