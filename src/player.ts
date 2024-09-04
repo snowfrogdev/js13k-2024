@@ -11,6 +11,7 @@ import {
   mouseIsDown,
   mousePos,
   Particle,
+  min,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -27,6 +28,7 @@ export class Player extends EngineObject implements DamageTaker {
   public firingDirection: Vector2 = vec2();
   private lastFireTime = 0;
   private knockbackFromHit = new Vector2();
+  private healingTimer = new Timer(3);
 
   constructor(position: Vector2) {
     super(position);
@@ -39,9 +41,16 @@ export class Player extends EngineObject implements DamageTaker {
       this.destroy();
     }
 
+    if (this.healingTimer.elapsed()) {
+      console.log("healing");
+      this.health = min(this.health + 2, 500);
+      this.healingTimer.set(1);
+    }
+
     this.isFiring = false;
     const currentTime = performance.now();
     const rateOfFire = 0.08; // configurable rate of fire
+    let knockbackFactor = 0.1
     if (mouseIsDown(0) && currentTime - this.lastFireTime > rateOfFire * 1000) {
       // Calculate angle offset so that `accuracy` percentage of the time the angleOffset will be 0 and the shot will hit
       // the player. Otherwise, the shot will miss slightly.
@@ -67,10 +76,6 @@ export class Player extends EngineObject implements DamageTaker {
       Projectile.sound.play();
       this.lastFireTime = currentTime;
       this.isFiring = true;
-
-      // knockback player when firing
-      const knockback = 0.2;
-      this.velocity = this.velocity.add(this.firingDirection.scale(-knockback));
     }
 
     // wasd input for movement
@@ -81,6 +86,10 @@ export class Player extends EngineObject implements DamageTaker {
     if (keyIsDown("KeyD")) direction.x += 1;
 
     if (direction.lengthSquared() > 0) {
+      // increase knockback factor when moving
+      knockbackFactor = 0.2
+
+
       direction.normalize();
       const acceleration = 0.07;
       this.velocity = this.velocity.add(direction.scale(acceleration));
@@ -89,6 +98,12 @@ export class Player extends EngineObject implements DamageTaker {
         this.velocity = this.velocity.normalize().scale(maxSpeed);
       }
     }
+
+    // knockback player when firing
+    if (this.isFiring) {
+      this.velocity = this.velocity.add(this.firingDirection.scale(-knockbackFactor));
+    }
+    
 
     const deceleration = 0.1;
     this.velocity = this.velocity.scale(1 - deceleration);

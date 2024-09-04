@@ -165,7 +165,7 @@ function gameUpdatePost() {
 
   let lerpFactor = 0.025;
 
-  if (player.velocity.length() > 0.1) { 
+  if (player.velocity.length() > 0.1) {
     lerpFactor = 0.1;
   }
 
@@ -208,6 +208,7 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
+
   // Print the camera scale to the screen
   /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
   const scaleTextSize = 30 / cameraScale;
@@ -222,6 +223,18 @@ function gameRenderPost() {
   // Draw base indicator on the edge of the screen
   drawScreenEdgeIndicator(base.pos, rgb(1, 1, 0), 25);
 
+  // Draw a cross surrounded by a square for the mouse pointer
+  const screenMousePos = worldToScreen(mousePos);
+  const darkColor = rgb(112 / 255, 66 / 255, 20 / 255);
+  const lightColor = rgb(245 / 255, 222 / 255, 179 / 255);
+  drawRect(screenMousePos, vec2(30), lightColor, 0, true, true);
+  drawLine(screenMousePos.add(vec2(-15, 0)), screenMousePos.add(vec2(15, 0)), 3, darkColor, true, true);
+  drawLine(screenMousePos.add(vec2(0, -15)), screenMousePos.add(vec2(0, 15)), 3, darkColor, true, true);
+  drawLine(screenMousePos.add(vec2(-15, 15)), screenMousePos.add(vec2(15, 15)), 3, darkColor, true, true);
+  drawLine(screenMousePos.add(vec2(15, 15)), screenMousePos.add(vec2(15, -15)), 3, darkColor, true, true);
+  drawLine(screenMousePos.add(vec2(15, -15)), screenMousePos.add(vec2(-15, -15)), 3, darkColor, true, true);
+  drawLine(screenMousePos.add(vec2(-15, -15)), screenMousePos.add(vec2(-15, 15)), 3, darkColor, true, true);
+  
   AIDirector.debug();
 }
 

@@ -1,4 +1,4 @@
-import { drawLine, drawRect, mainCanvasSize, rgb, time, Timer, vec2, Vector2 } from "littlejsengine";
+import { drawLine, drawRect, drawText, mainCanvasSize, rgb, time, Timer, vec2, Vector2 } from "littlejsengine";
 import { subscribe } from "./event-bus";
 import { findPath } from "./findPath";
 import { Enemy } from "./enemy";
@@ -15,7 +15,7 @@ let _lastActionTimestamp = performance.now();
 let _timeBeforeIntensityDecayMs = 1_000;
 
 subscribe("PLAYER_DAMAGED", ({ damage }) => {
-  setEmotionalIntensity(_emotionalIntensity + damage);
+  setEmotionalIntensity(_emotionalIntensity + damage * 2);
   _lastActionTimestamp = performance.now();
 });
 
@@ -25,7 +25,7 @@ subscribe("PLAYER_INCAPACITATED", () => {
 });
 
 subscribe("ENEMY_KILLED", () => {
-  setEmotionalIntensity(_emotionalIntensity + 100);
+  setEmotionalIntensity(_emotionalIntensity + 200);
   _lastActionTimestamp = performance.now();
 });
 
@@ -42,10 +42,10 @@ const _stateTransitionTimer = new Timer();
 const _peakEmotionalIntensityThreshold = 1_000;
 const _relaxEmotionalIntensityThreshold = 100;
 const _sustainPeakPeriodSecs = 5;
-const _realaxPeriodSecs = 45;
+const _relaxPeriodSecs = 45;
 
 const _spawnTimer = new Timer();
-const _spawnIntervalSecs = 2;
+const _spawnIntervalSecs = 1.5;
 
 let _enemySpawns: Vector2[];
 let _playerPosition: Vector2;
@@ -69,7 +69,7 @@ function update(playerPosition: Vector2) {
   _playerPosition = playerPosition;
 
   if (performance.now() - _lastActionTimestamp > _timeBeforeIntensityDecayMs && _emotionalIntensity > 0) {
-    setEmotionalIntensity(_emotionalIntensity - 1);
+    setEmotionalIntensity(_emotionalIntensity - 0.5);
   }
 
   _stateMachine[_state]();
@@ -104,9 +104,15 @@ function debug() {
   for (let i = 0; i < debugData.length - 1; i++) {
     const xPos = (graphWidth / maxDebugDataPoints) * i + (screenWidth - graphWidth);
     // Draw a vertical line for each 30 seconds
-    if (debugData[i].time !== 0 && debugData[i].time % 30 === 0) {
+    const timeElapsed = debugData[i].time;
+    if (timeElapsed !== 0 && timeElapsed % 30 === 0) {
       drawLine(vec2(xPos, screenHeight), vec2(xPos, screenHeight - graphHeight), 1, rgb(1, 1, 1, 0.3), true, true);
+
+      // Draw the number of minutes elapsed
+      if (debugData[i].time % 60 === 0) {
+        drawText(timeElapsed.toString(), vec2(xPos, screenHeight - graphHeight - 10), 10, rgb(1, 1, 1));
     }
+  }
 
     // Draw the intensity
     const intensityY = intensityToGraphY(debugData[i].intensity);
@@ -137,7 +143,7 @@ const _stateMachine: Record<States, () => void> = {
   PEAK_FADE() {
     if (_emotionalIntensity <= _relaxEmotionalIntensityThreshold) {
       _state = "RELAX";
-      _stateTransitionTimer.set(_realaxPeriodSecs);
+      _stateTransitionTimer.set(_relaxPeriodSecs);
     }
   },
   RELAX() {
