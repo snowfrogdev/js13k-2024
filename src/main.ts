@@ -12,6 +12,7 @@ import {
   mainCanvasSize,
   mousePos,
   mouseWheel,
+  randVector,
   rgb,
   setCameraPos,
   setCameraScale,
@@ -133,7 +134,7 @@ function gameInit() {
   AIDirector.init(enemySpawns, nearestValidPos);
 
 
-  player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
+  player = new Player(baseSpawnPosition.add(randVector(3)));
   setCameraPos(player.pos);
   setCameraScale(48);
 }
@@ -238,6 +239,7 @@ function gameRenderPost() {
   drawLine(screenMousePos.add(vec2(15, -15)), screenMousePos.add(vec2(-15, -15)), 3, darkColor, true, true);
   drawLine(screenMousePos.add(vec2(-15, -15)), screenMousePos.add(vec2(-15, 15)), 3, darkColor, true, true);
   
+  Researcher.render();
   AIDirector.debug();
 }
 
