@@ -158,7 +158,7 @@ function spawnEnemy() {
   let farthestSpawns: Vector2[] = [];
   for (const spawn of _enemySpawns) {
     const distance = _playerPosition.distance(spawn);
-    if (farthestSpawns.length < 3) {
+    if (farthestSpawns.length < 4) {
       farthestSpawns.push(spawn);
       continue;
     }

@@ -5,6 +5,7 @@ type EventsDefinition = {
   PLAYER_INCAPACITATED: void;
   ENEMY_KILLED: void;
   BASE_DAMAGED: { damage: number };
+  RESEARCH_MATERIAL_COLLECTED: { amount: number };
 };
 
 type Events = keyof EventsDefinition;

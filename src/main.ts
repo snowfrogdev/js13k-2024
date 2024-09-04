@@ -32,6 +32,7 @@ import { fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
 import { Hospital } from "./hospital";
 import { AIDirector } from "./ai-director";
+import { Researcher } from "./researcher";
 
 let player: Player;
 let base: Base;
@@ -131,6 +132,7 @@ function gameInit() {
 
   AIDirector.init(enemySpawns, nearestValidPos);
 
+
   player = new Player(vec2(levelSize.x / 2, levelSize.y / 2));
   setCameraPos(player.pos);
   setCameraScale(48);
@@ -140,6 +142,7 @@ function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
   AIDirector.update(player.pos);
+  Researcher.update();
 }
 
 function gameUpdatePost() {

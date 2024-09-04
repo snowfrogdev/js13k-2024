@@ -11,6 +11,7 @@ export class ShellCasings extends Particle {
   static create(position: Vector2, flyOffDirection: Vector2) {
     const particle = [...ShellCasings.pool].find((p) => !p._active) ?? new ShellCasings(position);
     particle._active = true;
+    particle.pos = position.copy();
     particle.velocity = flyOffDirection.add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));
     ShellCasings.pool.add(particle);
     return particle;
