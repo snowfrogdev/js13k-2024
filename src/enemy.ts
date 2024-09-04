@@ -65,7 +65,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
 
       // smoke
-      new ParticleEmitter(
+      const emitter = new ParticleEmitter(
         this.pos,
         0,
         1,
@@ -91,7 +91,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         false,
         false,
         true,
-        this.renderOrder
+        500
       );
 
       this.destroy();
@@ -154,6 +154,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         const position = this.pos.add(firingDirection!.scale(0.5));
         const rateOfFire = 1;
         Projectile.create(position, firingDirection!, rgb(1, 0.48, 0.09), projectileSpeed, vec2(0.45), [Player, Base]);
+        // muzzle flash
         new Particle(position, undefined, undefined, rgb(1), rgb(1), 0.007, 0.65, 0.65);
         Projectile.sound.play(position);
         this.firingTimer.set(rateOfFire);

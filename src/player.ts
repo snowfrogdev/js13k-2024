@@ -31,6 +31,7 @@ export class Player extends EngineObject implements DamageTaker {
   constructor(position: Vector2) {
     super(position);
     this.drawSize = vec2(1);
+    this.renderOrder = Infinity;
   }
 
   update() {
@@ -115,7 +116,6 @@ export class Player extends EngineObject implements DamageTaker {
       return;
     }
 
-    this.renderOrder = Infinity;
     //drawTile(this.pos, vec2(1), tile(0, 16));
     drawRect(this.pos, this.drawSize, this.color || rgb(0, 255, 0));
 
