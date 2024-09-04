@@ -1,4 +1,4 @@
-import { drawLine, drawRect, drawText, mainCanvasSize, rgb, time, Timer, vec2, Vector2 } from "littlejsengine";
+import { drawLine, drawRect, drawText, mainCanvasSize, rgb, screenToWorld, time, Timer, vec2, Vector2 } from "littlejsengine";
 import { subscribe } from "./event-bus";
 import { findPath } from "./findPath";
 import { Enemy } from "./enemy";
@@ -110,9 +110,9 @@ function debug() {
 
       // Draw the number of minutes elapsed
       if (debugData[i].time % 60 === 0) {
-        drawText(timeElapsed.toString(), vec2(xPos, screenHeight - graphHeight - 10), 10, rgb(1, 1, 1));
+        drawText((timeElapsed / 60).toString(), screenToWorld(vec2(xPos, screenHeight - graphHeight + 10)), 0.3, rgb(1, 1, 1));
+      }
     }
-  }
 
     // Draw the intensity
     const intensityY = intensityToGraphY(debugData[i].intensity);
