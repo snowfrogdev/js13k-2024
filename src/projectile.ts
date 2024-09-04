@@ -52,6 +52,7 @@ export class Projectile extends EngineObject {
 
   render() {
     if (!this._active) return;
+    this.renderOrder = -this.pos.y + this.size.y / 2;
     drawRect(this.pos, this.drawSize, this.color);
   }
 

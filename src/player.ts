@@ -19,6 +19,7 @@ import { DamageTaker } from "./damage-taker";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
 import { publish } from "./event-bus";
+import { ShellCasings } from "./shell-casings";
 
 export class Player extends EngineObject implements DamageTaker {
   private health = 500;
@@ -49,26 +50,18 @@ export class Player extends EngineObject implements DamageTaker {
       const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
 
       this.firingDirection = mousePos.subtract(this.pos).normalize().rotate(angleOffset);
-      const positionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.5).scale(0.5));
-      const positionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.5).scale(0.5));
+      const firingPositionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.5).scale(0.5));
+      const firingPositionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.5).scale(0.5));
 
-      Projectile.create(positionLeft, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
-      Projectile.create(positionRight, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
+      Projectile.create(firingPositionLeft, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
+      Projectile.create(firingPositionRight, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
 
       // Muzzle flash
-      new Particle(positionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
-      new Particle(positionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
+      new Particle(firingPositionLeft, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
+      new Particle(firingPositionRight, undefined, undefined, rgb(1), rgb(1), 0.005, 0.5, 0.5);
 
-      // Shell casings
-      const leftCasing = new Particle(positionLeft, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
-      const rightCasing = new Particle(positionRight, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 5, 0.1, 0.1);
-      // set a random velocity for the casings that is roughly at a perpendicular angle to the firing direction
-      leftCasing.velocity = this.firingDirection.rotate(90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));  
-      rightCasing.velocity = this.firingDirection.rotate(-90).add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));    
-      leftCasing.damping = 0.95;
-      rightCasing.damping = 0.95;
-      leftCasing.renderOrder = this.renderOrder - 0.1;
-      rightCasing.renderOrder = this.renderOrder - 0.1;
+      new ShellCasings(firingPositionLeft, this.firingDirection.rotate(90));
+      new ShellCasings(firingPositionRight, this.firingDirection.rotate(-90));
 
 
       Projectile.sound.play();
@@ -77,7 +70,7 @@ export class Player extends EngineObject implements DamageTaker {
       this.isFiring = true;
 
       // knockback player when firing
-      const knockback = 0.1;
+      const knockback = 0.2;
       this.velocity = this.velocity.add(this.firingDirection.scale(-knockback));
     }
 
