@@ -14,6 +14,7 @@ import {
   min,
   keyWasReleased,
   engineObjectsCallback,
+  randVector,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -28,24 +29,32 @@ export class Player extends EngineObject implements DamageTaker {
   private health = Player.maxHealth;
   private deathTimer = new Timer();
   private deathSound = new Sound([1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3]);
-  private vacuumSound = new Sound([.1,.02,,.1,.9,.8,,.5,,,,,,.1,,.3,,.7,.6]); 
+  private vacuumSound = new Sound([0.1, 0.02, , 0.1, 0.9, 0.8, , 0.5, , , , , , 0.1, , 0.3, , 0.7, 0.6]);
   public isFiring = false;
   public firingDirection: Vector2 = vec2();
   private lastFireTime = 0;
   private knockbackFromHit = new Vector2();
-  private healingTimer = new Timer(3);
+  private healingTimer = new Timer(1);
   private vacuumMode = false;
   private materialBeingVacuumed = new Set<ResearchMaterial>();
+  private _isDisabled = false;
+  public get isDisabled() {
+    return this._isDisabled;
+  }
+  private spawnPosition: Vector2;
 
-  constructor(position: Vector2) {
-    super(position);
+  constructor(spawnPosition: Vector2) {
+    super(spawnPosition);
     this.drawSize = vec2(1);
     this.renderOrder = Infinity;
+    this.spawnPosition = spawnPosition.copy();
   }
 
   update() {
+    if (this.isDisabled) return;
     if (this.deathTimer.elapsed()) {
-      this.destroy();
+      publish("PLAYER_INCAPACITATED", { player: this });
+      this.disable();
     }
 
     if (keyWasReleased("ShiftLeft")) {
@@ -119,7 +128,7 @@ export class Player extends EngineObject implements DamageTaker {
       material.vacuum(this.pos);
       if (this.pos.distance(material.pos) < 0.1) {
         material.destroy();
-        publish("RESEARCH_MATERIAL_COLLECTED", { amount: 1 });
+        publish("RESEARCH_MATERIAL_COLLECTED", { amount: 0.5 });
       }
     }
 
@@ -153,8 +162,8 @@ export class Player extends EngineObject implements DamageTaker {
   }
 
   private vacuum() {
-      this.vacuumSound.play();
-    
+    this.vacuumSound.play();
+
     engineObjectsCallback(mousePos, 2, (obj: EngineObject) => {
       if (obj instanceof ResearchMaterial) {
         this.materialBeingVacuumed.add(obj);
@@ -171,6 +180,8 @@ export class Player extends EngineObject implements DamageTaker {
   }
 
   render() {
+    if (this.isDisabled) return;
+
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
         drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
@@ -196,22 +207,38 @@ export class Player extends EngineObject implements DamageTaker {
 
   takeDamage(projectile: Projectile) {
     if (this.deathTimer.active()) return;
+    const damage = 10;
 
-    publish("PLAYER_DAMAGED", { damage: 5 });
+    publish("PLAYER_DAMAGED", { damage });
 
     // flash color
     this.color = rgb(255, 255, 255, 1);
     setTimeout(() => (this.color = undefined!), 70);
 
-    this.health -= 5;
+    this.health -= damage;
     // knockback
     const knockback = 0.07;
     this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
 
     if (this.health <= 0) {
-      publish("PLAYER_INCAPACITATED");
       this.deathTimer.set(0.15);
       this.deathSound.play();
     }
+  }
+
+  private disable() {
+    this._isDisabled = true;
+    this.deathTimer.unset();
+    this.pos = vec2(-1000, 0);
+    this.velocity = vec2();
+    this.isFiring = false;
+    this.vacuumMode = false;
+  }
+
+  respawn() {
+    this.health = Player.maxHealth;
+    this._isDisabled = false;
+    this.pos = this.spawnPosition.copy().add(randVector(5));
+    this.velocity = vec2();
   }
 }

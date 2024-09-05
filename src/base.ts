@@ -46,13 +46,16 @@ export class Base extends EngineObject {
   takeDamage() {
     if (this.deathTimer.active()) return;
 
-    publish("BASE_DAMAGED", { damage: 5 });
+    const damage = 10;
+    const basePos = this.pos;
+
+    publish("BASE_DAMAGED", { damage });
 
     // flash color
     this.color = rgb(1, 1, 1, 1);
     setTimeout(() => (this.color = undefined!), 70);
 
-    this.health -= 5;
+    this.health -= damage;
 
     if (this.health <= 0) {
       this.deathTimer.set(0.15);

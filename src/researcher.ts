@@ -1,9 +1,10 @@
-import { drawRect, mainCanvasSize, rgb, Timer, vec2 } from "littlejsengine";
+import { drawRect, mainCanvasSize, min, rgb, Timer, vec2 } from "littlejsengine";
 import { subscribe } from "./event-bus";
 
 const researchPointsGoal = 500;
 const researchRatePerSecs = 1;
 const researchTimer = new Timer(1);
+const researchPointCost = 2;
 let researchPointsAccumulated = 0;
 let researchMaterial = 0;
 
@@ -12,9 +13,10 @@ subscribe("RESEARCH_MATERIAL_COLLECTED", ({ amount }) => {
 });
 
 function update() {
-  if (researchMaterial > 0 && researchTimer.elapsed()) {
-    researchMaterial -= researchRatePerSecs;
+  if (researchMaterial > researchPointCost && researchTimer.elapsed()) {
+    researchMaterial -= researchPointCost;
     researchPointsAccumulated += researchRatePerSecs;
+    researchTimer.set(1);
   }
 }
 
@@ -41,10 +43,10 @@ function render() {
     true
   );
 
-  const researchPointsBarWidth = barWidth * (researchPointsAccumulated / researchPointsGoal) - 5;
+  const researchPointsBarWidth = barWidth * min(researchPointsGoal, researchPointsAccumulated) / researchPointsGoal - 6;
   drawRect(
-    vec2(screenWidth - researchPointsBarWidth / 2, screenHeight - barHeight / 2),
-    vec2(researchPointsBarWidth, barHeight - 5),
+    vec2(screenWidth - researchPointsBarWidth / 2 - 3, screenHeight - barHeight / 2),
+    vec2(researchPointsBarWidth, barHeight - 6),
     lightColor,
     0,
     true,
@@ -61,10 +63,10 @@ function render() {
     true
   );
 
-  const researchMaterialBarWidth = barWidth * (researchMaterial / researchPointsGoal) - 5;
+  const researchMaterialBarWidth = barWidth * min(researchPointsGoal, researchMaterial) / researchPointsGoal - 6;
   drawRect(
-    vec2(researchMaterialBarWidth / 2, screenHeight - barHeight / 2),
-    vec2(researchMaterialBarWidth, barHeight - 5),
+    vec2(researchMaterialBarWidth / 2 + 3, screenHeight - barHeight / 2),
+    vec2(researchMaterialBarWidth, barHeight - 6),
     lightColor,
     0,
     true,

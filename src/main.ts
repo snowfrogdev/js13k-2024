@@ -34,6 +34,7 @@ import { navGraph, toKey } from "./findPath";
 import { Hospital } from "./hospital";
 import { AIDirector } from "./ai-director";
 import { Researcher } from "./researcher";
+import { Respawner } from "./respawn";
 
 let player: Player;
 let base: Base;
@@ -133,7 +134,6 @@ function gameInit() {
 
   AIDirector.init(enemySpawns, nearestValidPos);
 
-
   player = new Player(baseSpawnPosition.add(randVector(3)));
   setCameraPos(player.pos);
   setCameraScale(48);
@@ -144,6 +144,7 @@ function gameUpdate() {
   // handle input and update the game state
   AIDirector.update(player.pos);
   Researcher.update();
+  Respawner.update();
 }
 
 function gameUpdatePost() {
@@ -173,11 +174,9 @@ function gameUpdatePost() {
     lerpFactor = 0.1;
   }
 
-  let newCameraPos: Vector2 = cameraPos.lerp(player.pos, lerpFactor);
-
-  // Adjust the camera position to move towards a point between the mouse position
-  // and the player position
-  newCameraPos = cameraPos.lerp(mousePos.subtract(player.pos).scale(0.3).add(player.pos), lerpFactor);
+  let newCameraPos: Vector2 = player.isDisabled
+    ? cameraPos.lerp(base.pos, lerpFactor)
+    : cameraPos.lerp(mousePos.subtract(player.pos).scale(0.3).add(player.pos), lerpFactor);
 
   // Clamp the camera position to prevent it from going outside the tilemap
   let clampedCameraPos = vec2(
@@ -238,7 +237,8 @@ function gameRenderPost() {
   drawLine(screenMousePos.add(vec2(15, 15)), screenMousePos.add(vec2(15, -15)), 3, darkColor, true, true);
   drawLine(screenMousePos.add(vec2(15, -15)), screenMousePos.add(vec2(-15, -15)), 3, darkColor, true, true);
   drawLine(screenMousePos.add(vec2(-15, -15)), screenMousePos.add(vec2(-15, 15)), 3, darkColor, true, true);
-  
+
+  Respawner.render();
   Researcher.render();
   AIDirector.debug();
 }

@@ -1,4 +1,4 @@
-import { Particle, randVector, rgb, vec2, Vector2 } from "littlejsengine";
+import { Particle, randVector, rgb, time, vec2, Vector2 } from "littlejsengine";
 
 export class ResearchMaterial extends Particle {
   static pool = new Set<ResearchMaterial>();
@@ -7,7 +7,7 @@ export class ResearchMaterial extends Particle {
   private isBeingVacuumed = false;
 
   private constructor(position: Vector2) {
-    super(position, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60 * 3, 0.25, 0.1, 0.001);
+    super(position, undefined, undefined, rgb(1, 0.3, 0.3), rgb(1, 0.3, 0.3), 60 * 1.5, 0.25, 0.1, 0.001);
     this.damping = 0.9;
   }
 
@@ -16,6 +16,7 @@ export class ResearchMaterial extends Particle {
     particle._active = true;
     particle.pos = position.copy();
     particle.velocity = randVector(0.1);
+    particle.spawnTime = time;
 
     ResearchMaterial.pool.add(particle);
     return particle;

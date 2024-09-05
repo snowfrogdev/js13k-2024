@@ -1,4 +1,4 @@
-import { Particle, rand, randVector, rgb, vec2, Vector2 } from "littlejsengine";
+import { Particle, rand, randVector, rgb, time, vec2, Vector2 } from "littlejsengine";
 
 export class ShellCasings extends Particle {
   static pool = new Set<ShellCasings>();
@@ -13,6 +13,8 @@ export class ShellCasings extends Particle {
     particle._active = true;
     particle.pos = position.copy();
     particle.velocity = flyOffDirection.add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));
+    particle.spawnTime = time;
+    
     ShellCasings.pool.add(particle);
     return particle;
   }

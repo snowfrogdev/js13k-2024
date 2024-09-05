@@ -1,4 +1,16 @@
-import { drawLine, drawRect, drawText, mainCanvasSize, rgb, screenToWorld, time, Timer, vec2, Vector2 } from "littlejsengine";
+import {
+  clamp,
+  drawLine,
+  drawRect,
+  drawText,
+  mainCanvasSize,
+  rgb,
+  screenToWorld,
+  time,
+  Timer,
+  vec2,
+  Vector2,
+} from "littlejsengine";
 import { subscribe } from "./event-bus";
 import { findPath } from "./findPath";
 import { Enemy } from "./enemy";
@@ -12,7 +24,7 @@ function setEmotionalIntensity(value: number) {
 }
 
 let _lastActionTimestamp = performance.now();
-let _timeBeforeIntensityDecayMs = 1_000;
+let _timeBeforeIntensityDecayMs = 2_000;
 
 subscribe("PLAYER_DAMAGED", ({ damage }) => {
   setEmotionalIntensity(_emotionalIntensity + damage * 2);
@@ -25,12 +37,12 @@ subscribe("PLAYER_INCAPACITATED", () => {
 });
 
 subscribe("ENEMY_KILLED", () => {
-  setEmotionalIntensity(_emotionalIntensity + 200);
+  setEmotionalIntensity(_emotionalIntensity + 250);
   _lastActionTimestamp = performance.now();
 });
 
 subscribe("BASE_DAMAGED", ({ damage }) => {
-  setEmotionalIntensity(_emotionalIntensity + damage);
+  //setEmotionalIntensity(_emotionalIntensity + damage);
   _lastActionTimestamp = performance.now();
 });
 
@@ -42,10 +54,13 @@ const _stateTransitionTimer = new Timer();
 const _peakEmotionalIntensityThreshold = 1_000;
 const _relaxEmotionalIntensityThreshold = 100;
 const _sustainPeakPeriodSecs = 5;
-const _relaxPeriodSecs = 45;
+const _relaxPeriodSecs = 5;
 
 const _spawnTimer = new Timer();
-const _spawnIntervalSecs = 1.5;
+const _maxSpawnsPerMinute = 90;
+let _spawnIntervalInSecs = _maxSpawnsPerMinute / 60;
+
+const _emotionalIntensityDecayRatePerSec = 0.75;
 
 let _enemySpawns: Vector2[];
 let _playerPosition: Vector2;
@@ -55,7 +70,7 @@ function init(enemySpawns: Vector2[], basePosition: Vector2) {
   _enemySpawns = enemySpawns;
   _basePosition = basePosition;
 
-  _spawnTimer.set(_spawnIntervalSecs);
+  _spawnTimer.set(_spawnIntervalInSecs);
 
   setInterval(() => {
     if (debugData.length > 10 * 60) {
@@ -69,8 +84,20 @@ function update(playerPosition: Vector2) {
   _playerPosition = playerPosition;
 
   if (performance.now() - _lastActionTimestamp > _timeBeforeIntensityDecayMs && _emotionalIntensity > 0) {
-    setEmotionalIntensity(_emotionalIntensity - 0.5);
+    setEmotionalIntensity(_emotionalIntensity - _emotionalIntensityDecayRatePerSec);
   }
+
+  // Update the rate of enemy spawns based on the emotional intensity
+  _spawnIntervalInSecs;
+  const spawnsPerMinute = clamp(
+    _maxSpawnsPerMinute * (1 - _emotionalIntensity / _peakEmotionalIntensityThreshold),
+    0,
+    _maxSpawnsPerMinute
+  );
+
+  _spawnIntervalInSecs = 60 / spawnsPerMinute;
+
+  console.log(_spawnIntervalInSecs);
 
   _stateMachine[_state]();
 }
@@ -110,7 +137,12 @@ function debug() {
 
       // Draw the number of minutes elapsed
       if (debugData[i].time % 60 === 0) {
-        drawText((timeElapsed / 60).toString(), screenToWorld(vec2(xPos, screenHeight - graphHeight + 10)), 0.3, rgb(1, 1, 1));
+        drawText(
+          (timeElapsed / 60).toString(),
+          screenToWorld(vec2(xPos, screenHeight - graphHeight + 10)),
+          0.3,
+          rgb(1, 1, 1)
+        );
       }
     }
 
@@ -176,7 +208,7 @@ function spawnEnemy() {
   const enemy = new Enemy(spawn);
   enemy.path = path;
 
-  _spawnTimer.set(_spawnIntervalSecs);
+  _spawnTimer.set(_spawnIntervalInSecs);
 }
 
 export const AIDirector = { init, update, debug } as const;

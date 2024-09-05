@@ -9,7 +9,6 @@ import {
   vec2,
   min,
   Particle,
-  randVector,
   ParticleEmitter,
   PI,
   tile,
@@ -24,7 +23,7 @@ import { ResearchMaterial } from "./research-material";
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
   private _path: Vector2[] = [];
-  private health = 100;
+  private health = 75;
   private deathTimer = new Timer();
   private deathSound = new Sound(
     [1.5, , 47, 0.08, 0.15, 0.66, 4, 0.4, 2, -4, , , , 0.7, , 0.9, 0.06, 0.34, 0.3],
@@ -127,9 +126,9 @@ export class Enemy extends EngineObject implements DamageTaker {
         }
       }
 
-      if (obj instanceof Player || obj instanceof Base) {
+      if (obj instanceof Player || (obj instanceof Base && this.pos.distance(obj.pos) < 8)) {
         if (this.firingTimer.active()) return;
-        const projectileSpeed = 0.5;
+        const projectileSpeed = 0.55;
         const firingSolution = this.calculateInterceptVector(this.pos, obj.pos, obj.velocity, projectileSpeed);
         if (!firingSolution) return;
         // Calculate angle offset so that `accuracy` percentage of the time the angleOffset will be 0 and the shot will hit
