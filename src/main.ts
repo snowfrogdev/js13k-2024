@@ -16,6 +16,7 @@ import {
   rgb,
   setCameraPos,
   setCameraScale,
+  speak,
   tile,
   TileLayer,
   TileLayerData,

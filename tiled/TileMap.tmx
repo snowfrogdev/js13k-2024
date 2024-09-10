@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="41">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="68">
  <editorsettings>
   <export target="../src/tilemap.json" format="json"/>
  </editorsettings>
@@ -396,5 +396,30 @@
  <objectgroup id="10" name="Buildings">
   <object id="38" name="Hospital.png" gid="43" x="228.5" y="1011" width="54" height="61"/>
   <object id="39" name="Skyscraper_05.png" gid="44" x="101.5" y="1013" width="41" height="77"/>
+  <object id="41" name="building-01.png" gid="45" x="166" y="1015" width="45" height="42"/>
+  <object id="44" name="building-01.png" gid="45" x="569.5" y="910.5" width="45" height="42"/>
+  <object id="45" name="Hospital.png" gid="43" x="747" y="833.5" width="54" height="61"/>
+  <object id="46" name="building-01.png" gid="45" x="365" y="1061" width="45" height="42"/>
+  <object id="47" name="Hospital.png" gid="43" x="114.5" y="767.5" width="54" height="61"/>
+  <object id="48" name="Hospital.png" gid="43" x="715" y="629" width="54" height="61"/>
+  <object id="49" name="Hospital.png" gid="43" x="1042.5" y="303" width="54" height="61"/>
+  <object id="50" name="Hospital.png" gid="43" x="1676" y="930" width="54" height="61"/>
+  <object id="51" name="Hospital.png" gid="43" x="1842" y="1032.5" width="54" height="61"/>
+  <object id="52" name="Skyscraper_05.png" gid="44" x="438.5" y="622.5" width="41" height="77"/>
+  <object id="53" name="Skyscraper_05.png" gid="44" x="566.5" y="263" width="41" height="77"/>
+  <object id="54" name="Skyscraper_05.png" gid="44" x="999" y="455.5" width="41" height="77"/>
+  <object id="55" name="Skyscraper_05.png" gid="44" x="1382" y="559" width="41" height="77"/>
+  <object id="56" name="Skyscraper_05.png" gid="44" x="1601" y="826.5" width="41" height="77"/>
+  <object id="57" name="Skyscraper_05.png" gid="44" x="1981" y="924.5" width="41" height="77"/>
+  <object id="58" name="Skyscraper_05.png" gid="44" x="820" y="832" width="41" height="77"/>
+  <object id="59" name="building-01.png" gid="45" x="843.5" y="935.5" width="45" height="42"/>
+  <object id="60" name="building-01.png" gid="45" x="1470.5" y="936.5" width="45" height="42"/>
+  <object id="61" name="building-01.png" gid="45" x="2042.5" y="909" width="45" height="42"/>
+  <object id="62" name="building-01.png" gid="45" x="834" y="530" width="45" height="42"/>
+  <object id="63" name="building-01.png" gid="45" x="1242.5" y="324.5" width="45" height="42"/>
+  <object id="64" name="building-01.png" gid="45" x="1196.5" y="171.5" width="45" height="42"/>
+  <object id="65" name="building-01.png" gid="45" x="711" y="264" width="45" height="42"/>
+  <object id="66" name="building-01.png" gid="45" x="342.5" y="324" width="45" height="42"/>
+  <object id="67" name="Hospital.png" gid="43" x="1183" y="838" width="54" height="61"/>
  </objectgroup>
 </map>
