@@ -15,6 +15,9 @@ import {
   keyWasReleased,
   engineObjectsCallback,
   randVector,
+  tile,
+  tileSizeDefault,
+  drawTile,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
 import { DamageTaker } from "./damage-taker";
@@ -23,6 +26,9 @@ import { Projectile } from "./projectile";
 import { publish } from "./event-bus";
 import { ShellCasings } from "./shell-casings";
 import { ResearchMaterial } from "./research-material";
+import { SpriteData } from "./sprite-data";
+import * as SpriteSheetData from "./sprite-sheet.json";
+import { TiledBuildingData } from "./building";
 
 export class Player extends EngineObject implements DamageTaker {
   static readonly maxHealth = 500;
@@ -45,9 +51,13 @@ export class Player extends EngineObject implements DamageTaker {
 
   constructor(spawnPosition: Vector2) {
     super(spawnPosition);
-    this.drawSize = vec2(1);
     this.renderOrder = Infinity;
     this.spawnPosition = spawnPosition.copy();
+    const sprite: SpriteData = SpriteSheetData.frames["Player.png"];
+    const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+    const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+    this.tileInfo = tile(spritePos, spriteSize, 1);
+    this.size = vec2(spriteSize.x / tileSizeDefault.x, spriteSize.y / tileSizeDefault.y);
   }
 
   update() {
@@ -142,8 +152,8 @@ export class Player extends EngineObject implements DamageTaker {
     const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
 
     this.firingDirection = mousePos.subtract(this.pos).normalize().rotate(angleOffset);
-    const firingPositionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.5).scale(0.5));
-    const firingPositionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.5).scale(0.5));
+    const firingPositionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.35).scale(this.size.x / 2));
+    const firingPositionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.35).scale(this.size.x / 2));
 
     Projectile.create(firingPositionLeft, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
     Projectile.create(firingPositionRight, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
@@ -184,21 +194,24 @@ export class Player extends EngineObject implements DamageTaker {
 
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
+        // drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
+        // drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
       }
-
-      return;
     }
 
-    const color = this.color ?? this.vacuumMode ? rgb(0.2, 0.7, 0.2) : rgb(0, 1, 0);
-
-    //drawTile(this.pos, vec2(1), tile(0, 16));
-    drawRect(this.pos, this.drawSize, color);
+    if (this.vacuumMode) {
+      const sprite: SpriteData = SpriteSheetData.frames["Player-vaccum.png"];
+      const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+      const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+      const tileInfo = tile(spritePos, spriteSize, 1);
+      drawTile(this.pos, this.size, tileInfo);
+    } else {
+      drawTile(this.pos, this.size, this.tileInfo);
+    }
 
     // draw health bar
-    const healthBarWidth = this.drawSize.x;
+    const healthBarWidth = this.size.x;
     const healthBarHeight = 0.2;
     const healthBarPos = this.pos.add(vec2(0, -this.size.y / 2 - 0.2));
     drawRect(healthBarPos, vec2(healthBarWidth, healthBarHeight), rgb(0, 0, 0));
