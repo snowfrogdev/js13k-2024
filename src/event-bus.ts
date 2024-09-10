@@ -1,4 +1,3 @@
-import { Vector2 } from "littlejsengine";
 import { Player } from "./player";
 
 const eventBus = new Comment("event-bus");

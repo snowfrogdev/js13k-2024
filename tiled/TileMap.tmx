@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="31">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="37">
  <editorsettings>
   <export target="../src/tilemap.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>
- <tileset firstgid="36" source="Buildings.tsx"/>
- <layer id="8" name="Ground" width="135" height="85">
+ <tileset firstgid="36" source="sprite-sheet.tsx"/>
+ <layer id="8" name="Ground" width="135" height="85" locked="1">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -307,6 +307,9 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="Buildings">
-  <object id="30" name="Hospital" gid="36" x="225.667" y="1013.67" width="54" height="61"/>
+  <object id="32" name="Hospital.png" gid="36" x="222" y="1011.67" width="64" height="64"/>
+  <object id="36" name="Hospital.png" gid="36" x="739" y="834.667" width="64" height="64"/>
+  <object id="34" name="Skyscraper_05.png" gid="40" x="89.3333" y="1031.33" width="64" height="128"/>
+  <object id="35" name="Skyscraper_05.png" gid="40" x="805.5" y="852.5" width="64" height="128"/>
  </objectgroup>
 </map>

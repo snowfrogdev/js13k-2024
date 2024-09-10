@@ -592,15 +592,51 @@
          "objects":[
                 {
                  "gid":36,
-                 "height":61,
-                 "id":30,
-                 "name":"Hospital",
+                 "height":64,
+                 "id":32,
+                 "name":"Hospital.png",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":54,
-                 "x":225.666666666667,
-                 "y":1013.66666666667
+                 "width":64,
+                 "x":222,
+                 "y":1011.66666666667
+                }, 
+                {
+                 "gid":36,
+                 "height":64,
+                 "id":36,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":739,
+                 "y":834.666666666667
+                }, 
+                {
+                 "gid":40,
+                 "height":128,
+                 "id":34,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":90.3333333333333,
+                 "y":1032.33333333333
+                }, 
+                {
+                 "gid":40,
+                 "height":128,
+                 "id":35,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":805.5,
+                 "y":852.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -608,8 +644,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":31,
+ "nextlayerid":14,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
@@ -625,7 +661,7 @@
         }, 
         {
          "firstgid":36,
-         "source":"..\/tiled\/Buildings.tsx"
+         "source":"..\/tiled\/sprite-sheet.tsx"
         }],
  "tilewidth":16,
  "type":"map",

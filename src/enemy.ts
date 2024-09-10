@@ -19,6 +19,8 @@ import { DamageTaker } from "./damage-taker";
 import { Base } from "./base";
 import { publish } from "./event-bus";
 import { ResearchMaterial } from "./research-material";
+import { SpriteData } from "./sprite-data";
+import * as SpriteSheetData from "./sprite-sheet.json";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
@@ -52,6 +54,10 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
 
       // smoke
+      const sprite: SpriteData = SpriteSheetData.frames["Smoke.png"];
+      const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+      const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+      const tileInfo = tile(spritePos, spriteSize, 1);
       const emitter = new ParticleEmitter(
         this.pos,
         0,
@@ -59,7 +65,7 @@ export class Enemy extends EngineObject implements DamageTaker {
         2,
         5,
         PI,
-        tile(1, 16, 1),
+        tileInfo,
         undefined,
         undefined,
         undefined,

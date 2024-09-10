@@ -42,6 +42,7 @@ subscribe("ENEMY_KILLED", () => {
 });
 
 subscribe("BASE_DAMAGED", ({ damage }) => {
+  // TODO: Affect Emotional Intensity based on proximity of player
   //setEmotionalIntensity(_emotionalIntensity + damage);
   _lastActionTimestamp = performance.now();
 });

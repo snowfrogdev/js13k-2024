@@ -31,10 +31,11 @@ import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
 import { fromKey } from "./findPath";
 import { navGraph, toKey } from "./findPath";
-import { Hospital } from "./hospital";
 import { AIDirector } from "./ai-director";
 import { Researcher } from "./researcher";
 import { Respawner } from "./respawn";
+import { Building, TiledBuildingData } from "./building";
+import { convertCoord } from "./convert-coord";
 
 let player: Player;
 let base: Base;
@@ -106,12 +107,12 @@ function gameInit() {
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
   const buildings = tileMapData.layers.find((x) => x.name === "Buildings");
-  const hospital = buildings?.objects?.find((x) => x.name === "Hospital");
-  const hospitalPosition = convertCoord(hospital!.x + 54 / 2, hospital!.y - 62 / 2, tileSizeDefault.x, levelSize.y);
-  new Hospital(hospitalPosition);
+  for (const building of buildings?.objects as TiledBuildingData[]) {
+    new Building(building);
+  }
 
   const baseSpawn = spawns?.objects?.find((x) => x.type === "BaseSpawn");
-  const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y, tileSizeDefault.x, levelSize.y);
+  const baseSpawnPosition = convertCoord(baseSpawn!.x, baseSpawn!.y);
 
   // Find the nearest valid position on the navGraph to the baseSpawnPosition
   let minDistance = Infinity;
@@ -130,7 +131,7 @@ function gameInit() {
 
   const enemySpawns: Vector2[] = spawns?.objects
     ?.filter((x) => x.type === "EnemySpawn")!
-    .map((x) => convertCoord(x.x, x.y, tileSizeDefault.x, levelSize.y))!;
+    .map((x) => convertCoord(x.x, x.y))!;
 
   AIDirector.init(enemySpawns, nearestValidPos);
 
@@ -246,16 +247,8 @@ function gameRenderPost() {
 // Startup LittleJS Engine
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, [
   "./assets/img/Tilemap.png",
-  "./assets/img/Smoke.png",
-  "./assets/img/Hospital.png",
+  "./assets/img/sprite-sheet.webp",
 ]);
-
-function convertCoord(x: number, y: number, tileSize: number, mapHeight: number): Vector2 {
-  const newX = x / tileSize;
-  const newY = mapHeight - y / tileSize;
-
-  return vec2(newX, newY);
-}
 
 function drawScreenEdgeIndicator(target: Vector2, color: Color, size: number = 15) {
   const enemyScreenPos = worldToScreen(target);
