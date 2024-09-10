@@ -12,6 +12,7 @@ import {
   ParticleEmitter,
   PI,
   tile,
+  isOverlapping,
 } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
@@ -43,6 +44,8 @@ export class Enemy extends EngineObject implements DamageTaker {
   }
 
   private target: RoadNode | null = null;
+  private nearestRoadNode: RoadNode | null = null;
+  private previousRoadNode: RoadNode | null = null;
 
   constructor(position: Vector2) {
     super(position);
@@ -111,6 +114,9 @@ export class Enemy extends EngineObject implements DamageTaker {
 
     if (nearestWaypointIndex === this._path.length - 1 && minDist < maxSpeed) return;
 
+    this.nearestRoadNode = this._path[nearestWaypointIndex];
+    this.previousRoadNode = this._path[nearestWaypointIndex - 1] ?? this._path[nearestWaypointIndex];
+
     // target the next waypoint
     this.target = this._path[nearestWaypointIndex + 1] ?? this._path[nearestWaypointIndex];
 
@@ -124,7 +130,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
         // Basic collision avoidance
         if (dist < this.size.x * 1.5) {
-          const coneAngle = 120; // degrees
+          const coneAngle = 110; // degrees
           const directionAB = obj.pos.subtract(this.pos).normalize();
           const directionA = this.velocity.normalize();
           const dotProduct = directionA.dot(directionAB);
@@ -180,7 +186,30 @@ export class Enemy extends EngineObject implements DamageTaker {
       return;
     }
 
-    this.renderOrder = -this.pos.y + this.size.y / 2 + (this.target?.overpass ? tileMapData.height : 0);
+    this.renderOrder = -this.pos.y + this.size.y / 2;
+
+    if (!this.nearestRoadNode?.overpass && this.target?.overpass) {
+      if (isOverlapping(this.pos, this.size, this.target.pos, vec2(16, 16))) {
+        this.renderOrder += tileMapData.height;
+      }
+    }
+
+    if (this.nearestRoadNode?.overpass && this.target?.overpass) {
+      this.renderOrder += tileMapData.height;
+    }
+
+    if (this.nearestRoadNode?.overpass && !this.target?.overpass) {
+      if (isOverlapping(this.pos, this.size, this.nearestRoadNode.pos, vec2(16, 16))) {
+        this.renderOrder += tileMapData.height;
+      }
+    }
+
+    if (!this.nearestRoadNode?.overpass && this.previousRoadNode?.overpass) {
+      if (isOverlapping(this.pos, this.size, this.previousRoadNode.pos, vec2(16, 16))) {
+        this.renderOrder += tileMapData.height;
+      }
+    }
+
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
     drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
   }
