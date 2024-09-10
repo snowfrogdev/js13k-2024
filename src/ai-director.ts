@@ -37,7 +37,6 @@ subscribe("PLAYER_INCAPACITATED", () => {
 });
 
 subscribe("ENEMY_KILLED", () => {
-  // TODO: This doesn't fire, check why
   setEmotionalIntensity(_emotionalIntensity + 10);
   console.log("Enemy killed");
   _lastActionTimestamp = performance.now();

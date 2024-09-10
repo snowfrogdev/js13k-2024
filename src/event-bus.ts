@@ -23,9 +23,7 @@ export function publish<T extends EventsWithPayload>(eventName: T, payload: Even
 export function publish<T extends EventsWithoutPayload>(eventName: T): void;
 
 export function publish<T extends keyof EventsDefinition>(eventName: T, payload?: EventsDefinition[T]): void {
-  const event = payload
-    ? new CustomEvent(eventName, { detail: payload })
-    : new Event(eventName);
+  const event = payload ? new CustomEvent(eventName, { detail: payload }) : new CustomEvent(eventName);
   eventBus.dispatchEvent(event);
 }
 
