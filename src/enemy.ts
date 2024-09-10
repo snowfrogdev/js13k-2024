@@ -13,6 +13,8 @@ import {
   PI,
   tile,
   isOverlapping,
+  tileSizeDefault,
+  drawTile,
 } from "littlejsengine";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
@@ -49,8 +51,11 @@ export class Enemy extends EngineObject implements DamageTaker {
 
   constructor(position: Vector2) {
     super(position);
-    this.drawSize = this.size.scale(0.8);
-    this.color = rgb(1, 0, 0);
+    const sprite: SpriteData = SpriteSheetData.frames["Enemy.png"];
+    const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+    const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+    this.tileInfo = tile(spritePos, spriteSize, 1);
+    this.size = vec2(spriteSize.x / tileSizeDefault.x, spriteSize.y / tileSizeDefault.y);
     Enemy.all.add(this);
   }
 
@@ -178,12 +183,10 @@ export class Enemy extends EngineObject implements DamageTaker {
   render() {
     if (this.health <= 0) {
       if (this.deathTimer.getPercent() < 0.35) {
-        drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
+        //drawRect(this.pos, this.drawSize.scale(3.5), rgb(0, 0, 0));
       } else {
-        drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
+        //drawRect(this.pos, this.drawSize.scale(3.5), rgb(1));
       }
-
-      return;
     }
 
     this.renderOrder = -this.pos.y + this.size.y / 2;
@@ -210,8 +213,8 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
     }
 
-    //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
-    drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
+    drawTile(this.pos, this.size, this.tileInfo);
+    //drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
   }
 
   takeDamage(projectile: Projectile) {
