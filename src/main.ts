@@ -36,12 +36,13 @@ import { Researcher } from "./researcher";
 import { Respawner } from "./respawn";
 import { Building, TiledBuildingData } from "./building";
 import { convertCoord } from "./convert-coord";
+import { Overpass } from "./overpass";
 
 let player: Player;
 let base: Base;
 let paths: Vector2[][] = [];
 
-let overpassLayer: TileLayer;
+//let overpassLayer: TileLayer;
 
 function gameInit() {
   const levelSize = vec2(tileMapData.width, tileMapData.height);
@@ -128,8 +129,8 @@ function gameInit() {
     }
   }
 
-  overpassLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
-  overpassLayer.renderOrder = 1;
+  //overpassLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
+  //overpassLayer.renderOrder = 1;
 
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
@@ -138,8 +139,9 @@ function gameInit() {
 
       if (tile === 0) continue;
 
-      const data = new TileLayerData(tile - 1);
-      overpassLayer.setData(pos, data);
+      //const data = new TileLayerData(tile - 1);
+      //overpassLayer.setData(pos, data);
+      new Overpass(vec2(pos.x + 0.5, pos.y + 0.5), tile - 1);
 
       // Build the graph by adding adjacent walkable tiles with costs
       const neighbors: { pos: Vector2; cost: number; overpass: boolean }[] = [];
@@ -186,7 +188,7 @@ function gameInit() {
 
   groundLayer.redraw();
   roadLayer.redraw();
-  overpassLayer.redraw();
+  //overpassLayer.redraw();
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
   const buildings = tileMapData.layers.find((x) => x.name === "Buildings");

@@ -22,6 +22,7 @@ import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import * as SpriteSheetData from "./sprite-sheet.json";
 import { RoadNode } from "./findPath";
+import * as tileMapData from "./tilemap.json";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
@@ -40,6 +41,8 @@ export class Enemy extends EngineObject implements DamageTaker {
   set path(value: RoadNode[]) {
     this._path = value;
   }
+
+  private target: RoadNode | null = null;
 
   constructor(position: Vector2) {
     super(position);
@@ -109,10 +112,10 @@ export class Enemy extends EngineObject implements DamageTaker {
     if (nearestWaypointIndex === this._path.length - 1 && minDist < maxSpeed) return;
 
     // target the next waypoint
-    const target = this._path[nearestWaypointIndex + 1] ?? this._path[nearestWaypointIndex];
+    this.target = this._path[nearestWaypointIndex + 1] ?? this._path[nearestWaypointIndex];
 
     // move towards the target
-    const dir = target.pos.subtract(this.pos).normalize();
+    const dir = this.target.pos.subtract(this.pos).normalize();
     this.velocity = dir.scale(maxSpeed);
 
     engineObjectsCallback(this.pos, 15, (obj: EngineObject) => {
@@ -177,7 +180,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       return;
     }
 
-    this.renderOrder = -this.pos.y + this.size.y / 2;
+    this.renderOrder = -this.pos.y + this.size.y / 2 + (this.target?.overpass ? tileMapData.height : 0);
     //drawTile(this.pos, vec2(1), tile(0, 16, 0), this.color);
     drawRect(this.pos, this.drawSize, this.color || rgb(1, 0, 0));
   }
