@@ -28,7 +28,6 @@ import { ShellCasings } from "./shell-casings";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import * as SpriteSheetData from "./sprite-sheet.json";
-import { TiledBuildingData } from "./building";
 
 export class Player extends EngineObject implements DamageTaker {
   static readonly maxHealth = 500;

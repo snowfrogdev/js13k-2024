@@ -1,10 +1,16 @@
-import { Particle, rand, randVector, rgb, time, vec2, Vector2 } from "littlejsengine";
+import { Color, Particle, rand, randVector, tile, time, vec2, Vector2 } from "littlejsengine";
+import { SpriteData } from "./sprite-data";
+import * as SpriteSheetData from "./sprite-sheet.json";
 
 export class ShellCasings extends Particle {
   static pool = new Set<ShellCasings>();
   private _active: boolean = true;
   private constructor(position: Vector2) {
-    super(position, undefined, undefined, rgb(0, 0, 0), rgb(0, 0, 0), 60 * 2, 0.1, 0.1);    
+    const sprite: SpriteData = SpriteSheetData.frames["shell-casing.png"];
+    const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+    const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+    const tileInfo = tile(spritePos, spriteSize, 1);
+    super(position, tileInfo, undefined, new Color, new Color, 60 * 2, 0.3, 0.3);    
     this.damping = 0.95;
   }
 
