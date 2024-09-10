@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.0" name="Tileset" tilewidth="16" tileheight="16" tilecount="34" columns="34">
+ <editorsettings>
+  <export target="../src/tileset.json" format="json"/>
+ </editorsettings>
  <image source="../public/assets/img/Tilemap.png" width="544" height="16"/>
  <tile id="1" type="Road">
   <properties>

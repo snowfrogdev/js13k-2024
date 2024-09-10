@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.0" name="sprite-sheet" tilewidth="117" tileheight="115" tilecount="5" columns="0">
+<tileset version="1.10" tiledversion="1.11.0" name="sprite-sheet" tilewidth="117" tileheight="115" tilecount="6" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="2">
   <image source="../aseprite/sprites/Smoke.png" width="16" height="16"/>
@@ -15,5 +15,8 @@
  </tile>
  <tile id="9">
   <image source="../aseprite/sprites/building-01.png" width="45" height="42"/>
+ </tile>
+ <tile id="11">
+  <image source="../aseprite/sprites/building-side-01.png" width="51" height="58"/>
  </tile>
 </tileset>

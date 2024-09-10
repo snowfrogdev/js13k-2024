@@ -9,7 +9,6 @@ let _player: Player;
 subscribe("PLAYER_INCAPACITATED", ({ player }) => {
   respawnTimer.set(5);
   _player = player;
-  console.log("Player incapacitated");
 });
 
 function update() {

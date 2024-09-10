@@ -299,18 +299,18 @@
          "objects":[
                 {
                  "gid":35,
-                 "height":1379.33333333333,
+                 "height":1379.33,
                  "id":2,
                  "name":"reference",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":2165.33333333333,
-                 "x":109.833333333333,
-                 "y":1265.16666666667
+                 "width":2165.33,
+                 "x":109.833,
+                 "y":1265.17
                 }],
          "offsetx":-111,
-         "offsety":90.3333333333334,
+         "offsety":90.3333,
          "opacity":0.38,
          "type":"objectgroup",
          "visible":true,
@@ -356,7 +356,7 @@
                  "visible":true,
                  "width":0,
                  "x":632,
-                 "y":106.166666666667
+                 "y":106.167
                 }, 
                 {
                  "height":0,
@@ -373,8 +373,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":503.666666666667,
-                 "y":105.833333333333
+                 "x":503.667,
+                 "y":105.833
                 }, 
                 {
                  "height":0,
@@ -391,7 +391,7 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":904.333333333333,
+                 "x":904.333,
                  "y":58.5
                 }, 
                 {
@@ -410,7 +410,7 @@
                  "visible":true,
                  "width":0,
                  "x":1000,
-                 "y":105.166666666667
+                 "y":105.167
                 }, 
                 {
                  "height":0,
@@ -427,8 +427,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":1304.66666666667,
-                 "y":105.166666666667
+                 "x":1304.67,
+                 "y":105.167
                 }, 
                 {
                  "height":0,
@@ -445,8 +445,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":1703.33333333333,
-                 "y":26.8333333333333
+                 "x":1703.33,
+                 "y":26.8333
                 }, 
                 {
                  "height":0,
@@ -481,8 +481,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":2151.66666666667,
-                 "y":859.166666666667
+                 "x":2151.67,
+                 "y":859.167
                 }, 
                 {
                  "height":0,
@@ -518,7 +518,7 @@
                  "visible":true,
                  "width":0,
                  "x":1688,
-                 "y":1304.16666666667
+                 "y":1304.17
                 }, 
                 {
                  "height":0,
@@ -536,7 +536,7 @@
                  "visible":true,
                  "width":0,
                  "x":1048,
-                 "y":1304.83333333333
+                 "y":1304.83
                 }, 
                 {
                  "height":0,
@@ -553,8 +553,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":41.3333333333335,
-                 "y":1032.83333333333
+                 "x":41.3333,
+                 "y":1032.83
                 }, 
                 {
                  "height":0,
@@ -571,8 +571,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":56.3333333333335,
-                 "y":953.166666666667
+                 "x":56.3333,
+                 "y":953.167
                 }, 
                 {
                  "height":0,
@@ -589,8 +589,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":57.0000000000001,
-                 "y":792.166666666667
+                 "x":57,
+                 "y":792.167
                 }, 
                 {
                  "height":0,
@@ -607,8 +607,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":56.6666666666668,
-                 "y":568.166666666667
+                 "x":56.6667,
+                 "y":568.167
                 }, 
                 {
                  "height":0,
@@ -625,8 +625,8 @@
                  "type":"EnemySpawn",
                  "visible":true,
                  "width":0,
-                 "x":40.3333333333335,
-                 "y":473.833333333333
+                 "x":40.3333,
+                 "y":473.833
                 }, 
                 {
                  "height":0,
@@ -644,7 +644,7 @@
                  "visible":true,
                  "width":0,
                  "x":104,
-                 "y":104.833333333333
+                 "y":104.833
                 }, 
                 {
                  "height":0,
@@ -662,7 +662,7 @@
                  "visible":true,
                  "width":0,
                  "x":328,
-                 "y":105.833333333333
+                 "y":105.833
                 }, 
                 {
                  "gid":42,
@@ -1010,6 +1010,654 @@
                  "width":54,
                  "x":1183,
                  "y":838
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":74,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":747,
+                 "y":994.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":75,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":642.5,
+                 "y":754.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":76,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":67,
+                 "y":860.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":77,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":166.5,
+                 "y":631.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":78,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":242,
+                 "y":424.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":79,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":264.5,
+                 "y":194
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":80,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":644,
+                 "y":205.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":81,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":449,
+                 "y":228
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":82,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":939.5,
+                 "y":236
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":83,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1242,
+                 "y":227.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":84,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1246.5,
+                 "y":420
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":85,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1452.5,
+                 "y":463
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":86,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1206,
+                 "y":761
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":87,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1036,
+                 "y":604.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":88,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1322,
+                 "y":1035.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":89,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1693,
+                 "y":1018.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":90,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":2098.5,
+                 "y":942.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":91,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1801,
+                 "y":788.5
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":92,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":1043,
+                 "y":657
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":93,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":648,
+                 "y":627.5
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":94,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":523,
+                 "y":414.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":95,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":817.5,
+                 "y":452
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":96,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":341,
+                 "y":630.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":97,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":245,
+                 "y":742.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":98,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":895.5,
+                 "y":665
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":99,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":1421,
+                 "y":832
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":100,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":1301,
+                 "y":840.5
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":101,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":1786,
+                 "y":1032.5
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":102,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":1877,
+                 "y":840.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":103,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":2008,
+                 "y":759.5
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":104,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":2106.5,
+                 "y":759.5
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":105,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":2097,
+                 "y":832
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":106,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":1719.5,
+                 "y":727
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":107,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":1680.5,
+                 "y":689
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":108,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":1627,
+                 "y":635.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":109,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1140,
+                 "y":546.5
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":110,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":999,
+                 "y":839
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":111,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":1091.5,
+                 "y":1023
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":112,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":848.5,
+                 "y":1007
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":113,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":818.5,
+                 "y":1032.5
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":114,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":695,
+                 "y":976.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":115,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":675.5,
+                 "y":923.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":116,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":465.5,
+                 "y":1036
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":117,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":73,
+                 "y":916
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":118,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":536.5,
+                 "y":343.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":119,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":400.5,
+                 "y":259.5
+                }, 
+                {
+                 "gid":43,
+                 "height":61,
+                 "id":120,
+                 "name":"Hospital.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":54,
+                 "x":263.5,
+                 "y":242.5
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":121,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":133.5,
+                 "y":268.5
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":122,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":785.5,
+                 "y":190
+                }, 
+                {
+                 "gid":45,
+                 "height":42,
+                 "id":123,
+                 "name":"building-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":45,
+                 "x":788,
+                 "y":326
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":124,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":790.5,
+                 "y":256
+                }, 
+                {
+                 "gid":47,
+                 "height":58,
+                 "id":125,
+                 "name":"building-side-01.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":51,
+                 "x":997,
+                 "y":773
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":126,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":1063.5,
+                 "y":838.5
+                }, 
+                {
+                 "gid":44,
+                 "height":77,
+                 "id":127,
+                 "name":"Skyscraper_05.png",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":1127.5,
+                 "y":832
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1018,7 +1666,7 @@
          "y":0
         }],
  "nextlayerid":15,
- "nextobjectid":68,
+ "nextobjectid":128,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

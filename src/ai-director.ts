@@ -38,7 +38,6 @@ subscribe("PLAYER_INCAPACITATED", () => {
 
 subscribe("ENEMY_KILLED", () => {
   setEmotionalIntensity(_emotionalIntensity + 10);
-  console.log("Enemy killed");
   _lastActionTimestamp = performance.now();
 });
 
@@ -92,13 +91,11 @@ function update(playerPosition: Vector2) {
   // Update the rate of enemy spawns based on the emotional intensity
   const spawnsPerMinute = clamp(
     _maxSpawnsPerMinute * (1 - _emotionalIntensity / _peakEmotionalIntensityThreshold),
-    0,
+    1,
     _maxSpawnsPerMinute
   );
 
   _spawnIntervalInSecs = 60 / spawnsPerMinute;
-
-  //console.log(_spawnIntervalInSecs);
 
   _stateMachine[_state]();
 }
