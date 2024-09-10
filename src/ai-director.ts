@@ -89,7 +89,6 @@ function update(playerPosition: Vector2) {
   }
 
   // Update the rate of enemy spawns based on the emotional intensity
-  _spawnIntervalInSecs;
   const spawnsPerMinute = clamp(
     _maxSpawnsPerMinute * (1 - _emotionalIntensity / _peakEmotionalIntensityThreshold),
     0,
@@ -98,7 +97,7 @@ function update(playerPosition: Vector2) {
 
   _spawnIntervalInSecs = 60 / spawnsPerMinute;
 
-  console.log(_spawnIntervalInSecs);
+  //console.log(_spawnIntervalInSecs);
 
   _stateMachine[_state]();
 }
@@ -205,7 +204,7 @@ function spawnEnemy() {
   // Spawn the enemy
   const spawnIndex = Math.floor(Math.random() * farthestSpawns.length);
   const spawn = farthestSpawns[spawnIndex];
-  const path = findPath(spawn, _basePosition)!;
+  const path = findPath({pos: spawn, overpass: false}, {pos: _basePosition, overpass: false})!;
   const enemy = new Enemy(spawn);
   enemy.path = path;
 

@@ -19,12 +19,12 @@ import {
   tile,
   TileLayer,
   TileLayerData,
-  tileSizeDefault,
   vec2,
   Vector2,
   worldToScreen,
 } from "littlejsengine";
 import * as tileMapData from "./tilemap.json";
+import * as tileSetData from "./tileset.json";
 import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
@@ -40,6 +40,8 @@ import { convertCoord } from "./convert-coord";
 let player: Player;
 let base: Base;
 let paths: Vector2[][] = [];
+
+let overpassLayer: TileLayer;
 
 function gameInit() {
   const levelSize = vec2(tileMapData.width, tileMapData.height);
@@ -57,12 +59,26 @@ function gameInit() {
     }
   }
 
+  const roadsLayerData = tileMapData.layers.find((l) => l.name === "Roads")!.data!;
+  const overpassLayerData = tileMapData.layers.find((l) => l.name === "Roads - overpass")!.data!;
+
+  const possibleMoves = [
+    { move: vec2(1, 0), cost: 1, dir: "E", from: "W" }, // right
+    { move: vec2(-1, 0), cost: 1, dir: "W", from: "E" }, // left
+    { move: vec2(0, 1), cost: 1, dir: "N", from: "S" }, // up
+    { move: vec2(0, -1), cost: 1, dir: "S", from: "N" }, // down
+    { move: vec2(1, 1), cost: 1.4, dir: "NE", from: "SW" }, // top-right diagonal
+    { move: vec2(-1, 1), cost: 1.4, dir: "NW", from: "SE" }, // top-left diagonal
+    { move: vec2(1, -1), cost: 1.4, dir: "SE", from: "NW" }, // bottom-right diagonal
+    { move: vec2(-1, -1), cost: 1.4, dir: "SW", from: "NE" }, // bottom-left diagonal
+  ];
+
   const roadLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
 
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
-      const tile = tileMapData.layers[1].data![y * levelSize.x + x];
+      const tile = roadsLayerData[y * levelSize.x + x];
 
       if (tile === 0) continue;
 
@@ -70,40 +86,107 @@ function gameInit() {
       roadLayer.setData(pos, data);
 
       // Build the graph by adding adjacent walkable tiles with costs
-      const neighbors: { pos: Vector2; cost: number }[] = [];
-      const possibleMoves = [
-        { move: vec2(1, 0), cost: 1 }, // right
-        { move: vec2(-1, 0), cost: 1 }, // left
-        { move: vec2(0, 1), cost: 1 }, // up
-        { move: vec2(0, -1), cost: 1 }, // down
-        { move: vec2(1, 1), cost: 1.4 }, // top-right diagonal
-        { move: vec2(-1, 1), cost: 1.4 }, // top-left diagonal
-        { move: vec2(1, -1), cost: 1.4 }, // bottom-right diagonal
-        { move: vec2(-1, -1), cost: 1.4 }, // bottom-left diagonal
-      ];
+      const neighbors: { pos: Vector2; cost: number; overpass: boolean }[] = [];
 
       const nonWalkableTiles: number[] = [0, 10, 12, 15, 16, 26, 29];
 
+      const validNeighbors =
+        tileSetData.tiles
+          .find((x) => x.id === tile - 1)
+          ?.properties?.find((x) => x.name === "Neighbours")
+          ?.value.split(",") ?? [];
+
       if (!nonWalkableTiles.some((x) => x === tile)) {
-        for (const { move, cost } of possibleMoves) {
+        for (const { move, cost, dir, from } of possibleMoves) {
+          if (!validNeighbors.includes(dir)) continue;
+
           const neighborPos = pos.add(move);
+          let overpass = false;
           const isInbounds =
             neighborPos.x >= 0 && neighborPos.x < levelSize.x && neighborPos.y >= 0 && neighborPos.y < levelSize.y;
           if (isInbounds) {
-            const neighborTile =
-              tileMapData.layers[1].data![(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+            let neighborTile = roadsLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+
+            const neighborsValidNeighbors =
+              tileSetData.tiles
+                .find((x) => x.id === neighborTile - 1)
+                ?.properties?.find((x) => x.name === "Neighbours")
+                ?.value.split(",") ?? [];
+
+            if (!neighborsValidNeighbors.includes(from)) {
+              neighborTile = overpassLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+              overpass = true;
+            }
+
             if (!nonWalkableTiles.some((x) => x === neighborTile)) {
-              neighbors.push({ pos: neighborPos, cost });
+              neighbors.push({ pos: neighborPos, cost, overpass });
             }
           }
         }
-        navGraph.set(toKey(pos), neighbors);
+        navGraph.set(toKey({ pos, overpass: false }), neighbors);
+      }
+    }
+  }
+
+  overpassLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
+  overpassLayer.renderOrder = 1;
+
+  for (let x = levelSize.x; x--; ) {
+    for (let y = levelSize.y; y--; ) {
+      const pos = vec2(x, levelSize.y - 1 - y);
+      const tile = overpassLayerData[y * levelSize.x + x];
+
+      if (tile === 0) continue;
+
+      const data = new TileLayerData(tile - 1);
+      overpassLayer.setData(pos, data);
+
+      // Build the graph by adding adjacent walkable tiles with costs
+      const neighbors: { pos: Vector2; cost: number; overpass: boolean }[] = [];
+
+      const nonWalkableTiles: number[] = [0, 10, 12, 15, 16, 26, 29];
+
+      const validNeighbors =
+        tileSetData.tiles
+          .find((x) => x.id === tile - 1)
+          ?.properties?.find((x) => x.name === "Neighbours")
+          ?.value.split(",") ?? [];
+
+      if (!nonWalkableTiles.some((x) => x === tile)) {
+        for (const { move, cost, dir, from } of possibleMoves) {
+          if (!validNeighbors.includes(dir)) continue;
+
+          const neighborPos = pos.add(move);
+          let overpass = false;
+          const isInbounds =
+            neighborPos.x >= 0 && neighborPos.x < levelSize.x && neighborPos.y >= 0 && neighborPos.y < levelSize.y;
+          if (isInbounds) {
+            let neighborTile = roadsLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+
+            const neighborsValidNeighbors =
+              tileSetData.tiles
+                .find((x) => x.id === neighborTile - 1)
+                ?.properties?.find((x) => x.name === "Neighbours")
+                ?.value.split(",") ?? [];
+
+            if (!neighborsValidNeighbors.includes(from)) {
+              neighborTile = overpassLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
+              overpass = true;
+            }
+
+            if (!nonWalkableTiles.some((x) => x === neighborTile)) {
+              neighbors.push({ pos: neighborPos, cost, overpass });
+            }
+          }
+        }
+        navGraph.set(toKey({ pos, overpass: true }), neighbors);
       }
     }
   }
 
   groundLayer.redraw();
   roadLayer.redraw();
+  overpassLayer.redraw();
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
   const buildings = tileMapData.layers.find((x) => x.name === "Buildings");
@@ -119,7 +202,7 @@ function gameInit() {
   let nearestValidPos = baseSpawnPosition;
 
   for (const key of navGraph.keys()) {
-    const pos = fromKey(key);
+    const pos = fromKey(key).pos;
     const distance = baseSpawnPosition.distance(pos);
     if (distance < minDistance) {
       minDistance = distance;

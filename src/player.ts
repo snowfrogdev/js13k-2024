@@ -194,6 +194,7 @@ export class Player extends EngineObject implements DamageTaker {
 
     const color = this.color ?? this.vacuumMode ? rgb(0.2, 0.7, 0.2) : rgb(0, 1, 0);
 
+    this.renderOrder = -this.pos.y + this.size.y / 2;
     //drawTile(this.pos, vec2(1), tile(0, 16));
     drawRect(this.pos, this.drawSize, color);
 

@@ -21,10 +21,11 @@ import { publish } from "./event-bus";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import * as SpriteSheetData from "./sprite-sheet.json";
+import { RoadNode } from "./findPath";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
-  private _path: Vector2[] = [];
+  private _path: RoadNode[] = [];
   private health = 75;
   private deathTimer = new Timer();
   private deathSound = new Sound(
@@ -36,7 +37,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
   private knockbackFromHit = new Vector2();
 
-  set path(value: Vector2[]) {
+  set path(value: RoadNode[]) {
     this._path = value;
   }
 
@@ -96,7 +97,7 @@ export class Enemy extends EngineObject implements DamageTaker {
     let nearestWaypointIndex = 0;
     let minDist = Infinity;
     for (let i = 0; i < this._path.length; i++) {
-      const dist = this.pos.distance(this._path[i]);
+      const dist = this.pos.distance(this._path[i].pos);
       if (dist < minDist) {
         minDist = dist;
         nearestWaypointIndex = i;
@@ -111,7 +112,7 @@ export class Enemy extends EngineObject implements DamageTaker {
     const target = this._path[nearestWaypointIndex + 1] ?? this._path[nearestWaypointIndex];
 
     // move towards the target
-    const dir = target.subtract(this.pos).normalize();
+    const dir = target.pos.subtract(this.pos).normalize();
     this.velocity = dir.scale(maxSpeed);
 
     engineObjectsCallback(this.pos, 15, (obj: EngineObject) => {
