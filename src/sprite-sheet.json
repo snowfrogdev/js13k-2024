@@ -1,24 +1,32 @@
 {"frames": {
 
+"base.png":
+{
+	"frame": {"x":1,"y":1,"w":117,"h":115},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":117,"h":115},
+	"sourceSize": {"w":117,"h":115}
+},
 "Hospital.png":
 {
-	"frame": {"x":1,"y":1,"w":56,"h":63},
+	"frame": {"x":44,"y":118,"w":54,"h":61},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":4,"y":0,"w":56,"h":63},
-	"sourceSize": {"w":64,"h":64}
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":61},
+	"sourceSize": {"w":54,"h":61}
 },
 "Skyscraper_05.png":
 {
-	"frame": {"x":59,"y":1,"w":43,"h":79},
+	"frame": {"x":1,"y":118,"w":41,"h":77},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":12,"y":30,"w":43,"h":79},
-	"sourceSize": {"w":64,"h":128}
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":41,"h":77},
+	"sourceSize": {"w":41,"h":77}
 },
 "Smoke.png":
 {
-	"frame": {"x":1,"y":66,"w":16,"h":16},
+	"frame": {"x":100,"y":118,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -29,8 +37,8 @@
 	"version": "1.0",
 	"image": "sprite-sheet.webp",
 	"format": "RGBA4444",
-	"size": {"w":103,"h":83},
+	"size": {"w":119,"h":196},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0da5dbb01cc92214a44f8f590a489724:285e233ff913273e76bb354df2479a28:ddb9b0dc447467663cd34969ba2e34a5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3bb70f93d23365e642c6247731673f06:9ab0df3f866a7ae2e12746960d6b6c55:ddb9b0dc447467663cd34969ba2e34a5$"
 }
 }

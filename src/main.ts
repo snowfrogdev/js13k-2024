@@ -129,8 +129,6 @@ function gameInit() {
     }
   }
 
-  //overpassLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
-  //overpassLayer.renderOrder = 1;
 
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
@@ -139,8 +137,6 @@ function gameInit() {
 
       if (tile === 0) continue;
 
-      //const data = new TileLayerData(tile - 1);
-      //overpassLayer.setData(pos, data);
       new Overpass(vec2(pos.x + 0.5, pos.y + 0.5), tile - 1);
 
       // Build the graph by adding adjacent walkable tiles with costs
@@ -188,7 +184,6 @@ function gameInit() {
 
   groundLayer.redraw();
   roadLayer.redraw();
-  //overpassLayer.redraw();
 
   const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
   const buildings = tileMapData.layers.find((x) => x.name === "Buildings");
@@ -212,7 +207,7 @@ function gameInit() {
     }
   }
 
-  base = new Base(baseSpawnPosition);
+  base = new Base(baseSpawn as TiledBuildingData);
 
   const enemySpawns: Vector2[] = spawns?.objects
     ?.filter((x) => x.type === "EnemySpawn")!

@@ -23,14 +23,13 @@ export class Building extends EngineObject {
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     this.tileInfo = tile(spritePos, spriteSize, 1);
-    const x = tiledData.x + (spriteSize.x + sprite.spriteSourceSize.x) / 2;
-    const y = tiledData.y - (spriteSize.y + sprite.spriteSourceSize.y) / 2;
+    const x = tiledData.x + sprite.sourceSize.w / 2;
+    const y = tiledData.y - sprite.sourceSize.h / 2;
     this.pos = convertCoord(x, y);
     this.size = vec2(spriteSize.x / tileSizeDefault.x, spriteSize.y / tileSizeDefault.y);
   }
 
   render(): void {
-    // draw the hospital
     this.renderOrder = -this.pos.y + this.size.y / 2;
     drawTile(this.pos, this.size, this.tileInfo);
   }
