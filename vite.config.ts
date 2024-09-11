@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
 
     config.build = {
       minify: "terser",
+      modulePreload: false,
       terserOptions: {
         ...config.build?.terserOptions,
         compress: {
