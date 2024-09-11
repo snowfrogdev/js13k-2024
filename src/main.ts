@@ -290,12 +290,6 @@ function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
 
-  // Print the camera scale to the screen
-  /* const scaleText = `Camera Scale: ${cameraScale.toFixed(2)}`;
-  const scaleTextSize = 30 / cameraScale;
-  const scaleTextPos = screenToWorld(vec2(160, 40));
-  drawText(scaleText, scaleTextPos, scaleTextSize, rgb(255, 255, 255)); */
-
   // Draw enemy indicator on the edge of the screen
   for (const enemy of Enemy.all) {
     drawScreenEdgeIndicator(enemy.pos, rgb(1, 0, 0), 15);
