@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="128">
  <editorsettings>
-  <export target="../src/tilemap.json" format="json"/>
+  <export target="../src/tilemap2.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>

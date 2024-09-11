@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "node compress-tilemap.js && vite",
+    "build": "node compress-tilemap.js && tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

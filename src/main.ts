@@ -16,7 +16,6 @@ import {
   rgb,
   setCameraPos,
   setCameraScale,
-  speak,
   tile,
   TileLayer,
   TileLayerData,
@@ -24,7 +23,7 @@ import {
   Vector2,
   worldToScreen,
 } from "littlejsengine";
-import * as tileMapData from "./tilemap.json";
+import { tilemapData } from "./tilemap-rle";
 import * as tileSetData from "./tileset.json";
 import { Base } from "./base";
 import { Player } from "./player";
@@ -46,7 +45,7 @@ let paths: Vector2[][] = [];
 //let overpassLayer: TileLayer;
 
 function gameInit() {
-  const levelSize = vec2(tileMapData.width, tileMapData.height);
+  const levelSize = vec2(tilemapData.width, tilemapData.height);
   initTileCollision(levelSize);
   engineObjectsDestroy();
 
@@ -54,15 +53,13 @@ function gameInit() {
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
-      const tile = tileMapData.layers[0].data![y * levelSize.x + x];
-
-      const data = new TileLayerData(tile - 1);
+      const data = new TileLayerData(31);
       groundLayer.setData(pos, data);
     }
   }
 
-  const roadsLayerData = tileMapData.layers.find((l) => l.name === "Roads")!.data!;
-  const overpassLayerData = tileMapData.layers.find((l) => l.name === "Roads - overpass")!.data!;
+  const roadsLayerData = tilemapData.layers.find((l) => l.name === "Roads")!.data!;
+  const overpassLayerData = tilemapData.layers.find((l) => l.name === "Roads - overpass")!.data!;
 
   const possibleMoves = [
     { move: vec2(1, 0), cost: 1, dir: "E", from: "W" }, // right
@@ -130,7 +127,6 @@ function gameInit() {
     }
   }
 
-
   for (let x = levelSize.x; x--; ) {
     for (let y = levelSize.y; y--; ) {
       const pos = vec2(x, levelSize.y - 1 - y);
@@ -186,8 +182,8 @@ function gameInit() {
   groundLayer.redraw();
   roadLayer.redraw();
 
-  const spawns = tileMapData.layers.find((x) => x.name === "Spawns");
-  const buildings = tileMapData.layers.find((x) => x.name === "Buildings");
+  const spawns = tilemapData.layers.find((x) => x.name === "Spawns");
+  const buildings = tilemapData.layers.find((x) => x.name === "Buildings");
   for (const building of buildings?.objects as TiledBuildingData[]) {
     new Building(building);
   }
@@ -235,7 +231,7 @@ function gameUpdatePost() {
 
   // destroy projectiles that are out of bounds
   Projectile.pool.forEach((p) => {
-    if (p.pos.x < 0 || p.pos.x > tileMapData.width || p.pos.y < 0 || p.pos.y > tileMapData.height) {
+    if (p.pos.x < 0 || p.pos.x > tilemapData.width || p.pos.y < 0 || p.pos.y > tilemapData.height) {
       p.destroy();
     }
   });
@@ -246,7 +242,7 @@ function gameUpdatePost() {
     setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
   }
 
-  const levelSize = vec2(tileMapData.width, tileMapData.height);
+  const levelSize = vec2(tilemapData.width, tilemapData.height);
   const cameraSize = mainCanvasSize.scale(1 / cameraScale);
   const halfCameraSize = cameraSize.scale(0.5);
 
@@ -322,7 +318,10 @@ function gameRenderPost() {
 
   Respawner.render();
   Researcher.render();
-  AIDirector.debug();
+
+  if (import.meta.env.DEV) {
+    AIDirector.debug();
+  }
 }
 
 // Startup LittleJS Engine

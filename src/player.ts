@@ -19,7 +19,7 @@ import {
   tileSizeDefault,
   drawTile,
 } from "littlejsengine";
-import * as tileMapData from "./tilemap.json";
+import { tilemapData } from "./tilemap-rle";
 import { DamageTaker } from "./damage-taker";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
@@ -121,7 +121,7 @@ export class Player extends EngineObject implements DamageTaker {
     this.knockbackFromHit = vec2();
 
     // Clamp player position to prevent it from going outside the tilemap
-    const levelSize = vec2(tileMapData.width, tileMapData.height);
+    const levelSize = vec2(tilemapData.width, tilemapData.height);
     this.pos.x = clamp(this.pos.x, 1, levelSize.x - 1);
     this.pos.y = clamp(this.pos.y, 1, levelSize.y - 1);
 
@@ -151,8 +151,12 @@ export class Player extends EngineObject implements DamageTaker {
     const angleOffset = Math.random() < accuracy ? 0 : Math.random() * 0.5 - 0.25;
 
     this.firingDirection = mousePos.subtract(this.pos).normalize().rotate(angleOffset);
-    const firingPositionLeft = this.pos.add(this.velocity).add(this.firingDirection.rotate(-0.35).scale(this.size.x / 2));
-    const firingPositionRight = this.pos.add(this.velocity).add(this.firingDirection.rotate(0.35).scale(this.size.x / 2));
+    const firingPositionLeft = this.pos
+      .add(this.velocity)
+      .add(this.firingDirection.rotate(-0.35).scale(this.size.x / 2));
+    const firingPositionRight = this.pos
+      .add(this.velocity)
+      .add(this.firingDirection.rotate(0.35).scale(this.size.x / 2));
 
     Projectile.create(firingPositionLeft, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);
     Projectile.create(firingPositionRight, this.firingDirection, rgb(255, 255, 0), 0.7, vec2(0.35), [Enemy]);

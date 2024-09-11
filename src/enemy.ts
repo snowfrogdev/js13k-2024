@@ -1,7 +1,6 @@
 import {
   EngineObject,
   Vector2,
-  drawRect,
   rgb,
   Timer,
   Sound,
@@ -25,7 +24,7 @@ import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import * as SpriteSheetData from "./sprite-sheet.json";
 import { RoadNode } from "./findPath";
-import * as tileMapData from "./tilemap.json";
+import { tilemapData } from "./tilemap-rle";
 
 export class Enemy extends EngineObject implements DamageTaker {
   static all = new Set<Enemy>();
@@ -70,7 +69,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       const spritePos = vec2(sprite.frame.x, sprite.frame.y);
       const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
       const tileInfo = tile(spritePos, spriteSize, 1);
-      const emitter = new ParticleEmitter(
+      new ParticleEmitter(
         this.pos,
         0,
         1,
@@ -193,23 +192,23 @@ export class Enemy extends EngineObject implements DamageTaker {
 
     if (!this.nearestRoadNode?.overpass && this.target?.overpass) {
       if (isOverlapping(this.pos, this.size, this.target.pos, vec2(16, 16))) {
-        this.renderOrder += tileMapData.height;
+        this.renderOrder += tilemapData.height;
       }
     }
 
     if (this.nearestRoadNode?.overpass && this.target?.overpass) {
-      this.renderOrder += tileMapData.height;
+      this.renderOrder += tilemapData.height;
     }
 
     if (this.nearestRoadNode?.overpass && !this.target?.overpass) {
       if (isOverlapping(this.pos, this.size, this.nearestRoadNode.pos, vec2(16, 16))) {
-        this.renderOrder += tileMapData.height;
+        this.renderOrder += tilemapData.height;
       }
     }
 
     if (!this.nearestRoadNode?.overpass && this.previousRoadNode?.overpass) {
       if (isOverlapping(this.pos, this.size, this.previousRoadNode.pos, vec2(16, 16))) {
-        this.renderOrder += tileMapData.height;
+        this.renderOrder += tilemapData.height;
       }
     }
 

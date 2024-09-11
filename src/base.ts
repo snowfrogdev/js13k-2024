@@ -1,4 +1,4 @@
-import { drawRect, rgb, Sound, Timer, vec2, Vector2 } from "littlejsengine";
+import { drawRect, rgb, Sound, Timer, vec2 } from "littlejsengine";
 import { publish } from "./event-bus";
 import { Building, TiledBuildingData } from "./building";
 
@@ -42,7 +42,6 @@ export class Base extends Building {
     if (this.deathTimer.active()) return;
 
     const damage = 10;
-    const basePos = this.pos;
 
     publish("BASE_DAMAGED", { damage });
 
