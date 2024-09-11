@@ -1,3 +1,9 @@
+Installing the project
+```bash
+npm install
+```
+
+
 For dev server run
 ```bash
 npm run dev
