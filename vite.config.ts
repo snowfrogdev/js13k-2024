@@ -1,4 +1,5 @@
 import { defineConfig, UserConfig } from "vite";
+import { roadrollerPlugin } from "./roadroller-plugin";
 
 export default defineConfig(({ mode }) => {
   let config: UserConfig = {};
@@ -13,7 +14,8 @@ export default defineConfig(({ mode }) => {
     };
 
     config.build = {
-      minify: "terser",
+      //minify: "terser",
+      minify: false,
       modulePreload: false,
       terserOptions: {
         ...config.build?.terserOptions,
@@ -30,6 +32,10 @@ export default defineConfig(({ mode }) => {
         },
       },
     };
+
+    config.plugins = [
+      roadrollerPlugin,
+    ]
   }
   return config;
 });
