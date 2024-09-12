@@ -26,7 +26,7 @@
 },
 "Enemy.png":
 {
-	"frame": {"x":220,"y":96,"w":13,"h":13},
+	"frame": {"x":220,"y":95,"w":13,"h":13},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":13,"h":13},
@@ -58,11 +58,11 @@
 },
 "shell-casing.png":
 {
-	"frame": {"x":219,"y":73,"w":3,"h":3},
+	"frame": {"x":219,"y":73,"w":2,"h":2},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
-	"sourceSize": {"w":3,"h":3}
+	"spriteSourceSize": {"x":0,"y":0,"w":2,"h":2},
+	"sourceSize": {"w":2,"h":2}
 },
 "Skyscraper_05.png":
 {
@@ -74,7 +74,7 @@
 },
 "Smoke.png":
 {
-	"frame": {"x":220,"y":78,"w":16,"h":16},
+	"frame": {"x":220,"y":77,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -87,6 +87,6 @@
 	"format": "RGBA4444",
 	"size": {"w":254,"h":123},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a87f64b55e519250a7eba2133a3c9770:9268f2366a8a1124278f1acd41149a8d:ddb9b0dc447467663cd34969ba2e34a5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:f755874cc8b9ef75885b4e485de5463e:29676343c7d01be2694f5d92c3091146:ddb9b0dc447467663cd34969ba2e34a5$"
 }
 }

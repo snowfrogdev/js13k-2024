@@ -10,8 +10,9 @@ export class ShellCasings extends Particle {
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     const tileInfo = tile(spritePos, spriteSize, 1);
-    super(position, tileInfo, undefined, new Color, new Color, 60 * 2, 0.3, 0.3);    
+    super(position, tileInfo, undefined, new Color, new Color, 60 * 2, 0.13, 0.13);    
     this.damping = 0.95;
+    this.angleDamping = 0.95;
   }
 
   static create(position: Vector2, flyOffDirection: Vector2) {
@@ -19,6 +20,7 @@ export class ShellCasings extends Particle {
     particle._active = true;
     particle.pos = position.copy();
     particle.velocity = flyOffDirection.add(randVector(0.3)).normalize().scale(rand(0.1, 0.3));
+    particle.angleVelocity = rand(-0.1, 0.1);
     particle.spawnTime = time;
     
     ShellCasings.pool.add(particle);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="128">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="135" height="85" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="158">
  <editorsettings>
-  <export target="../src/tilemap2.json" format="json"/>
+  <export target="tilemap.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="Tileset.tsx"/>
  <tileset firstgid="35" source="Reference.tsx"/>
@@ -276,6 +276,119 @@
  <objectgroup id="7" name="Reference" locked="1" opacity="0.38" offsetx="-111" offsety="90.3333">
   <object id="2" name="reference" gid="35" x="109.833" y="1265.17" width="2165.33" height="1379.33"/>
  </objectgroup>
+ <objectgroup id="10" name="Buildings">
+  <object id="38" name="Hospital.png" gid="43" x="228.5" y="1011" width="54" height="61"/>
+  <object id="39" name="Skyscraper_05.png" gid="44" x="101.5" y="1013" width="41" height="77"/>
+  <object id="41" name="building-01.png" gid="45" x="166" y="1015" width="45" height="42"/>
+  <object id="44" name="building-01.png" gid="45" x="569.5" y="910.5" width="45" height="42"/>
+  <object id="45" name="Hospital.png" gid="43" x="747" y="833.5" width="54" height="61"/>
+  <object id="46" name="building-01.png" gid="45" x="365" y="1061" width="45" height="42"/>
+  <object id="47" name="Hospital.png" gid="43" x="114.5" y="767.5" width="54" height="61"/>
+  <object id="48" name="Hospital.png" gid="43" x="715" y="629" width="54" height="61"/>
+  <object id="49" name="Hospital.png" gid="43" x="1042.5" y="303" width="54" height="61"/>
+  <object id="50" name="Hospital.png" gid="43" x="1676" y="930" width="54" height="61"/>
+  <object id="51" name="Hospital.png" gid="43" x="1842" y="1032.5" width="54" height="61"/>
+  <object id="52" name="Skyscraper_05.png" gid="44" x="438.5" y="622.5" width="41" height="77"/>
+  <object id="53" name="Skyscraper_05.png" gid="44" x="566.5" y="263" width="41" height="77"/>
+  <object id="54" name="Skyscraper_05.png" gid="44" x="999" y="455.5" width="41" height="77"/>
+  <object id="55" name="Skyscraper_05.png" gid="44" x="1382" y="559" width="41" height="77"/>
+  <object id="56" name="Skyscraper_05.png" gid="44" x="1601" y="826.5" width="41" height="77"/>
+  <object id="57" name="Skyscraper_05.png" gid="44" x="1981" y="924.5" width="41" height="77"/>
+  <object id="58" name="Skyscraper_05.png" gid="44" x="820" y="832" width="41" height="77"/>
+  <object id="59" name="building-01.png" gid="45" x="843.5" y="935.5" width="45" height="42"/>
+  <object id="60" name="building-01.png" gid="45" x="1470.5" y="936.5" width="45" height="42"/>
+  <object id="61" name="building-01.png" gid="45" x="2042.5" y="909" width="45" height="42"/>
+  <object id="62" name="building-01.png" gid="45" x="834" y="530" width="45" height="42"/>
+  <object id="63" name="building-01.png" gid="45" x="1242.5" y="324.5" width="45" height="42"/>
+  <object id="64" name="building-01.png" gid="45" x="1196.5" y="171.5" width="45" height="42"/>
+  <object id="65" name="building-01.png" gid="45" x="711" y="264" width="45" height="42"/>
+  <object id="66" name="building-01.png" gid="45" x="342.5" y="324" width="45" height="42"/>
+  <object id="67" name="Hospital.png" gid="43" x="1183" y="838" width="54" height="61"/>
+  <object id="74" name="building-side-01.png" gid="47" x="747" y="994.5" width="51" height="58"/>
+  <object id="75" name="building-side-01.png" gid="47" x="642.5" y="754.5" width="51" height="58"/>
+  <object id="76" name="building-side-01.png" gid="47" x="67" y="860.5" width="51" height="58"/>
+  <object id="77" name="building-side-01.png" gid="47" x="166.5" y="631.5" width="51" height="58"/>
+  <object id="78" name="building-side-01.png" gid="47" x="242" y="424.5" width="51" height="58"/>
+  <object id="79" name="building-side-01.png" gid="47" x="264.5" y="194" width="51" height="58"/>
+  <object id="80" name="building-side-01.png" gid="47" x="644" y="205.5" width="51" height="58"/>
+  <object id="81" name="building-side-01.png" gid="47" x="449" y="228" width="51" height="58"/>
+  <object id="82" name="building-side-01.png" gid="47" x="939.5" y="236" width="51" height="58"/>
+  <object id="83" name="building-side-01.png" gid="47" x="1242" y="227.5" width="51" height="58"/>
+  <object id="84" name="building-side-01.png" gid="47" x="1246.5" y="420" width="51" height="58"/>
+  <object id="85" name="building-side-01.png" gid="47" x="1452.5" y="463" width="51" height="58"/>
+  <object id="86" name="building-side-01.png" gid="47" x="1206" y="761" width="51" height="58"/>
+  <object id="87" name="building-side-01.png" gid="47" x="1036" y="604.5" width="51" height="58"/>
+  <object id="88" name="building-side-01.png" gid="47" x="1322" y="1035.5" width="51" height="58"/>
+  <object id="89" name="building-side-01.png" gid="47" x="1693" y="1018.5" width="51" height="58"/>
+  <object id="90" name="building-side-01.png" gid="47" x="2098.5" y="942.5" width="51" height="58"/>
+  <object id="91" name="building-side-01.png" gid="47" x="1801" y="788.5" width="51" height="58"/>
+  <object id="92" name="Skyscraper_05.png" gid="44" x="1043" y="657" width="41" height="77"/>
+  <object id="93" name="Skyscraper_05.png" gid="44" x="648" y="627.5" width="41" height="77"/>
+  <object id="94" name="Skyscraper_05.png" gid="44" x="523" y="414.5" width="41" height="77"/>
+  <object id="95" name="Hospital.png" gid="43" x="817.5" y="452" width="54" height="61"/>
+  <object id="96" name="Hospital.png" gid="43" x="341" y="630.5" width="54" height="61"/>
+  <object id="97" name="Hospital.png" gid="43" x="245" y="742.5" width="54" height="61"/>
+  <object id="98" name="Hospital.png" gid="43" x="895.5" y="665" width="54" height="61"/>
+  <object id="99" name="Hospital.png" gid="43" x="1421" y="832" width="54" height="61"/>
+  <object id="100" name="building-01.png" gid="45" x="1301" y="840.5" width="45" height="42"/>
+  <object id="101" name="building-01.png" gid="45" x="1786" y="1032.5" width="45" height="42"/>
+  <object id="102" name="building-01.png" gid="45" x="1877" y="840.5" width="45" height="42"/>
+  <object id="103" name="Hospital.png" gid="43" x="2008" y="759.5" width="54" height="61"/>
+  <object id="104" name="building-01.png" gid="45" x="2106.5" y="759.5" width="45" height="42"/>
+  <object id="105" name="Skyscraper_05.png" gid="44" x="2097" y="832" width="41" height="77"/>
+  <object id="106" name="Skyscraper_05.png" gid="44" x="1719.5" y="727" width="41" height="77"/>
+  <object id="107" name="Hospital.png" gid="43" x="1680.5" y="689" width="54" height="61"/>
+  <object id="108" name="building-01.png" gid="45" x="1627" y="635.5" width="45" height="42"/>
+  <object id="109" name="building-side-01.png" gid="47" x="1140" y="546.5" width="51" height="58"/>
+  <object id="110" name="building-01.png" gid="45" x="999" y="839" width="45" height="42"/>
+  <object id="111" name="building-side-01.png" gid="47" x="1091.5" y="1023" width="51" height="58"/>
+  <object id="112" name="building-01.png" gid="45" x="848.5" y="1007" width="45" height="42"/>
+  <object id="113" name="Skyscraper_05.png" gid="44" x="818.5" y="1032.5" width="41" height="77"/>
+  <object id="114" name="Skyscraper_05.png" gid="44" x="695" y="976.5" width="41" height="77"/>
+  <object id="115" name="Hospital.png" gid="43" x="675.5" y="923.5" width="54" height="61"/>
+  <object id="116" name="building-side-01.png" gid="47" x="465.5" y="1036" width="51" height="58"/>
+  <object id="117" name="Hospital.png" gid="43" x="73" y="916" width="54" height="61"/>
+  <object id="118" name="Hospital.png" gid="43" x="536.5" y="343.5" width="54" height="61"/>
+  <object id="119" name="Hospital.png" gid="43" x="400.5" y="259.5" width="54" height="61"/>
+  <object id="120" name="Hospital.png" gid="43" x="263.5" y="242.5" width="54" height="61"/>
+  <object id="121" name="building-01.png" gid="45" x="133.5" y="268.5" width="45" height="42"/>
+  <object id="122" name="building-side-01.png" gid="47" x="785.5" y="190" width="51" height="58"/>
+  <object id="123" name="building-01.png" gid="45" x="788" y="326" width="45" height="42"/>
+  <object id="124" name="Skyscraper_05.png" gid="44" x="790.5" y="256" width="41" height="77"/>
+  <object id="125" name="building-side-01.png" gid="47" x="997" y="773" width="51" height="58"/>
+  <object id="126" name="Skyscraper_05.png" gid="44" x="1063.5" y="838.5" width="41" height="77"/>
+  <object id="127" name="Skyscraper_05.png" gid="44" x="1127.5" y="832" width="41" height="77"/>
+  <object id="128" name="Hospital.png" gid="43" x="342" y="839.5" width="54" height="61"/>
+  <object id="129" name="Hospital.png" gid="43" x="567" y="829.5" width="54" height="61"/>
+  <object id="130" name="Hospital.png" gid="43" x="1105" y="453.5" width="54" height="61"/>
+  <object id="131" name="Hospital.png" gid="43" x="1311" y="682.5" width="54" height="61"/>
+  <object id="132" name="Hospital.png" gid="43" x="1177" y="1025.5" width="54" height="61"/>
+  <object id="133" name="building-side-01.png" gid="47" x="437.5" y="351" width="51" height="58"/>
+  <object id="134" name="building-side-01.png" gid="47" x="643.5" y="354" width="51" height="58"/>
+  <object id="135" name="building-side-01.png" gid="47" x="820.5" y="596" width="51" height="58"/>
+  <object id="136" name="building-side-01.png" gid="47" x="820.5" y="596" width="51" height="58"/>
+  <object id="137" name="building-side-01.png" gid="47" x="1301.5" y="608" width="51" height="58"/>
+  <object id="138" name="building-side-01.png" gid="47" x="998.5" y="947" width="51" height="58"/>
+  <object id="139" name="building-01.png" gid="45" x="991.5" y="1034" width="45" height="42"/>
+  <object id="140" name="building-01.png" gid="45" x="909.5" y="745" width="45" height="42"/>
+  <object id="141" name="building-01.png" gid="45" x="349.5" y="535" width="45" height="42"/>
+  <object id="142" name="building-01.png" gid="45" x="417.5" y="938" width="45" height="42"/>
+  <object id="143" name="building-01.png" gid="45" x="916.5" y="457" width="45" height="42"/>
+  <object id="144" name="Skyscraper_05.png" gid="44" x="456" y="738" width="41" height="77"/>
+  <object id="145" name="building-side-01.png" gid="47" x="346.5" y="742" width="51" height="58"/>
+  <object id="146" name="building-side-01.png" gid="47" x="263.5" y="632" width="51" height="58"/>
+  <object id="147" name="building-01.png" gid="45" x="761.5" y="452" width="45" height="42"/>
+  <object id="148" name="Skyscraper_05.png" gid="44" x="705.5" y="448.5" width="41" height="77"/>
+  <object id="149" name="Skyscraper_05.png" gid="44" x="1012.5" y="552.5" width="41" height="77"/>
+  <object id="150" name="building-01.png" gid="45" x="978.5" y="661" width="45" height="42"/>
+  <object id="151" name="Skyscraper_05.png" gid="44" x="1299.5" y="743.5" width="41" height="77"/>
+  <object id="152" name="building-01.png" gid="45" x="1323.5" y="205" width="45" height="42"/>
+  <object id="153" name="building-side-01.png" gid="47" x="1313.5" y="268" width="51" height="58"/>
+  <object id="154" name="building-side-01.png" gid="47" x="611.5" y="558" width="51" height="58"/>
+  <object id="155" name="building-01.png" gid="45" x="542.5" y="551" width="45" height="42"/>
+  <object id="156" name="Hospital.png" gid="43" x="452" y="554.5" width="54" height="61"/>
+  <object id="157" name="Skyscraper_05.png" gid="44" x="657.5" y="822.5" width="41" height="77"/>
+ </objectgroup>
  <objectgroup id="9" name="Spawns">
   <object id="3" type="EnemySpawn" x="776" y="105.5">
    <properties>
@@ -391,89 +504,6 @@
    </properties>
    <point/>
   </object>
-  <object id="40" name="base.png" type="BaseSpawn" gid="42" x="440" y="839" width="117" height="115"/>
- </objectgroup>
- <objectgroup id="10" name="Buildings">
-  <object id="38" name="Hospital.png" gid="43" x="228.5" y="1011" width="54" height="61"/>
-  <object id="39" name="Skyscraper_05.png" gid="44" x="101.5" y="1013" width="41" height="77"/>
-  <object id="41" name="building-01.png" gid="45" x="166" y="1015" width="45" height="42"/>
-  <object id="44" name="building-01.png" gid="45" x="569.5" y="910.5" width="45" height="42"/>
-  <object id="45" name="Hospital.png" gid="43" x="747" y="833.5" width="54" height="61"/>
-  <object id="46" name="building-01.png" gid="45" x="365" y="1061" width="45" height="42"/>
-  <object id="47" name="Hospital.png" gid="43" x="114.5" y="767.5" width="54" height="61"/>
-  <object id="48" name="Hospital.png" gid="43" x="715" y="629" width="54" height="61"/>
-  <object id="49" name="Hospital.png" gid="43" x="1042.5" y="303" width="54" height="61"/>
-  <object id="50" name="Hospital.png" gid="43" x="1676" y="930" width="54" height="61"/>
-  <object id="51" name="Hospital.png" gid="43" x="1842" y="1032.5" width="54" height="61"/>
-  <object id="52" name="Skyscraper_05.png" gid="44" x="438.5" y="622.5" width="41" height="77"/>
-  <object id="53" name="Skyscraper_05.png" gid="44" x="566.5" y="263" width="41" height="77"/>
-  <object id="54" name="Skyscraper_05.png" gid="44" x="999" y="455.5" width="41" height="77"/>
-  <object id="55" name="Skyscraper_05.png" gid="44" x="1382" y="559" width="41" height="77"/>
-  <object id="56" name="Skyscraper_05.png" gid="44" x="1601" y="826.5" width="41" height="77"/>
-  <object id="57" name="Skyscraper_05.png" gid="44" x="1981" y="924.5" width="41" height="77"/>
-  <object id="58" name="Skyscraper_05.png" gid="44" x="820" y="832" width="41" height="77"/>
-  <object id="59" name="building-01.png" gid="45" x="843.5" y="935.5" width="45" height="42"/>
-  <object id="60" name="building-01.png" gid="45" x="1470.5" y="936.5" width="45" height="42"/>
-  <object id="61" name="building-01.png" gid="45" x="2042.5" y="909" width="45" height="42"/>
-  <object id="62" name="building-01.png" gid="45" x="834" y="530" width="45" height="42"/>
-  <object id="63" name="building-01.png" gid="45" x="1242.5" y="324.5" width="45" height="42"/>
-  <object id="64" name="building-01.png" gid="45" x="1196.5" y="171.5" width="45" height="42"/>
-  <object id="65" name="building-01.png" gid="45" x="711" y="264" width="45" height="42"/>
-  <object id="66" name="building-01.png" gid="45" x="342.5" y="324" width="45" height="42"/>
-  <object id="67" name="Hospital.png" gid="43" x="1183" y="838" width="54" height="61"/>
-  <object id="74" name="building-side-01.png" gid="47" x="747" y="994.5" width="51" height="58"/>
-  <object id="75" name="building-side-01.png" gid="47" x="642.5" y="754.5" width="51" height="58"/>
-  <object id="76" name="building-side-01.png" gid="47" x="67" y="860.5" width="51" height="58"/>
-  <object id="77" name="building-side-01.png" gid="47" x="166.5" y="631.5" width="51" height="58"/>
-  <object id="78" name="building-side-01.png" gid="47" x="242" y="424.5" width="51" height="58"/>
-  <object id="79" name="building-side-01.png" gid="47" x="264.5" y="194" width="51" height="58"/>
-  <object id="80" name="building-side-01.png" gid="47" x="644" y="205.5" width="51" height="58"/>
-  <object id="81" name="building-side-01.png" gid="47" x="449" y="228" width="51" height="58"/>
-  <object id="82" name="building-side-01.png" gid="47" x="939.5" y="236" width="51" height="58"/>
-  <object id="83" name="building-side-01.png" gid="47" x="1242" y="227.5" width="51" height="58"/>
-  <object id="84" name="building-side-01.png" gid="47" x="1246.5" y="420" width="51" height="58"/>
-  <object id="85" name="building-side-01.png" gid="47" x="1452.5" y="463" width="51" height="58"/>
-  <object id="86" name="building-side-01.png" gid="47" x="1206" y="761" width="51" height="58"/>
-  <object id="87" name="building-side-01.png" gid="47" x="1036" y="604.5" width="51" height="58"/>
-  <object id="88" name="building-side-01.png" gid="47" x="1322" y="1035.5" width="51" height="58"/>
-  <object id="89" name="building-side-01.png" gid="47" x="1693" y="1018.5" width="51" height="58"/>
-  <object id="90" name="building-side-01.png" gid="47" x="2098.5" y="942.5" width="51" height="58"/>
-  <object id="91" name="building-side-01.png" gid="47" x="1801" y="788.5" width="51" height="58"/>
-  <object id="92" name="Skyscraper_05.png" gid="44" x="1043" y="657" width="41" height="77"/>
-  <object id="93" name="Skyscraper_05.png" gid="44" x="648" y="627.5" width="41" height="77"/>
-  <object id="94" name="Skyscraper_05.png" gid="44" x="523" y="414.5" width="41" height="77"/>
-  <object id="95" name="Hospital.png" gid="43" x="817.5" y="452" width="54" height="61"/>
-  <object id="96" name="Hospital.png" gid="43" x="341" y="630.5" width="54" height="61"/>
-  <object id="97" name="Hospital.png" gid="43" x="245" y="742.5" width="54" height="61"/>
-  <object id="98" name="Hospital.png" gid="43" x="895.5" y="665" width="54" height="61"/>
-  <object id="99" name="Hospital.png" gid="43" x="1421" y="832" width="54" height="61"/>
-  <object id="100" name="building-01.png" gid="45" x="1301" y="840.5" width="45" height="42"/>
-  <object id="101" name="building-01.png" gid="45" x="1786" y="1032.5" width="45" height="42"/>
-  <object id="102" name="building-01.png" gid="45" x="1877" y="840.5" width="45" height="42"/>
-  <object id="103" name="Hospital.png" gid="43" x="2008" y="759.5" width="54" height="61"/>
-  <object id="104" name="building-01.png" gid="45" x="2106.5" y="759.5" width="45" height="42"/>
-  <object id="105" name="Skyscraper_05.png" gid="44" x="2097" y="832" width="41" height="77"/>
-  <object id="106" name="Skyscraper_05.png" gid="44" x="1719.5" y="727" width="41" height="77"/>
-  <object id="107" name="Hospital.png" gid="43" x="1680.5" y="689" width="54" height="61"/>
-  <object id="108" name="building-01.png" gid="45" x="1627" y="635.5" width="45" height="42"/>
-  <object id="109" name="building-side-01.png" gid="47" x="1140" y="546.5" width="51" height="58"/>
-  <object id="110" name="building-01.png" gid="45" x="999" y="839" width="45" height="42"/>
-  <object id="111" name="building-side-01.png" gid="47" x="1091.5" y="1023" width="51" height="58"/>
-  <object id="112" name="building-01.png" gid="45" x="848.5" y="1007" width="45" height="42"/>
-  <object id="113" name="Skyscraper_05.png" gid="44" x="818.5" y="1032.5" width="41" height="77"/>
-  <object id="114" name="Skyscraper_05.png" gid="44" x="695" y="976.5" width="41" height="77"/>
-  <object id="115" name="Hospital.png" gid="43" x="675.5" y="923.5" width="54" height="61"/>
-  <object id="116" name="building-side-01.png" gid="47" x="465.5" y="1036" width="51" height="58"/>
-  <object id="117" name="Hospital.png" gid="43" x="73" y="916" width="54" height="61"/>
-  <object id="118" name="Hospital.png" gid="43" x="536.5" y="343.5" width="54" height="61"/>
-  <object id="119" name="Hospital.png" gid="43" x="400.5" y="259.5" width="54" height="61"/>
-  <object id="120" name="Hospital.png" gid="43" x="263.5" y="242.5" width="54" height="61"/>
-  <object id="121" name="building-01.png" gid="45" x="133.5" y="268.5" width="45" height="42"/>
-  <object id="122" name="building-side-01.png" gid="47" x="785.5" y="190" width="51" height="58"/>
-  <object id="123" name="building-01.png" gid="45" x="788" y="326" width="45" height="42"/>
-  <object id="124" name="Skyscraper_05.png" gid="44" x="790.5" y="256" width="41" height="77"/>
-  <object id="125" name="building-side-01.png" gid="47" x="997" y="773" width="51" height="58"/>
-  <object id="126" name="Skyscraper_05.png" gid="44" x="1063.5" y="838.5" width="41" height="77"/>
-  <object id="127" name="Skyscraper_05.png" gid="44" x="1127.5" y="832" width="41" height="77"/>
+  <object id="40" name="base.png" type="BaseSpawn" gid="42" x="440" y="841.5" width="117" height="115"/>
  </objectgroup>
 </map>
