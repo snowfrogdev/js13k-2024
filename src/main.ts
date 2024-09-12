@@ -1,11 +1,13 @@
 import { engineInit } from "littlejsengine";
 import { SceneManager } from "./scene-manager";
-import { Level01 } from "./scenes/level-01";
+import { Level01Scene } from "./scenes/level-01.scene";
+import { MainMenuScene } from "./scenes/main-menu.scene";
 
-SceneManager.registerScene(new Level01());
+SceneManager.registerScene(new MainMenuScene());
+SceneManager.registerScene(new Level01Scene());
 
 engineInit(
-  () => SceneManager.switchScene("Level01"),
+  () => SceneManager.switchScene("main-menu"),
   SceneManager.gameUpdate,
   SceneManager.gameUpdatePost,
   SceneManager.gameRender,

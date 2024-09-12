@@ -8,6 +8,7 @@ type EventsDefinition = {
   ENEMY_KILLED: undefined; // Using 'undefined' for events without payloads
   BASE_DAMAGED: { damage: number };
   RESEARCH_MATERIAL_COLLECTED: { amount: number };
+  BUTTON_CLICKED: { buttonId: string };
 };
 
 export const EVENTS: { [K in keyof EventsDefinition]: K } = {
@@ -16,6 +17,7 @@ export const EVENTS: { [K in keyof EventsDefinition]: K } = {
   ENEMY_KILLED: "ENEMY_KILLED",
   BASE_DAMAGED: "BASE_DAMAGED",
   RESEARCH_MATERIAL_COLLECTED: "RESEARCH_MATERIAL_COLLECTED",
+  BUTTON_CLICKED: "BUTTON_CLICKED",
 } as const;
 
 type EventsWithPayload = {

@@ -3,7 +3,6 @@ import {
   cameraScale,
   clamp,
   Color,
-  drawLine,
   drawRect,
   engineObjectsDestroy,
   initTileCollision,
@@ -36,13 +35,13 @@ import { Researcher } from "../researcher";
 import { Respawner } from "../respawn";
 import { Projectile } from "../projectile";
 import { Enemy } from "../enemy";
-import { Constants } from "../constants";
+import { drawMousePointer } from "../drawMousePointer";
 
-export class Level01 extends Scene {
+export class Level01Scene extends Scene {
   private player!: Player;
   private base!: Base;
   constructor() {
-    super("Level01", ["./assets/img/Tilemap.png", "./assets/img/sprite-sheet.webp"]);
+    super("level-01", ["./assets/img/Tilemap.png", "./assets/img/sprite-sheet.webp"]);
   }
 
   override onEnter() {
@@ -277,44 +276,7 @@ export class Level01 extends Scene {
     // Draw base indicator on the edge of the screen
     this.drawScreenEdgeIndicator(this.base.pos, rgb(1, 1, 0), 25);
 
-    // Draw a cross surrounded by a square for the mouse pointer
-    const screenMousePos = worldToScreen(mousePos);
-
-    drawRect(screenMousePos, vec2(30), Constants.PALETTE.BEIGE, 0, true, true);
-    drawLine(screenMousePos.add(vec2(-15, 0)), screenMousePos.add(vec2(15, 0)), 3, Constants.PALETTE.BROWN, true, true);
-    drawLine(screenMousePos.add(vec2(0, -15)), screenMousePos.add(vec2(0, 15)), 3, Constants.PALETTE.BROWN, true, true);
-    drawLine(
-      screenMousePos.add(vec2(-15, 15)),
-      screenMousePos.add(vec2(15, 15)),
-      3,
-      Constants.PALETTE.BROWN,
-      true,
-      true
-    );
-    drawLine(
-      screenMousePos.add(vec2(15, 15)),
-      screenMousePos.add(vec2(15, -15)),
-      3,
-      Constants.PALETTE.BROWN,
-      true,
-      true
-    );
-    drawLine(
-      screenMousePos.add(vec2(15, -15)),
-      screenMousePos.add(vec2(-15, -15)),
-      3,
-      Constants.PALETTE.BROWN,
-      true,
-      true
-    );
-    drawLine(
-      screenMousePos.add(vec2(-15, -15)),
-      screenMousePos.add(vec2(-15, 15)),
-      3,
-      Constants.PALETTE.BROWN,
-      true,
-      true
-    );
+    drawMousePointer();
 
     Respawner.render();
     Researcher.render();
@@ -336,10 +298,10 @@ export class Level01 extends Scene {
       // Calculate the direction from the center of the screen to to the enemy
       const dir = enemyScreenPos.subtract(cameraScreenPos).normalize();
       // Calculate the position along that direction where we reach the edge of the screen
-  
+
       let tMin = Infinity;
       let intersection: Vector2 = cameraScreenPos;
-  
+
       // Check intersection with left edge (x = 0)
       if (dir.x !== 0) {
         const t = -cameraScreenPos.x / dir.x;
@@ -349,7 +311,7 @@ export class Level01 extends Scene {
           intersection = vec2(0, y);
         }
       }
-  
+
       // Check intersection with right edge (x = screenSize.x)
       if (dir.x !== 0) {
         const t = (screenSize.x - cameraScreenPos.x) / dir.x;
@@ -359,7 +321,7 @@ export class Level01 extends Scene {
           intersection = vec2(screenSize.x, y);
         }
       }
-  
+
       // Check intersection with top edge (y = 0)
       if (dir.y !== 0) {
         const t = -cameraScreenPos.y / dir.y;
@@ -369,7 +331,7 @@ export class Level01 extends Scene {
           intersection = vec2(x, 0);
         }
       }
-  
+
       // Check intersection with bottom edge (y = screenSize.y)
       if (dir.y !== 0) {
         const t = (screenSize.y - cameraScreenPos.y) / dir.y;
@@ -379,7 +341,7 @@ export class Level01 extends Scene {
           intersection = vec2(x, screenSize.y);
         }
       }
-  
+
       drawRect(intersection, vec2(size), color, 0, true, true);
     }
   }

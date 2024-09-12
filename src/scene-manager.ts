@@ -48,28 +48,43 @@ async function loadImage(src: string, idx: number): Promise<void> {
  * Called every frame at 60 frames per second, handle input and update the game state.
  */
 function gameUpdate(): void {
-  currentScene?.gameUpdate();
+  if (!currentScene) {
+    return;
+  }
+
+  currentScene.gameUpdate();
 }
 
 /**
  * Called after physics and objects are updated, setup camera and prepare for rendering.
  */
 function gameUpdatePost(): void {
-  currentScene?.gameUpdatePost();
+  if (!currentScene) {
+    return;
+  }
+
+  currentScene.gameUpdatePost();
 }
 
 /**
  * Called before objects are rendered, draw any background effects that appear behind objects.
  */
 function gameRender(): void {
-  currentScene?.gameRender();
+  if (!currentScene) {
+    return;
+  }
+
+  currentScene.gameRender();
 }
 
 /**
  * Called after objects are rendered, draw effects or hud that appear above all objects.
  */
 function gameRenderPost(): void {
-  currentScene?.gameRenderPost();
+  if (!currentScene) {
+    return;
+  }
+  currentScene.gameRenderPost();
 }
 
 export const SceneManager = {
