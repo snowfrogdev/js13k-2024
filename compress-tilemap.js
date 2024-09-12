@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 
-const tilemap = JSON.parse(readFileSync("./src/tilemap.json", "utf8"));
+const tilemap = JSON.parse(readFileSync("./tiled/tilemap.json", "utf8"));
 
 for (let i = 0; i < tilemap.layers.length; i++) {
   const layer = tilemap.layers[i];

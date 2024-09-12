@@ -1,5 +1,7 @@
 import { defineConfig, UserConfig } from "vite";
-import { roadrollerPlugin } from "./roadroller-plugin";
+import { roadrollerPlugin } from "./vite-plugins/roadroller-plugin";
+import { advzipPlugin } from "./vite-plugins/advzip-plugin";
+import { ectPlugin } from "./vite-plugins/ect-plugin";
 
 export default defineConfig(({ mode }) => {
   let config: UserConfig = {};
@@ -14,8 +16,7 @@ export default defineConfig(({ mode }) => {
     };
 
     config.build = {
-      //minify: "terser",
-      minify: false,
+      minify: "terser",
       modulePreload: false,
       terserOptions: {
         ...config.build?.terserOptions,
@@ -34,7 +35,7 @@ export default defineConfig(({ mode }) => {
     };
 
     config.plugins = [
-      roadrollerPlugin,
+      roadrollerPlugin, ectPlugin(), advzipPlugin()
     ]
   }
   return config;

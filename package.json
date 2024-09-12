@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "advzip-bin": "^2.0.0",
+    "ect-bin": "^1.4.1",
+    "glob": "^11.0.0",
     "roadroller": "^2.1.0",
     "terser": "^5.31.6",
     "typescript": "^5.5.3",
