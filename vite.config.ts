@@ -2,9 +2,12 @@ import { defineConfig, UserConfig } from "vite";
 import { roadrollerPlugin } from "./vite-plugins/roadroller-plugin";
 import { advzipPlugin } from "./vite-plugins/advzip-plugin";
 import { ectPlugin } from "./vite-plugins/ect-plugin";
+import { convertJsonToJsPlugin } from "./vite-plugins/convert-json-to-js-plugin";
 
 export default defineConfig(({ mode }) => {
-  let config: UserConfig = {};
+  let config: UserConfig = {
+    plugins: [convertJsonToJsPlugin, roadrollerPlugin, ectPlugin(), advzipPlugin()]
+  };
 
   if (mode === "production") {
     config.resolve = {
@@ -33,8 +36,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     };
-
-    config.plugins = [roadrollerPlugin, ectPlugin(), advzipPlugin()];
   }
   return config;
 });
