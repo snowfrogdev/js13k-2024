@@ -2,7 +2,7 @@ import { ASSERT, TextureInfo, textureInfos } from "littlejsengine";
 import { Scene } from "./scene";
 
 const scenes = new Map<string, Scene>();
-const currentScene: Scene | null = null;
+let currentScene: Scene | null = null;
 
 /**
  * Register a scene with the scene manager.
@@ -30,6 +30,7 @@ async function switchScene(name: string) {
   await Promise.all(promises);
 
   scene!.onEnter();
+  currentScene = scene!;
 }
 
 async function loadImage(src: string, idx: number): Promise<void> {
