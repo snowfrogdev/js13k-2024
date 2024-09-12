@@ -22,7 +22,7 @@ import { Base } from "./base";
 import { publish } from "./event-bus";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
-import * as SpriteSheetData from "./sprite-sheet.json";
+import { spriteSheetData } from "./sprite-sheet";
 import { RoadNode } from "./findPath";
 import { tilemapData } from "./tilemap-rle";
 
@@ -50,7 +50,7 @@ export class Enemy extends EngineObject implements DamageTaker {
 
   constructor(position: Vector2) {
     super(position);
-    const sprite: SpriteData = SpriteSheetData.frames["Enemy.png"];
+    const sprite: SpriteData = spriteSheetData.frames["Enemy.png"];
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     this.tileInfo = tile(spritePos, spriteSize, 1);
@@ -65,7 +65,7 @@ export class Enemy extends EngineObject implements DamageTaker {
       }
 
       // smoke
-      const sprite: SpriteData = SpriteSheetData.frames["Smoke.png"];
+      const sprite: SpriteData = spriteSheetData.frames["Smoke.png"];
       const spritePos = vec2(sprite.frame.x, sprite.frame.y);
       const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
       const tileInfo = tile(spritePos, spriteSize, 1);

@@ -27,7 +27,7 @@ import { publish } from "./event-bus";
 import { ShellCasings } from "./shell-casings";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
-import * as SpriteSheetData from "./sprite-sheet.json";
+import { spriteSheetData } from "./sprite-sheet";
 
 export class Player extends EngineObject implements DamageTaker {
   static readonly maxHealth = 500;
@@ -52,7 +52,7 @@ export class Player extends EngineObject implements DamageTaker {
     super(spawnPosition);
     this.renderOrder = Infinity;
     this.spawnPosition = spawnPosition.copy();
-    const sprite: SpriteData = SpriteSheetData.frames["Player.png"];
+    const sprite: SpriteData = spriteSheetData.frames["Player.png"];
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     this.tileInfo = tile(spritePos, spriteSize, 1);
@@ -204,7 +204,7 @@ export class Player extends EngineObject implements DamageTaker {
     }
 
     if (this.vacuumMode) {
-      const sprite: SpriteData = SpriteSheetData.frames["Player-vaccum.png"];
+      const sprite: SpriteData = spriteSheetData.frames["Player-vaccum.png"];
       const spritePos = vec2(sprite.frame.x, sprite.frame.y);
       const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
       const tileInfo = tile(spritePos, spriteSize, 1);

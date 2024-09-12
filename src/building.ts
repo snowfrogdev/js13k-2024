@@ -1,5 +1,5 @@
 import { drawTile, EngineObject, tile, tileSizeDefault, vec2 } from "littlejsengine";
-import * as SpriteSheetData from "./sprite-sheet.json";
+import { spriteSheetData } from "./sprite-sheet";
 import { SpriteData } from "./sprite-data";
 import { convertCoord } from "./convert-coord";
 
@@ -19,7 +19,7 @@ export type TiledBuildingData = {
 export class Building extends EngineObject {
   constructor(tiledData: TiledBuildingData) {
     super();
-    const sprite: SpriteData = SpriteSheetData.frames[tiledData.name as keyof typeof SpriteSheetData.frames];
+    const sprite: SpriteData = spriteSheetData.frames[tiledData.name as keyof typeof spriteSheetData.frames];
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     this.tileInfo = tile(spritePos, spriteSize, 1);

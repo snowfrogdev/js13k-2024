@@ -24,7 +24,7 @@ import {
   worldToScreen,
 } from "littlejsengine";
 import { tilemapData } from "./tilemap-rle";
-import * as tileSetData from "./tileset.json";
+import { tilesetData } from "./tileset";
 import { Base } from "./base";
 import { Player } from "./player";
 import { Enemy } from "./enemy";
@@ -90,7 +90,7 @@ function gameInit() {
       const nonWalkableTiles: number[] = [0, 10, 12, 15, 16, 26, 29];
 
       const validNeighbors =
-        tileSetData.tiles
+        tilesetData.tiles
           .find((x) => x.id === tile - 1)
           ?.properties?.find((x) => x.name === "Neighbours")
           ?.value.split(",") ?? [];
@@ -107,7 +107,7 @@ function gameInit() {
             let neighborTile = roadsLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
 
             const neighborsValidNeighbors =
-              tileSetData.tiles
+              tilesetData.tiles
                 .find((x) => x.id === neighborTile - 1)
                 ?.properties?.find((x) => x.name === "Neighbours")
                 ?.value.split(",") ?? [];
@@ -142,7 +142,7 @@ function gameInit() {
       const nonWalkableTiles: number[] = [0, 10, 12, 15, 16, 26, 29];
 
       const validNeighbors =
-        tileSetData.tiles
+        tilesetData.tiles
           .find((x) => x.id === tile - 1)
           ?.properties?.find((x) => x.name === "Neighbours")
           ?.value.split(",") ?? [];
@@ -159,7 +159,7 @@ function gameInit() {
             let neighborTile = roadsLayerData[(levelSize.y - 1 - neighborPos.y) * levelSize.x + neighborPos.x];
 
             const neighborsValidNeighbors =
-              tileSetData.tiles
+              tilesetData.tiles
                 .find((x) => x.id === neighborTile - 1)
                 ?.properties?.find((x) => x.name === "Neighbours")
                 ?.value.split(",") ?? [];

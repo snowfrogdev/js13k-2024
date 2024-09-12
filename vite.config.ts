@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
     };
 
     config.plugins = [
-      roadrollerPlugin, ectPlugin(), advzipPlugin()
+      roadrollerPlugin, ectPlugin(), advzipPlugin(),
     ]
   }
   return config;

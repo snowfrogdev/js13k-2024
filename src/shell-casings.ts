@@ -1,12 +1,12 @@
 import { Color, Particle, rand, randVector, tile, time, vec2, Vector2 } from "littlejsengine";
 import { SpriteData } from "./sprite-data";
-import * as SpriteSheetData from "./sprite-sheet.json";
+import { spriteSheetData } from "./sprite-sheet";
 
 export class ShellCasings extends Particle {
   static pool = new Set<ShellCasings>();
   private _active: boolean = true;
   private constructor(position: Vector2) {
-    const sprite: SpriteData = SpriteSheetData.frames["shell-casing.png"];
+    const sprite: SpriteData = spriteSheetData.frames["shell-casing.png"];
     const spritePos = vec2(sprite.frame.x, sprite.frame.y);
     const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
     const tileInfo = tile(spritePos, spriteSize, 1);

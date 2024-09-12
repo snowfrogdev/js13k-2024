@@ -24,8 +24,9 @@ for (let i = 0; i < tilemap.layers.length; i++) {
   }
 }
 
-const output = `
-  const tilemapData = ${JSON.stringify(tilemap)};
+console.log("Convert tilemap.json to tilemap-rle.ts");
+const tilemapOutput = `
+  const tilemapData = ${JSON.stringify(tilemap).replace(/"(\w+)":/g, '$1:')};
 
   for (let i = 0; i < tilemapData.layers.length; i++) {
     const layer = tilemapData.layers[i];
@@ -45,4 +46,16 @@ const output = `
   export { tilemapData };
 `;
 
-writeFileSync("./src/tilemap-rle.ts", output);
+writeFileSync("./src/tilemap-rle.ts", tilemapOutput);
+
+
+
+console.log("Convert tileset.json to tileset.ts");
+const tileset = JSON.parse(readFileSync("./tiled/tileset.json", "utf8"));
+const tilesetOutput = `export const tilesetData = ${JSON.stringify(tileset).replace(/"(\w+)":/g, '$1:')}`;
+writeFileSync("./src/tileset.ts", tilesetOutput);
+
+console.log("Convert sprite-sheet.json to sprite-sheet.ts");
+const spriteSheet = JSON.parse(readFileSync("./aseprite/sprite-sheet.json", "utf8"));
+const spriteSheetOutput = `export const spriteSheetData = ${JSON.stringify(spriteSheet).replace(/"(\w+)":/g, '$1:')}`;
+writeFileSync("./src/sprite-sheet.ts", spriteSheetOutput);
