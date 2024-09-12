@@ -1,12 +1,12 @@
 import { abs, clamp, drawTextScreen, mainCanvasSize, rgb, time, Timer, vec2 } from "littlejsengine";
-import { subscribe } from "./event-bus";
+import { EVENTS, subscribe } from "./event-bus";
 import { Player } from "./player";
 
 const respawnTimer = new Timer();
 
 let _player: Player;
 
-subscribe("PLAYER_INCAPACITATED", ({ player }) => {
+subscribe(EVENTS.PLAYER_INCAPACITATED, ({ player }) => {
   respawnTimer.set(5);
   _player = player;
 });

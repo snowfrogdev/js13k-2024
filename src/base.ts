@@ -1,5 +1,5 @@
 import { drawRect, rgb, Sound, Timer, vec2 } from "littlejsengine";
-import { publish } from "./event-bus";
+import { EVENTS, publish } from "./event-bus";
 import { Building, TiledBuildingData } from "./building";
 
 export class Base extends Building {
@@ -43,7 +43,7 @@ export class Base extends Building {
 
     const damage = 10;
 
-    publish("BASE_DAMAGED", { damage });
+    publish(EVENTS.BASE_DAMAGED, { damage });
 
     // flash color
     this.color = rgb(1, 1, 1, 1);

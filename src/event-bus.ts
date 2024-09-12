@@ -10,6 +10,14 @@ type EventsDefinition = {
   RESEARCH_MATERIAL_COLLECTED: { amount: number };
 };
 
+export const EVENTS: { [K in keyof EventsDefinition]: K } = {
+  PLAYER_DAMAGED: "PLAYER_DAMAGED",
+  PLAYER_INCAPACITATED: "PLAYER_INCAPACITATED",
+  ENEMY_KILLED: "ENEMY_KILLED",
+  BASE_DAMAGED: "BASE_DAMAGED",
+  RESEARCH_MATERIAL_COLLECTED: "RESEARCH_MATERIAL_COLLECTED",
+} as const;
+
 type EventsWithPayload = {
   [K in keyof EventsDefinition]: EventsDefinition[K] extends undefined ? never : K;
 }[keyof EventsDefinition];

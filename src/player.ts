@@ -23,7 +23,7 @@ import { tilemapData } from "./tilemap-rle";
 import { DamageTaker } from "./damage-taker";
 import { Enemy } from "./enemy";
 import { Projectile } from "./projectile";
-import { publish } from "./event-bus";
+import { EVENTS, publish } from "./event-bus";
 import { ShellCasings } from "./shell-casings";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
@@ -62,7 +62,7 @@ export class Player extends EngineObject implements DamageTaker {
   update() {
     if (this.isDisabled) return;
     if (this.deathTimer.elapsed()) {
-      publish("PLAYER_INCAPACITATED", { player: this });
+      publish(EVENTS.PLAYER_INCAPACITATED, { player: this });
       this.disable();
     }
 
@@ -137,7 +137,7 @@ export class Player extends EngineObject implements DamageTaker {
       material.vacuum(this.pos);
       if (this.pos.distance(material.pos) < 0.1) {
         material.destroy();
-        publish("RESEARCH_MATERIAL_COLLECTED", { amount: 0.5 });
+        publish(EVENTS.RESEARCH_MATERIAL_COLLECTED, { amount: 0.5 });
       }
     }
 
@@ -225,7 +225,7 @@ export class Player extends EngineObject implements DamageTaker {
     if (this.deathTimer.active()) return;
     const damage = 10;
 
-    publish("PLAYER_DAMAGED", { damage });
+    publish(EVENTS.PLAYER_DAMAGED, { damage });
 
     // flash color
     this.color = rgb(255, 255, 255, 1);

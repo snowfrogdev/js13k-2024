@@ -1,5 +1,6 @@
 import { drawRect, mainCanvasSize, min, rgb, Timer, vec2 } from "littlejsengine";
-import { subscribe } from "./event-bus";
+import { EVENTS, subscribe } from "./event-bus";
+import { Constants } from "./constants";
 
 const researchPointsGoal = 500;
 const researchRatePerSecs = 1;
@@ -8,7 +9,7 @@ const researchPointCost = 2;
 let researchPointsAccumulated = 0;
 let researchMaterial = 0;
 
-subscribe("RESEARCH_MATERIAL_COLLECTED", ({ amount }) => {
+subscribe(EVENTS.RESEARCH_MATERIAL_COLLECTED, ({ amount }) => {
   researchMaterial += amount;
 });
 
@@ -30,8 +31,8 @@ function render() {
   const barWidth = 500;
   const barHeight = 50;
 
-  const darkColor = rgb(112 / 255, 66 / 255, 20 / 255, 0.5);
-  const lightColor = rgb(245 / 255, 222 / 255, 179 / 255, 0.5);
+  const darkColor = Constants.PALETTE.BROWN.multiply(rgb(1, 1, 1, 0.5));
+  const lightColor = Constants.PALETTE.BEIGE.multiply(rgb(1, 1, 1, 0.5));
 
   // Draw the research points bar in the lower right corner
   drawRect(
@@ -43,7 +44,8 @@ function render() {
     true
   );
 
-  const researchPointsBarWidth = barWidth * min(researchPointsGoal, researchPointsAccumulated) / researchPointsGoal - 6;
+  const researchPointsBarWidth =
+    (barWidth * min(researchPointsGoal, researchPointsAccumulated)) / researchPointsGoal - 6;
   drawRect(
     vec2(screenWidth - researchPointsBarWidth / 2 - 3, screenHeight - barHeight / 2),
     vec2(researchPointsBarWidth, barHeight - 6),
@@ -52,18 +54,11 @@ function render() {
     true,
     true
   );
-  
-  // Draw the research material bar in the lower left corner
-  drawRect(
-    vec2(barWidth / 2, screenHeight - barHeight / 2),
-    vec2(barWidth, barHeight),
-    darkColor,
-    0,
-    true,
-    true
-  );
 
-  const researchMaterialBarWidth = barWidth * min(researchPointsGoal, researchMaterial) / researchPointsGoal - 6;
+  // Draw the research material bar in the lower left corner
+  drawRect(vec2(barWidth / 2, screenHeight - barHeight / 2), vec2(barWidth, barHeight), darkColor, 0, true, true);
+
+  const researchMaterialBarWidth = (barWidth * min(researchPointsGoal, researchMaterial)) / researchPointsGoal - 6;
   drawRect(
     vec2(researchMaterialBarWidth / 2 + 3, screenHeight - barHeight / 2),
     vec2(researchMaterialBarWidth, barHeight - 6),
@@ -72,7 +67,6 @@ function render() {
     true,
     true
   );
-
 }
 
 export const Researcher = {

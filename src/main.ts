@@ -37,6 +37,7 @@ import { Respawner } from "./respawn";
 import { Building, TiledBuildingData } from "./building";
 import { convertCoord } from "./convert-coord";
 import { Overpass } from "./overpass";
+import { Constants } from "./constants";
 
 let player: Player;
 let base: Base;
@@ -300,15 +301,14 @@ function gameRenderPost() {
 
   // Draw a cross surrounded by a square for the mouse pointer
   const screenMousePos = worldToScreen(mousePos);
-  const darkColor = rgb(112 / 255, 66 / 255, 20 / 255);
-  const lightColor = rgb(245 / 255, 222 / 255, 179 / 255);
-  drawRect(screenMousePos, vec2(30), lightColor, 0, true, true);
-  drawLine(screenMousePos.add(vec2(-15, 0)), screenMousePos.add(vec2(15, 0)), 3, darkColor, true, true);
-  drawLine(screenMousePos.add(vec2(0, -15)), screenMousePos.add(vec2(0, 15)), 3, darkColor, true, true);
-  drawLine(screenMousePos.add(vec2(-15, 15)), screenMousePos.add(vec2(15, 15)), 3, darkColor, true, true);
-  drawLine(screenMousePos.add(vec2(15, 15)), screenMousePos.add(vec2(15, -15)), 3, darkColor, true, true);
-  drawLine(screenMousePos.add(vec2(15, -15)), screenMousePos.add(vec2(-15, -15)), 3, darkColor, true, true);
-  drawLine(screenMousePos.add(vec2(-15, -15)), screenMousePos.add(vec2(-15, 15)), 3, darkColor, true, true);
+  
+  drawRect(screenMousePos, vec2(30), Constants.PALETTE.BEIGE, 0, true, true);
+  drawLine(screenMousePos.add(vec2(-15, 0)), screenMousePos.add(vec2(15, 0)), 3, Constants.PALETTE.BROWN, true, true);
+  drawLine(screenMousePos.add(vec2(0, -15)), screenMousePos.add(vec2(0, 15)), 3, Constants.PALETTE.BROWN, true, true);
+  drawLine(screenMousePos.add(vec2(-15, 15)), screenMousePos.add(vec2(15, 15)), 3, Constants.PALETTE.BROWN, true, true);
+  drawLine(screenMousePos.add(vec2(15, 15)), screenMousePos.add(vec2(15, -15)), 3, Constants.PALETTE.BROWN, true, true);
+  drawLine(screenMousePos.add(vec2(15, -15)), screenMousePos.add(vec2(-15, -15)), 3, Constants.PALETTE.BROWN, true, true);
+  drawLine(screenMousePos.add(vec2(-15, -15)), screenMousePos.add(vec2(-15, 15)), 3, Constants.PALETTE.BROWN, true, true);
 
   Respawner.render();
   Researcher.render();

@@ -19,7 +19,7 @@ import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { DamageTaker } from "./damage-taker";
 import { Base } from "./base";
-import { publish } from "./event-bus";
+import { EVENTS, publish } from "./event-bus";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import { spriteSheetData } from "./sprite-sheet";
@@ -229,7 +229,7 @@ export class Enemy extends EngineObject implements DamageTaker {
     this.knockbackFromHit = projectile.velocity.normalize().scale(knockback);
 
     if (this.health <= 0) {
-      publish("ENEMY_KILLED");
+      publish(EVENTS.ENEMY_KILLED);
       this.deathTimer.set(0.15);
       this.deathSound.play(this.pos);
     }

@@ -11,7 +11,7 @@ import {
   vec2,
   Vector2,
 } from "littlejsengine";
-import { subscribe } from "./event-bus";
+import { EVENTS, subscribe } from "./event-bus";
 import { findPath } from "./findPath";
 import { Enemy } from "./enemy";
 
@@ -26,22 +26,22 @@ function setEmotionalIntensity(value: number) {
 let _lastActionTimestamp = performance.now();
 let _timeBeforeIntensityDecayMs = 2_000;
 
-subscribe("PLAYER_DAMAGED", ({ damage }) => {
+subscribe(EVENTS.PLAYER_DAMAGED, ({ damage }) => {
   setEmotionalIntensity(_emotionalIntensity + damage * 2);
   _lastActionTimestamp = performance.now();
 });
 
-subscribe("PLAYER_INCAPACITATED", () => {
+subscribe(EVENTS.PLAYER_INCAPACITATED, () => {
   setEmotionalIntensity(_emotionalIntensity + 500);
   _lastActionTimestamp = performance.now();
 });
 
-subscribe("ENEMY_KILLED", () => {
+subscribe(EVENTS.ENEMY_KILLED, () => {
   setEmotionalIntensity(_emotionalIntensity + 10);
   _lastActionTimestamp = performance.now();
 });
 
-subscribe("BASE_DAMAGED", () => {
+subscribe(EVENTS.BASE_DAMAGED, () => {
   // TODO: Affect Emotional Intensity based on proximity of player
   //setEmotionalIntensity(_emotionalIntensity + damage);
   _lastActionTimestamp = performance.now();
