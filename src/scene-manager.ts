@@ -1,8 +1,13 @@
-import { ASSERT, TextureInfo, textureInfos } from "littlejsengine";
+import { ASSERT, drawRect, rgb, TextureInfo, textureInfos, Timer, vec2 } from "littlejsengine";
 import { Scene } from "./scene";
+import { Constants } from "./constants";
 
 const scenes = new Map<string, Scene>();
 let currentScene: Scene | null = null;
+
+const fadingInTimer = new Timer();
+const fadingOutTimer = new Timer();
+const fadingDurationInSecs = 0.5;
 
 /**
  * Register a scene with the scene manager.
@@ -20,6 +25,7 @@ function registerScene(scene: Scene) {
 async function switchScene(name: string) {
   if (currentScene) {
     currentScene.onExit();
+    await fadeOut();
   }
 
   const scene = scenes.get(name);
@@ -31,6 +37,34 @@ async function switchScene(name: string) {
 
   scene!.onEnter();
   currentScene = scene!;
+  await fadeIn();
+}
+
+async function fadeOut() {
+  fadingOutTimer.set(fadingDurationInSecs);
+
+  return new Promise<void>((resolve) => {
+    const intervalId = setInterval(() => {
+      if (fadingOutTimer.elapsed()) {
+        clearInterval(intervalId);
+        resolve();
+      }
+    }, 15);
+  });
+}
+
+async function fadeIn() {
+  fadingOutTimer.unset();
+  fadingInTimer.set(fadingDurationInSecs);
+
+  return new Promise<void>((resolve) => {
+    const intervalId = setInterval(() => {
+      if (fadingInTimer.elapsed()) {
+        clearInterval(intervalId);
+        resolve();
+      }
+    }, 15);
+  });
 }
 
 async function loadImage(src: string, idx: number): Promise<void> {
@@ -81,10 +115,23 @@ function gameRender(): void {
  * Called after objects are rendered, draw effects or hud that appear above all objects.
  */
 function gameRenderPost(): void {
-  if (!currentScene) {
-    return;
+  currentScene?.gameRenderPost();
+
+  if (fadingOutTimer.active()) {
+    const endColor = Constants.PALETTE.BROWN;
+    const startColor = endColor.multiply(rgb(1, 1, 1, 0));
+    drawRect(vec2(0), vec2(500), startColor.lerp(endColor, fadingOutTimer.getPercent()));
   }
-  currentScene.gameRenderPost();
+
+  if (fadingOutTimer.elapsed()) {
+    drawRect(vec2(0), vec2(500), Constants.PALETTE.BROWN);
+  }
+
+  if (fadingInTimer.active()) {
+    const startColor = Constants.PALETTE.BROWN;
+    const endColor = startColor.multiply(rgb(1, 1, 1, 0));
+    drawRect(vec2(0), vec2(500), startColor.lerp(endColor, fadingInTimer.getPercent()));
+  }  
 }
 
 export const SceneManager = {
