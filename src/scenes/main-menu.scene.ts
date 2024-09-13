@@ -1,12 +1,4 @@
-import {
-  drawTile,
-  engineObjectsDestroy,
-  mainCanvasSize,
-  rgb,
-  tile,
-  TileInfo,
-  vec2,
-} from "littlejsengine";
+import { drawTile, engineObjectsDestroy, mainCanvasSize, rgb, tile, TileInfo, vec2 } from "littlejsengine";
 import { Scene } from "../scene";
 import { drawMousePointer } from "../drawMousePointer";
 import { SceneManager } from "../scene-manager";
@@ -22,8 +14,17 @@ export class MainMenuScene extends Scene {
 
   override onEnter() {
     this.backgroundTileInfo = tile(0, vec2(480, 270), 0);
-    new Button("start-button", vec2(0, -11.4), vec2(12, 2.7), undefined, undefined, rgb(0, 0, 0, 0));
-    
+    new Button(
+      "start-button",
+      vec2(0, -11.4),
+      vec2(12, 2.7),
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      rgb(0, 0, 0, 0)
+    );
+
     this.subscriptions.push(
       subscribe("BUTTON_CLICKED", (payload) => {
         if (payload.buttonId === "start-button") {
