@@ -36,18 +36,32 @@ import { Respawner } from "../respawn";
 import { Projectile } from "../projectile";
 import { Enemy } from "../enemy";
 import { drawMousePointer } from "../drawMousePointer";
+import { subscribe, Unsubscribe } from "../event-bus";
+import { SceneManager } from "../scene-manager";
+import { State } from "../state";
 
 export class Level01Scene extends Scene {
   private player!: Player;
   private base!: Base;
+  private subscriptions: Unsubscribe[] = [];
   constructor() {
     super("level-01", ["./assets/img/Tilemap.png", "./assets/img/sprite-sheet.webp"]);
   }
 
   override onEnter() {
+    this.subscriptions.push(
+      subscribe("BASE_DESTROYED", () => {
+        State.lastMissionWon = false;
+        SceneManager.switchScene("mission-end");
+      }),
+      subscribe("RESEARCH_COMPLETED", () => {
+        State.lastMissionWon = true;
+        SceneManager.switchScene("mission-end");
+      })
+    );
+
     const levelSize = vec2(tilemapData.width, tilemapData.height);
     initTileCollision(levelSize);
-    engineObjectsDestroy();
 
     const groundLayer = new TileLayer(vec2(), levelSize, tile(0, 16, 0));
     for (let x = levelSize.x; x--; ) {
@@ -287,6 +301,7 @@ export class Level01Scene extends Scene {
   }
 
   override onExit() {
+    this.subscriptions.forEach((unsubscribe) => unsubscribe());
     engineObjectsDestroy();
   }
 

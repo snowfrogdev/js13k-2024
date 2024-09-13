@@ -1,5 +1,5 @@
 import { drawRect, mainCanvasSize, min, rgb, Timer, vec2 } from "littlejsengine";
-import { EVENTS, subscribe } from "./event-bus";
+import { EVENTS, publish, subscribe } from "./event-bus";
 import { Constants } from "./constants";
 
 const researchPointsGoal = 500;
@@ -18,6 +18,11 @@ function update() {
     researchMaterial -= researchPointCost;
     researchPointsAccumulated += researchRatePerSecs;
     researchTimer.set(1);
+  }
+
+  if (researchPointsAccumulated >= researchPointsGoal) {
+    researchPointsAccumulated = researchPointsGoal;
+    publish(EVENTS.RESEARCH_COMPLETED);
   }
 }
 

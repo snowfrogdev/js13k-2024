@@ -54,6 +54,7 @@ export class Base extends Building {
     if (this.health <= 0) {
       this.deathTimer.set(0.15);
       this.deathSound.play(this.pos);
+      publish(EVENTS.BASE_DESTROYED);
     }
   }
 }

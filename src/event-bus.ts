@@ -3,21 +3,25 @@ import { Player } from "./player";
 const eventBus = new Comment("event-bus");
 
 type EventsDefinition = {
+  BASE_DAMAGED: { damage: number };
+  BASE_DESTROYED: undefined;
+  BUTTON_CLICKED: { buttonId: string };
+  ENEMY_KILLED: undefined; // Using 'undefined' for events without payloads
   PLAYER_DAMAGED: { damage: number };
   PLAYER_INCAPACITATED: { player: Player };
-  ENEMY_KILLED: undefined; // Using 'undefined' for events without payloads
-  BASE_DAMAGED: { damage: number };
+  RESEARCH_COMPLETED: undefined;
   RESEARCH_MATERIAL_COLLECTED: { amount: number };
-  BUTTON_CLICKED: { buttonId: string };
 };
 
 export const EVENTS: { [K in keyof EventsDefinition]: K } = {
+  BASE_DAMAGED: "BASE_DAMAGED",
+  BASE_DESTROYED: "BASE_DESTROYED",
+  BUTTON_CLICKED: "BUTTON_CLICKED",
+  ENEMY_KILLED: "ENEMY_KILLED",
   PLAYER_DAMAGED: "PLAYER_DAMAGED",
   PLAYER_INCAPACITATED: "PLAYER_INCAPACITATED",
-  ENEMY_KILLED: "ENEMY_KILLED",
-  BASE_DAMAGED: "BASE_DAMAGED",
+  RESEARCH_COMPLETED: "RESEARCH_COMPLETED",
   RESEARCH_MATERIAL_COLLECTED: "RESEARCH_MATERIAL_COLLECTED",
-  BUTTON_CLICKED: "BUTTON_CLICKED",
 } as const;
 
 type EventsWithPayload = {
@@ -37,7 +41,7 @@ export function publish<T extends keyof EventsDefinition>(eventName: T, payload?
   eventBus.dispatchEvent(event);
 }
 
-type Unsubscribe = () => void;
+export type Unsubscribe = () => void;
 
 function isCustomEvent(event: Event): event is CustomEvent {
   return "detail" in event;
