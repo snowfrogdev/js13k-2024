@@ -39,6 +39,7 @@ import { drawMousePointer } from "../drawMousePointer";
 import { subscribe, Unsubscribe } from "../event-bus";
 import { SceneManager } from "../scene-manager";
 import { State } from "../state";
+import { Tutorial } from "../tutorial";
 
 export class Level01Scene extends Scene {
   private player!: Player;
@@ -235,6 +236,7 @@ export class Level01Scene extends Scene {
     AIDirector.update(this.player.pos);
     Researcher.update();
     Respawner.update();
+    Tutorial.gameUpdate(this.base.pos);
   }
 
   override gameUpdatePost() {
@@ -246,9 +248,11 @@ export class Level01Scene extends Scene {
     });
 
     // for debug only
-    if (mouseWheel) {
-      const zoomSpeed = 2;
-      setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
+    if (import.meta.env.DEV) {
+      if (mouseWheel) {
+        const zoomSpeed = 2;
+        setCameraScale(cameraScale + mouseWheel * -zoomSpeed);
+      }
     }
 
     const levelSize = vec2(tilemapData.width, tilemapData.height);
@@ -279,6 +283,8 @@ export class Level01Scene extends Scene {
     }
 
     setCameraPos(clampedCameraPos);
+
+    Tutorial.gameUpdatePost(this.base.pos);
   }
 
   override gameRenderPost(): void {
@@ -294,6 +300,7 @@ export class Level01Scene extends Scene {
 
     Respawner.render();
     Researcher.render();
+    Tutorial.gameRenderPost(this.player.pos, this.base.pos);
 
     if (import.meta.env.DEV) {
       AIDirector.debug();
