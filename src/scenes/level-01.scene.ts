@@ -4,6 +4,7 @@ import {
   clamp,
   Color,
   drawRect,
+  drawTile,
   engineObjectsDestroy,
   initTileCollision,
   isOverlapping,
@@ -17,6 +18,7 @@ import {
   tile,
   TileLayer,
   TileLayerData,
+  tileSizeDefault,
   vec2,
   Vector2,
   worldToScreen,
@@ -40,6 +42,8 @@ import { subscribe, Unsubscribe } from "../event-bus";
 import { SceneManager } from "../scene-manager";
 import { State } from "../state";
 import { Tutorial } from "../tutorial";
+import { SpriteData } from "../sprite-data";
+import { spriteSheetData } from "../sprite-sheet";
 
 export class Level01Scene extends Scene {
   private player!: Player;
@@ -290,11 +294,11 @@ export class Level01Scene extends Scene {
   override gameRenderPost(): void {
     // Draw enemy indicator on the edge of the screen
     for (const enemy of Enemy.all) {
-      this.drawScreenEdgeIndicator(enemy.pos, rgb(1, 0, 0), 15);
+      this.drawScreenEdgeIndicator(enemy.pos, rgb(1, 0, 0), 20);
     }
 
     // Draw base indicator on the edge of the screen
-    this.drawScreenEdgeIndicator(this.base.pos, rgb(1, 1, 0), 25);
+    this.drawScreenEdgeIndicator(this.base.pos, rgb(1, 1, 0), 40);
 
     drawMousePointer();
 
@@ -323,6 +327,7 @@ export class Level01Scene extends Scene {
 
       let tMin = Infinity;
       let intersection: Vector2 = cameraScreenPos;
+      let angle: number = 0;
 
       // Check intersection with left edge (x = 0)
       if (dir.x !== 0) {
@@ -330,7 +335,8 @@ export class Level01Scene extends Scene {
         const y = cameraScreenPos.y + t * dir.y;
         if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
           tMin = t;
-          intersection = vec2(0, y);
+          intersection = vec2(17, y);
+          angle = -Math.PI / 2;
         }
       }
 
@@ -340,7 +346,8 @@ export class Level01Scene extends Scene {
         const y = cameraScreenPos.y + t * dir.y;
         if (t > 0 && y >= 0 && y <= screenSize.y && t < tMin) {
           tMin = t;
-          intersection = vec2(screenSize.x, y);
+          intersection = vec2(screenSize.x - 17, y);
+          angle = Math.PI / 2;
         }
       }
 
@@ -350,7 +357,8 @@ export class Level01Scene extends Scene {
         const x = cameraScreenPos.x + t * dir.x;
         if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
           tMin = t;
-          intersection = vec2(x, 0);
+          intersection = vec2(x, 17);
+          angle = 0;
         }
       }
 
@@ -360,11 +368,17 @@ export class Level01Scene extends Scene {
         const x = cameraScreenPos.x + t * dir.x;
         if (t > 0 && x >= 0 && x <= screenSize.x && t < tMin) {
           tMin = t;
-          intersection = vec2(x, screenSize.y);
+          intersection = vec2(x, screenSize.y - 17);
+          angle = Math.PI;
         }
       }
 
-      drawRect(intersection, vec2(size), color, 0, true, true);
+      // drawRect(intersection, vec2(size), color, 0, true, true);
+      const sprite: SpriteData = spriteSheetData.frames["arrow.png"];
+      const spritePos = vec2(sprite.frame.x, sprite.frame.y);
+      const spriteSize = vec2(sprite.frame.w, sprite.frame.h);
+      const tileInfo = tile(spritePos, spriteSize, 1);
+      drawTile(intersection, vec2(size), tileInfo, undefined, angle, undefined, undefined, undefined, true);
     }
   }
 }

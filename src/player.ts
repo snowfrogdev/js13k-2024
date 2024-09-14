@@ -28,6 +28,7 @@ import { ShellCasings } from "./shell-casings";
 import { ResearchMaterial } from "./research-material";
 import { SpriteData } from "./sprite-data";
 import { spriteSheetData } from "./sprite-sheet";
+import { Constants } from "./constants";
 
 export class Player extends EngineObject implements DamageTaker {
   static readonly maxHealth = 500;
@@ -217,8 +218,8 @@ export class Player extends EngineObject implements DamageTaker {
     const healthBarWidth = this.size.x;
     const healthBarHeight = 0.2;
     const healthBarPos = this.pos.add(vec2(0, -this.size.y / 2 - 0.2));
-    drawRect(healthBarPos, vec2(healthBarWidth, healthBarHeight), rgb(0, 0, 0));
-    drawRect(healthBarPos, vec2(healthBarWidth * (this.health / 500), healthBarHeight), rgb(1, 0, 0));
+    drawRect(healthBarPos, vec2(healthBarWidth + 0.15, healthBarHeight + 0.15), Constants.PALETTE.BROWN);
+    drawRect(healthBarPos, vec2(healthBarWidth * (this.health / 500), healthBarHeight), Constants.PALETTE.BEIGE);
   }
 
   takeDamage(projectile: Projectile) {

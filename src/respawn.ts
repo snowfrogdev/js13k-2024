@@ -1,6 +1,7 @@
 import { abs, clamp, drawTextScreen, mainCanvasSize, rgb, time, Timer, vec2 } from "littlejsengine";
 import { EVENTS, subscribe } from "./event-bus";
 import { Player } from "./player";
+import { Constants } from "./constants";
 
 const respawnTimer = new Timer();
 
@@ -27,7 +28,9 @@ function render() {
     const fontSize = 600;
     const text = clamp(abs(Math.ceil(respawnTimer.time - time)), 1, 5).toString();
 
-    drawTextScreen(text, vec2(screenWidth / 2, screenHeight / 2), fontSize, rgb(0,0,0),);
+    drawTextScreen(text, vec2(screenWidth / 2, screenHeight / 2), fontSize, Constants.PALETTE.BROWN,
+    10,
+    Constants.PALETTE.BEIGE);
   }
 }
 

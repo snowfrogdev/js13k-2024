@@ -1,6 +1,7 @@
 import { drawRect, rgb, Sound, Timer, vec2 } from "littlejsengine";
 import { EVENTS, publish } from "./event-bus";
 import { Building, TiledBuildingData } from "./building";
+import { Constants } from "./constants";
 
 export class Base extends Building {
   private health = 7500;
@@ -32,8 +33,8 @@ export class Base extends Building {
     const healthBarWidth = this.size.x;
     const healthBarHeight = 0.2;
     const healthBarPos = this.pos.add(vec2(0, -this.size.y / 2 - 0.2));
-    drawRect(healthBarPos, vec2(healthBarWidth, healthBarHeight), rgb(0, 0, 0));
-    drawRect(healthBarPos, vec2(healthBarWidth * (this.health / 7500), healthBarHeight), rgb(1, 0, 0));
+    drawRect(healthBarPos, vec2(healthBarWidth + 0.15, healthBarHeight + 0.15), Constants.PALETTE.BROWN);
+    drawRect(healthBarPos, vec2(healthBarWidth * (this.health / 7500), healthBarHeight), Constants.PALETTE.BEIGE);
 
     super.render();
   }
