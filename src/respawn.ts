@@ -1,4 +1,4 @@
-import { abs, clamp, drawTextScreen, mainCanvasSize, rgb, time, Timer, vec2 } from "littlejsengine";
+import { abs, clamp, drawTextScreen, mainCanvasSize, time, Timer, vec2 } from "littlejsengine";
 import { EVENTS, subscribe } from "./event-bus";
 import { Player } from "./player";
 import { Constants } from "./constants";

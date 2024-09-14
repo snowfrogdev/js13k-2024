@@ -9,7 +9,7 @@ export class MainMenuScene extends Scene {
   private backgroundTileInfo!: TileInfo;
   private subscriptions: Unsubscribe[] = [];
   constructor() {
-    super("main-menu", ["assets/img/Menu.png"]);
+    super("main-menu", ["./Menu.png"]);
   }
 
   override onEnter() {

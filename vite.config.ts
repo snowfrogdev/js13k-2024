@@ -6,7 +6,8 @@ import { convertJsonToJsPlugin } from "./vite-plugins/convert-json-to-js-plugin"
 
 export default defineConfig(({ mode }) => {
   let config: UserConfig = {
-    plugins: [convertJsonToJsPlugin, roadrollerPlugin, ectPlugin(), advzipPlugin()]
+    base: "",
+    plugins: [convertJsonToJsPlugin, roadrollerPlugin, ectPlugin(), advzipPlugin()],
   };
 
   if (mode === "production") {
@@ -21,6 +22,13 @@ export default defineConfig(({ mode }) => {
     config.build = {
       minify: "terser",
       modulePreload: false,
+      rollupOptions: {
+        output: {
+          entryFileNames: '[name].[hash].js',
+          chunkFileNames: '[name].[hash].js',
+          assetFileNames: '[name].[hash].[ext]',
+        }
+      },
       terserOptions: {
         ...config.build?.terserOptions,
         compress: {

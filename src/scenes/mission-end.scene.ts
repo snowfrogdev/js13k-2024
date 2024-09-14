@@ -29,7 +29,7 @@ export class MissionEndScene extends Scene {
 
     const text = State.lastMissionWon ? "Mission Complete!" : "Mission Failed!";
     drawText(text, vec2(0, 0), 4, Constants.PALETTE.BROWN);
-    
+
     new Button("retry-button", vec2(0, -3), vec2(6, 1.5), "RETRY", undefined, undefined, undefined);
   }
 

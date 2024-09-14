@@ -2,8 +2,6 @@ import {
   cameraPos,
   cameraScale,
   clamp,
-  Color,
-  drawRect,
   drawTile,
   engineObjectsDestroy,
   initTileCollision,
@@ -12,13 +10,11 @@ import {
   mousePos,
   mouseWheel,
   randVector,
-  rgb,
   setCameraPos,
   setCameraScale,
   tile,
   TileLayer,
   TileLayerData,
-  tileSizeDefault,
   vec2,
   Vector2,
   worldToScreen,
@@ -50,7 +46,7 @@ export class Level01Scene extends Scene {
   private base!: Base;
   private subscriptions: Unsubscribe[] = [];
   constructor() {
-    super("level-01", ["./assets/img/Tilemap.png", "./assets/img/sprite-sheet.webp"]);
+    super("level-01", ["./Tilemap.png", "./sprite-sheet.webp"]);
   }
 
   override onEnter() {
@@ -294,11 +290,11 @@ export class Level01Scene extends Scene {
   override gameRenderPost(): void {
     // Draw enemy indicator on the edge of the screen
     for (const enemy of Enemy.all) {
-      this.drawScreenEdgeIndicator(enemy.pos, rgb(1, 0, 0), 20);
+      this.drawScreenEdgeIndicator(enemy.pos, 20);
     }
 
     // Draw base indicator on the edge of the screen
-    this.drawScreenEdgeIndicator(this.base.pos, rgb(1, 1, 0), 40);
+    this.drawScreenEdgeIndicator(this.base.pos, 40);
 
     drawMousePointer();
 
@@ -316,7 +312,7 @@ export class Level01Scene extends Scene {
     engineObjectsDestroy();
   }
 
-  private drawScreenEdgeIndicator(target: Vector2, color: Color, size: number = 15) {
+  private drawScreenEdgeIndicator(target: Vector2, size: number = 15) {
     const enemyScreenPos = worldToScreen(target);
     const cameraScreenPos = worldToScreen(cameraPos);
     const screenSize = vec2(mainCanvasSize.x, mainCanvasSize.y);
