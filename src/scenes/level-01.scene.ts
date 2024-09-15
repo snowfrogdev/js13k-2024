@@ -54,10 +54,12 @@ export class Level01Scene extends Scene {
       subscribe("BASE_DESTROYED", () => {
         State.lastMissionWon = false;
         SceneManager.switchScene("mission-end");
+        AIDirector.reset();
       }),
       subscribe("RESEARCH_COMPLETED", () => {
         State.lastMissionWon = true;
         SceneManager.switchScene("mission-end");
+        AIDirector.reset();
       })
     );
 

@@ -20,11 +20,11 @@ const debugData: { time: number; enemies: number; intensity: number }[] = [];
 const maxDebugDataPoints = 10 * 60; // 10 minutes at 1 point per second
 
 function setEmotionalIntensity(value: number) {
-  _emotionalIntensity = value;
+  _emotionalIntensity = Math.max(0, value);
 }
 
 let _lastActionTimestamp = performance.now();
-let _timeBeforeIntensityDecayMs = 2_000;
+let _timeBeforeIntensityDecayMs = 3_000;
 
 subscribe(EVENTS.PLAYER_DAMAGED, ({ damage }) => {
   setEmotionalIntensity(_emotionalIntensity + damage * 2);
@@ -42,8 +42,7 @@ subscribe(EVENTS.ENEMY_KILLED, () => {
 });
 
 subscribe(EVENTS.BASE_DAMAGED, () => {
-  // TODO: Affect Emotional Intensity based on proximity of player
-  //setEmotionalIntensity(_emotionalIntensity + damage);
+  setEmotionalIntensity(_emotionalIntensity + 1);
   _lastActionTimestamp = performance.now();
 });
 
@@ -54,18 +53,19 @@ const _stateTransitionTimer = new Timer();
 
 const _peakEmotionalIntensityThreshold = 1_000;
 const _relaxEmotionalIntensityThreshold = 100;
-const _sustainPeakPeriodSecs = 5;
-const _relaxPeriodSecs = 5;
+const _sustainPeakPeriodSecs = 1;
+const _relaxPeriodSecs = 1;
 
 const _spawnTimer = new Timer();
-const _maxSpawnsPerMinute = 90;
+const _maxSpawnsPerMinute = 60;
 let _spawnIntervalInSecs = _maxSpawnsPerMinute / 60;
 
-const _emotionalIntensityDecayRatePerSec = 0.75;
+const _emotionalIntensityDecayRatePerSec = 2;
 
 let _enemySpawns: Vector2[];
 let _playerPosition: Vector2;
 let _basePosition: Vector2;
+let timeout: NodeJS.Timeout;
 
 function init(enemySpawns: Vector2[], basePosition: Vector2) {
   _enemySpawns = enemySpawns;
@@ -73,12 +73,14 @@ function init(enemySpawns: Vector2[], basePosition: Vector2) {
 
   _spawnTimer.set(_spawnIntervalInSecs);
 
-  setInterval(() => {
-    if (debugData.length > 10 * 60) {
-      debugData.shift();
-    }
-    debugData.push({ time: Math.round(time), enemies: Enemy.all.size, intensity: _emotionalIntensity });
-  }, 1000);
+  if (import.meta.env.DEV) {
+    timeout = setInterval(() => {
+      if (debugData.length > 10 * 60) {
+        debugData.shift();
+      }
+      debugData.push({ time: Math.round(time), enemies: Enemy.all.size, intensity: _emotionalIntensity });
+    }, 1000);
+  }
 }
 
 function update(playerPosition: Vector2) {
@@ -98,6 +100,13 @@ function update(playerPosition: Vector2) {
   _spawnIntervalInSecs = 60 / spawnsPerMinute;
 
   _stateMachine[_state]();
+}
+
+function reset() {
+  _stateTransitionTimer.unset();
+  _state = "BUILD_UP";
+  setEmotionalIntensity(0);
+  clearInterval(timeout);
 }
 
 function debug() {
@@ -211,4 +220,4 @@ function spawnEnemy() {
   _spawnTimer.set(_spawnIntervalInSecs);
 }
 
-export const AIDirector = { init, update, debug } as const;
+export const AIDirector = { init, update, debug, reset } as const;

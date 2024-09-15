@@ -5,7 +5,7 @@ import { Constants } from "./constants";
 const researchPointsGoal = 500;
 const researchRatePerSecs = 1;
 const researchTimer = new Timer(1);
-const researchPointCost = 2;
+const researchPointCost = 1;
 let researchPointsAccumulated = 0;
 let researchMaterial = 0;
 
